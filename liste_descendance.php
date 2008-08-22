@@ -49,7 +49,7 @@ $g4p_javascript='
 		
 		$("#mixed").treeview({
 			control: "#treecontrol",
-			url: "liste_ascendance_ajax.php",
+			url: "liste_descendance_ajax.php",
 			// add some additional, dynamic data and request with POST
 			ajax: {
 				type: "post"
