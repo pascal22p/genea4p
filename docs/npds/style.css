@@ -1,0 +1,676 @@
+BODY
+{
+  behavior: url("modules/genea4p/styles/default/csshover.htc");
+}
+
+DIV.info_bulle {
+    background-color : #FFBE8D;
+    border : 2px ridge Gray;
+    font-size : x-small;
+    text-align:left;
+    line-height:1em;
+}
+
+h1
+{
+  z-index:4;
+  font-size:1.8em;
+  font-weight: 700;
+  color: black;
+  letter-spacing : 2px;
+  border:none;
+  display : inline;
+  margin-left : 0;
+  text-align: center;
+}
+
+h1 span {
+}
+
+
+
+H2
+{
+  font-size:1.2em;
+  font-weight:500;
+  color:maroon;
+  text-align:left;
+  text-indent:1em;
+  margin-top:1em;
+  margin-bottom:1em;
+  padding:2px;
+}
+
+H3
+{
+  font-size:1em;
+  font-weight:900;
+  color:black;
+  text-align:left;
+  text-indent:1em;
+  margin-top:1em;
+  margin-bottom:0.2em;
+  padding:2px;
+}
+
+/* contenu a proprement dis */
+table.npds
+{
+  width:95%;
+  text-align:center;
+}
+
+table.npds TD
+{
+  padding:10px;
+}
+
+div.tout
+{
+}
+
+DIV.cadre
+{
+  text-align:left;
+  border:2px ridge blue;
+  width:100%;
+  margin-left:auto;
+  margin-right:auto;
+  padding:5px;
+  margin-top:30px;
+  margin-bottom:10px;
+  background-color:#AAC9E7;
+}
+
+/* */
+
+/* formualires */
+/*
+.formulaire
+{
+  text-align:left;
+}
+*/
+/* Styles pour la liste des patronymes et des personnes */
+
+DIV.colonne {
+    float : left;
+    text-align : center;
+    width : 49.5%;
+    margin-left : auto;
+    margin-right : auto;
+    background-color:transparent;
+}
+
+div.conteneur_colonnes
+{
+  margin-left:auto;
+  margin-right:auto;
+  width:75%;
+  border:2px darkblue ridge;
+  padding:5px;
+  background-color:#EAEAEA;
+}
+
+div.lettre
+{
+  font-size:small;
+  text-align:center;
+  border-bottom: dashed 3px darkblue;
+}
+
+DIV.page_prenom
+{
+    text-align:center;
+    border: 2px ridge gray;
+    padding:10px;
+    margin-top:20px;
+    margin-bottom:10px;
+}
+
+DIV.liste_prenoms
+{
+  border: 1px groove black;
+  margin-top:20px;
+  padding:5px;
+  padding-left:40px;
+  text-align:left;
+  width:500px;
+}
+
+a.liste:hover:before
+{
+  content:">> ";
+}
+
+img.icone_mar
+{
+  margin-bottom:0px;
+}
+
+img.icone_sexe
+{
+  margin-bottom:0px;
+}
+
+
+/* copyright tout en bas */
+DIV#copyright
+{
+  padding-top:20px;
+  text-align:center;
+  line-height:110%;
+  z-index:1;
+  position:relative;
+}
+
+/* messages, erreurs et alertes lors d'ajouts, modifications, suppression, connexion */
+DIV#message
+{
+    padding:5px;
+    font-size:1em;
+    line-height:100%;
+    color: black;
+    font-weight:bold;
+    border: 1px maroon groove;
+    position:absolute;
+    top:2px;
+    right:2px;
+    z-index:10;
+    text-align:left;
+    background-color:lightblue;
+}
+
+/* style pour l'affichage de la fiche de la personne */
+
+DIV.etat_civil
+{
+  padding-top:0.5em;
+  padding-bottom:1em;
+}
+
+/* styles pour les évènements */
+
+DIV.evenements
+{
+    text-align:left;
+    padding:0.5em;
+    margin-top:1em;
+    margin-bottom:1em;
+    margin-left:3%;
+    margin-right:3%;
+    font-size : normal;
+    border:dashed 1px darkblue;
+}
+
+/* style pour l'affichage de la famille */
+DIV.famille
+{
+    text-align:left;
+    border:2px groove darkblue;
+    background-color:#EAEAEA;
+    margin-left:auto;
+    margin-right:auto;
+    padding:10px;
+    width:80%;
+}
+
+/* style pour l'affichage de la liste des enfants */
+DIV.enfants
+{
+    text-align:left;
+    padding-left:1em;
+    margin-top:1em;
+    margin-bottom:1em;
+    font-size : normal;
+}
+
+DIV#accueil, DIV.page
+{
+    text-align:left;
+    border: 2px ridge gray;
+    padding:10px;
+    margin-top:20px;
+    margin-left:3%;
+    margin-right:3%;
+    margin-bottom:10px;
+    width:auto;
+}
+
+/* les parents */
+DIV.parents
+{
+    text-align:left;
+    padding:0.5em;
+    margin-top:1em;
+    margin-bottom:1em;
+    font-size : normal;
+}
+
+/* */
+
+
+DIV.notes, DIV.sources, DIV.multimedias
+{
+  margin-top:0.5em;
+  margin-bottom:0.5em;
+  padding:0.5em;
+  border:silver dashed 1px;
+}
+
+DIV.a_note, DIV.a_source, DIV.a_multimedia
+{
+    text-align:left;
+    border:1px dotted black;
+    padding:0.5em;
+    margin-top:0;
+    margin-bottom:0.1em;
+    margin-left:3%;
+    margin-right:3%;
+    text-indent : 15px;
+    font-size : small;
+}
+
+
+/* les relations */
+DIV.assos
+{
+    text-align:left;
+    padding:0.5em;
+    margin-top:1em;
+    margin-bottom:1em;
+    font-size : normal;
+}
+
+DIV.a_asso
+{
+    padding:0.5em;
+    margin-top:0;
+    margin-bottom:0.1em;
+    margin-left:1%;
+}
+
+
+/* affichage de la date entre-parenthèse*/
+SPAN.petit
+{
+    direction:ltr;
+    unicode-bidi:embed;
+    font-family: Arial, sans-serif;
+    font-style : italic;
+}
+/* force l'affichage de la date dans le bon sens pour l'hébreu ou autre */
+span.date
+{
+  direction:ltr;
+  unicode-bidi:embed;
+}
+
+EM
+{
+    color:darkblue;
+    text-indent : 0px;
+    font-weight:bold;
+}
+
+ DIV#lettres,DIV#patronymes, DIV#liste_prenoms
+{
+    margin-left:auto;
+    margin-right:auto;
+    border: 1px groove black;
+    background-image:url(images/vert-transparent.png);
+    background-repeat:repeat;
+    padding:5px;
+    width:90%;
+    margin-bottom:2em;
+}
+
+/* affichage de l'arbre ascendant */
+DIV.arbre
+{
+    text-align:center;
+    border: 2px ridge gray;
+    padding:1px;
+    margin-top:20px;
+    margin-left:0;
+    margin-right:0;
+    margin-bottom:10px;
+    background-color:#AAC9E7;
+    width:auto;
+}
+
+TABLE.arbre IMG
+{
+  border:none;
+  padding:0;
+  margin:0;
+}
+
+TABLE.arbre
+{
+  table-layout:fixed;
+  border:none;
+  padding:0px;
+  margin-left:auto;
+  margin-right:auto;
+  border-collapse: collapse;
+}
+
+TABLE.arbre TD
+{
+  padding-left:2px;
+  padding-right:2px;
+  padding-top:0px;
+  padding-bottom:0px;
+  margin:0px;
+  line-height:110%;
+}
+TABLE.arbre TD A,TABLE.arbre TD A:hover,TABLE.arbre TD A:link, TABLE.arbre TD A:visited
+{
+  color:black;
+  background-color:transparent;
+  border:none;
+}
+
+TABLE.arbre TR
+{
+  padding:0px;
+  margin:0px;
+}
+
+.cellule_M
+{
+  border:solid 1px black;
+  font-family:arial, sans-serif;
+  font-size:8pt;
+  padding:2px;
+  background-color:#cee7ff;
+}
+.cellule_F
+{
+  border:solid 1px black;
+  font-family:arial, sans-serif;
+  font-size:8pt;
+  padding:2px;
+  background-color:#ffcee7;
+}
+.cellule_I
+{
+  border:solid 1px black;
+  font-family:arial, sans-serif;
+  font-size:8pt;
+  padding:2px;
+  background-color:#ffffb9;
+}
+/* fin affichage arbre */
+
+DIV.spacer
+{
+  clear:both;
+}
+
+/* affichage des permission sur la page d'admin concernée */
+TABLE#permission
+{
+  text-align:center;
+  border-collapse:collapse;
+  padding:0;
+}
+
+TABLE#permission TD
+{
+  border-width: 1px;
+  border-color: black ;
+  border-style: solid;
+  padding:4px;
+}
+
+TABLE#permission TR
+{
+  margin:0;
+  padding:50px;
+}
+
+TABLE#permission THEAD
+{
+  font-weight:bold;
+}
+
+/* affichage pour la page famille proche */
+div.bloc_gauche
+{
+  position:relative;
+  float:left;
+  width:40%;
+  border:none;
+  text-align:center;
+}
+
+div.bloc_droit
+{
+  position:relative;
+  float:right;
+  width:40%;
+  border:none;
+  text-align:center;
+}
+
+div.ar_gp_1
+{
+  width:45%;
+  position:relative;
+  border:solid black 1px;
+  float:left;
+  margin:1%;
+  background-color:#cee7ff;
+}
+
+div.ar_gp_2
+{
+  width:45%;
+  position:relative;
+  border:solid black 1px;
+  float:right;
+  margin:1%;
+  background-color:#cee7ff;
+}
+
+a.fleche_gp_1
+{
+  width:100%;
+  border:none;
+  position:relative;
+  margin:1%;
+}
+
+div.gp_1
+{
+  width:98%;
+  border:solid black 1px;
+  position:relative;
+  margin-left:auto;
+  margin-right:auto;
+  background-color:#cee7ff;
+}
+
+div.fiche_centrale
+{
+  width:60%;
+  border:solid black 1px;
+  clear:both;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:20px;
+  margin-bottom:2%;
+  background-color:#cee7ff;
+  text-align:left;
+}
+
+TABLE.famille_proche
+{
+  font-size:small;
+  border-collapse:separate;
+  border:none;
+  margin:0px;
+  padding:0;
+  width:auto;
+  border-spacing:15px;
+}
+
+TABLE.famille_proche TD
+{
+  padding:10px;
+  text-align:center;
+  margin:15px;
+}
+
+DIV.famille_proche
+{
+  position:relative;
+  clear:both;
+  margin-top:20px;
+  margin-bottom:10px;
+  padding:5px;
+  border:2px solid black;
+  text-align:center;
+}
+
+TABLE.taggedcom {
+    border: 2px ridge gray;
+    padding:0px;
+    margin-top:0px;
+    margin-left:3%;
+    margin-right:3%;
+    background-color:#bfdfc5;
+    width:auto;
+    font-size:smaller;
+    border-collapse: collapse;
+}
+TABLE.taggedcom TR{
+  padding:0;
+  margin:0;
+  background :#AAC9E7;
+  text-align: center;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
+}
+
+TABLE.taggedcom TD{
+  padding:3px;
+  margin:0;
+  width:auto;
+  border: 2px ridge gray;
+  border-color:green;
+  border-collapse: collapse;
+  margin-bottom:0;
+}
+/* fin famille proche */
+
+
+/* style pous le menu */
+
+li.ssmenu
+{
+  font-weight:normal;
+  margin: 0px;
+  padding-left: 2px;
+}
+
+
+ul.menu {
+  list-style-type:none;
+  padding-top:0;
+  margin-top:0;
+  margin-left:0;
+  padding-left:10px;
+  font-weight:bold;
+}
+
+ul.ssmenu {
+  list-style-type:none;
+  list-style-type:none;
+  padding-top:0;
+  margin-top:0;
+  margin-left:0;
+  padding-left:0px;
+  text-indent:-10px;
+}
+
+li.menu {
+  padding-top:5px;
+  padding-bottom:2px;
+}
+
+/* bande en bois en haut*/
+div.bois
+{
+  display:none;
+}
+
+/* liste de descendance */
+ul.descendance
+{
+  border-left:1px solid black;
+  padding-left:22px;
+  list-style-type:none;
+  margin:0;
+  font-size:normal;
+}
+
+li.descendance
+{
+  list-style-image:url(images/trait-hor.png);
+  padding-left:0px;
+  margin:0
+  font-size:normal;
+}
+
+/* menu admin pour l'edition des fiches, familles, notes ... */
+DIV.menu_interne
+{
+  border:none;
+  margin:0;
+  padding-bottom:0.1em;
+  padding-top:0.1em;
+  background:none;
+  text-align:center;
+}
+
+a.admin:link
+{
+  margin-bottom:1px;
+  color:red;
+  background-color:#FFC6C3;
+  padding:1px;
+  border:black 1px solid;
+  font-size:x-small;
+  vertical-align:middle;
+}
+a.admin:visited
+{
+  margin-bottom:0;
+  color:red;
+  background-color:#FFC6C3;
+  padding:1px;
+  border:black 1px solid;
+    font-size:x-small;
+  vertical-align:middle;
+}
+a.admin:hover
+{
+  margin-bottom:0;
+  color:red;
+  background-color:#d2eacc;
+  padding:1px;
+  border:black 1px solid;
+    font-size:x-small;
+  vertical-align:middle;
+}
+/* fin menu interne */
+
+a.retour
+{
+  color:green;
+
+}

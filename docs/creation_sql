@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Export du fichier sql pour mysql 4.1";
+mysqldump -n --skip-add-locks --comments --default-character-set=utf8 --databases --disable-keys dumpgenealogie > genealogie_mysql41.sql
+echo "Export du fichier sql pour mysql 4.0";
+mysqldump -n --skip-add-locks --comments --compatible=mysql40 --default-character-set=utf8 --databases --disable-keys dumpgenealogie > genealogie.sql

@@ -1,0 +1,4 @@
+<Files *.g4p>
+deny from all
+</Files>
+options -Indexes

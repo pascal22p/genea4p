@@ -1,0 +1,1019 @@
+html
+{
+background-color:#AAC9E7;
+margin: 0px ;
+padding:0;
+  background-image : url(images/arbre.png);
+  background-attachment:fixed;
+  background-position:bottom right;
+  background-repeat:no-repeat;
+}
+
+body
+{
+/*
+  background-image : url(images/arbre.png);
+  background-attachment:fixed;
+  background-position:bottom right;
+  background-repeat:no-repeat;
+  */
+background-color:transparent;
+margin: 0px ;
+padding:0;
+color : black;
+line-height:140%;
+text-align:center;
+
+}
+
+div.info_bulle {
+    background-color : #FFBE8D;
+    color:black;
+    border : 2px ridge Gray;
+    font-size : x-small;
+    text-align:left;
+    line-height:1em;
+}
+
+h1
+{
+  font-size:1.8em;
+  font-weight: 700;
+  color: #00008b;
+  letter-spacing : 2px;
+  border:2px ridge blue;
+  text-align: center;
+  padding-top:15px;
+  padding-bottom:15px;
+  margin-left:10px;
+  margin-right:10px;
+  margin-bottom:40px;
+  margin-top:10px;
+  background-color:#EFEFEF;
+}
+
+h1 span 
+{
+}
+
+h2
+{
+  font-size:1.2em;
+  font-weight:500;
+  color:maroon;
+  text-align:left;
+  text-indent:1em;
+  margin-top:1em;
+  margin-bottom:1em;
+  padding:2px;
+  background-color:transparent;
+}
+
+h3
+{
+  font-size:1em;
+  font-weight:900;
+  color:black;
+  text-align:left;
+  text-indent:1em;
+  margin-top:1em;
+  margin-bottom:0.2em;
+  padding:2px;
+  background-color:transparent;
+}
+
+input
+{
+    text-align:inherit;
+    font-size:0.8em;
+    background-color: #DDDDEE;
+    vertical-align:baseline;
+    font-weight:500;
+    border-color:black;
+    border-style:inset;
+    border-width:1px;
+    color:black;
+    /*border : 2px ridge blue;*/
+}
+
+input.coche
+{
+  border:none;
+  background-color:transparent;
+  vertical-align:middle;
+  margin:0;
+  padding:0;
+    color:black;
+}
+
+select
+{
+    text-align:left;
+    font-size:0.8em;
+    background-color: #DDDDEE;
+    vertical-align:baseline;
+    font-weight:500;
+    border-color:black;
+    border-style:inset;
+    border-width:1px;
+    width:160px;
+    color:black;    
+}
+
+textarea
+{
+  font-size:0.8em;
+  text-align:left;
+  background-color:#DDDDEE;
+  border-color:green;
+}
+
+img
+{
+  border:none;
+  vertical-align:bottom;
+}
+
+p
+{
+    text-indent:0;
+    padding-left:15px;
+}
+
+
+
+/* contenu a proprement dis */
+div.tout
+{
+  padding-bottom:50px;
+  padding-top:0px;
+  padding-left:160px;
+  padding-right:0px;
+  margin:0px;
+  text-align:center;
+  border:none;
+  width:auto;
+}
+
+div.cadre
+{
+    text-align:left;
+    border: 2px ridge blue;
+    padding:10px;
+    margin-left:5px;
+    margin-right:5px;
+    margin-top:10px;
+    margin-bottom:10px;
+    background-color:#EFEFEF;
+}
+
+/* liens */
+a:link
+{
+  padding:1px;
+  color : black;
+  border:none;
+  text-decoration:none;
+
+}
+a:visited
+{
+  padding:1px;
+  color : #505050;
+  text-decoration:none;
+
+}
+a:hover
+{
+  color : Black;
+  background-color: #DDEEEE;
+  padding:1px;
+  border: none;
+  font-weight: bold;  
+
+}
+
+/* formualires */
+.formulaire
+{
+  text-align:left;
+}
+
+/* Styles pour la liste des patronymes et des personnes */
+div.colonne {
+    float : left;
+    text-align : center;
+    width : 49.5%;
+    margin-left : auto;
+    margin-right : auto;
+    background-color:transparent;
+}
+
+div.conteneur_colonnes
+{
+  margin-left:auto;
+  margin-right:auto;
+  width:75%;
+  border:2px blue ridge;
+  padding:5px;
+  background-color:#AAC9E7;
+}
+
+div.lettre
+{
+  font-size:small;
+  text-align:center;
+  border-bottom:3px dashed blue;
+}
+
+div.page_prenom
+{
+    text-align:center;
+    border: 2px ridge blue;
+    padding:10px;
+    margin-top:20px;
+    margin-left:5%;
+    margin-right:5%;
+    margin-bottom:10px;
+    background-color:#EFEFEF;
+    width:auto;
+}
+
+div.liste_prenoms
+{
+    margin-left:10%;
+    margin-right:10%;
+    margin-top:20px;
+    background-color:#EFEFEF;
+    border: 2px ridge blue;
+    padding:2%;
+    width:auto;
+    text-align:left;
+}
+
+a.liste:hover:before
+{
+  content:"";
+}
+
+img.icone_mar
+{
+  margin-bottom:6px;
+}
+
+img.icone_sexe
+{
+  margin-bottom:7px;
+}
+
+/* box title */
+.box_title
+{
+	border:none;
+	background-color:#00008b;
+	color:white;
+	width:auto;
+	font-weight:bold;
+	font-size:large;
+	margin:0;
+	padding:0.5em;
+	text-indent:5em;
+}
+
+/* box */
+.box
+{
+    text-align:left;
+    border:1px dotted black;
+    padding:0;
+    margin-top:0.2em;
+    margin-bottom:2.5em;
+    margin-left:5%;
+    margin-right:5%;
+    text-indent : 15px;
+    background-color:#AAC9E7;
+}
+
+
+/* copyright tout en bas */
+div#copyright
+{
+  clear:both;
+  margin-top:20px;
+  font-size:0.7em;
+  padding:5px;
+  text-align:center;
+  line-height:110%;
+  margin-left:auto;
+  margin-right:auto;
+  width:350px;
+  background-color:#EFEFEF;
+  border:2px ridge blue;
+}
+
+/* messages, erreurs et alertes lors d'ajouts, modifications, suppression, connexion */
+div#message
+{
+    padding:2px;
+    font-size:small;
+    line-height:100%;
+    color: black;
+    font-weight:bold;
+    border-bottom: 2px maroon groove;
+    position:absolute;
+    top:65px;
+    left:5px;
+    z-index:5;
+    background-color:transparent;/*#EFEFEF;*/
+    text-align:left;
+}
+
+/* style pour l'affichage de la fiche de la personne */
+
+DIV.etat_civil
+{
+    text-align:left;
+    border:1px dotted black;
+    padding:0;
+    margin-top:0em;
+    margin-bottom:1.5em;
+    margin-left:5%;
+    margin-right:5%;
+    text-indent : 15px;
+    background-color:#AAC9E7;
+}
+
+dl.etat_civil
+{
+	margin-bottom: 1em;
+}
+
+.etat_civil dt
+{
+	font-weight:bold;
+	color:#00008b;
+	float: left;
+	width: auto;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.etat_civil dd
+{
+	float: none;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+/* styles pour les ��ements */
+
+DIV.evenements
+{
+    text-align:left;
+    border:1px dotted black;
+    padding-top:0;
+	padding-bottom:1em;
+	padding-right:0em;
+	padding-left:0em;
+    margin-top:0em;
+    margin-bottom:1.5em;
+    margin-left:5%;
+    margin-right:5%;
+    text-indent : 15px;
+    font-size : small;
+    background-color:#AAC9E7;
+}
+
+DL.evenements
+{
+    text-align:left;
+    padding:0;
+    margin:0;
+	margin-bottom:1em;
+}
+
+DT
+{
+	margin-top:0.5em;
+}
+
+/* style pour l'affichage de la famille */
+div.famille
+{
+    text-align:left;
+    border:2px groove blue;
+    background-color:#AAC9E7;
+    margin-left:auto;
+    margin-right:auto;
+    padding:10px;
+    width:80%;
+}
+
+/* style pour l'affichage de la liste des enfants */
+div.enfants
+{
+    text-align:left;
+    padding-left:1em;
+    margin-top:1em;
+    margin-bottom:1em;
+    
+}
+
+div#accueil, div.page
+{
+    text-align:left;
+    border: 2px ridge gray;
+    padding:10px;
+    margin-top:20px;
+    margin-left:5%;
+    margin-right:5%;
+    margin-bottom:10px;
+    width:auto;
+}
+
+/* les parents */
+div.parents
+{
+    text-align:left;
+    padding:0.5em;
+    margin-top:1em;
+    margin-bottom:1em;
+    
+}
+
+div.oncles, div.cousins, div.freres
+{
+    text-align:left;
+    padding-left:0.5em;
+    padding-top:0em;
+    padding-bottom:0em;
+    margin-top:0em;
+    margin-bottom:0em;
+    
+}
+
+/* */
+div.notes, div.sources, div.multimedias
+{
+  margin-top:1.5em;
+  margin-bottom:0.5em;
+  padding:0.5em;
+  border:silver dashed 1px;
+}
+
+div.a_note, div.a_source, div.a_multimedia
+{
+    text-align:left;
+    border:1px dotted black;
+    padding-top:0;
+	padding-bottom:0.5em;
+	padding-right:0em;
+	padding-left:0em;
+    margin-top:0em;
+    margin-bottom:1.5em;
+    margin-left:5%;
+    margin-right:5%;
+    text-indent : 15px;
+    font-size : small;
+    background-color:#AAC9E7;
+}
+
+dl.source
+{
+	margin-bottom: 1em;
+}
+
+.source dt
+{
+	font-weight:bold;
+	color:#00008b;
+	float: left;
+	clear: both;
+	margin: 0;
+	padding: 0;
+	width: auto;
+}
+
+.source dd
+{
+	padding: 0;
+	margin: 0;
+}
+
+
+
+/* les relations */
+div.assos
+{
+    text-align:left;
+    padding:0.5em;
+    margin-top:1em;
+    margin-bottom:1em;
+}
+
+div.a_asso
+{
+    padding:0.5em;
+    margin-top:0;
+    margin-bottom:0.1em;
+    margin-left:1%;
+}
+
+
+/* affichage de la date entre-parenth�e*/
+span.petit
+{
+    direction:ltr;
+    unicode-bidi:embed;
+    font-size: small;
+    font-style : italic;
+	margin-left:0.5em;
+}
+/* force l'affichage de la date dans le bon sens pour l'h�reu ou autre */
+span.date
+{
+  direction:ltr;
+  unicode-bidi:embed;
+}
+
+em
+{
+    color:#00008b;
+    text-indent : 0px;
+    font-weight:bold;
+}
+
+/* affichage de l'arbre ascendant */
+div.arbre
+{
+    text-align:center;
+    border: 2px ridge gray;
+    padding:4px;
+    margin-top:20px;
+    margin-left:0;
+    margin-right:0;
+    margin-bottom:10px;
+    background-color:#EFEFEF;
+    width:auto;
+}
+
+table.arbre img
+{
+  border:none;
+  padding:0;
+  margin:0;
+}
+
+table.arbre
+{
+  table-layout:fixed;
+  border:none;
+  padding:0px;
+  margin-left:auto;
+  margin-right:auto;
+  border-collapse: collapse;
+}
+
+table.arbre td
+{
+  padding-left:2px;
+  padding-right:2px;
+  padding-top:0px;
+  padding-bottom:0px;
+  margin:0px;
+  line-height:110%;
+}
+table.arbre td a,table.arbre td a:hover,table.arbre td a:link, table.arbre td a:visited
+{
+  color:black;
+  background-color:transparent;
+  border:none;
+}
+
+table.arbre tr
+{
+  padding:0px;
+  margin:0px;
+}
+
+.cellule_M
+{
+  border:solid 1px black;
+  font-size:8pt;
+  padding:2px;
+  background-color:#cee7ff;
+}
+.cellule_F
+{
+  border:solid 1px black;
+  font-size:8pt;
+  padding:2px;
+  background-color:#ffcee7;
+}
+.cellule_I
+{
+  border:solid 1px black;
+  font-size:8pt;
+  padding:2px;
+  background-color:#ffffb9;
+}
+/* fin affichage arbre */
+
+div.spacer
+{
+  clear:both;
+}
+
+/* affichage des permission sur la page d'admin concern� */
+table#permission
+{
+  text-align:center;
+  border-collapse:collapse;
+  padding:0;
+}
+
+table#permission td
+{
+  border-width: 1px;
+  border-color: black ;
+  border-style: solid;
+  padding:4px;
+}
+
+table#permission tr
+{
+  margin:0;
+  padding:50px;
+}
+
+table#permission thead
+{
+  font-weight:bold;
+}
+
+/* affichage pour la page famille proche */
+div.bloc_gauche
+{
+  position:relative;
+  float:left;
+  width:40%;
+  border:none;
+  text-align:center;
+}
+
+div.bloc_droit
+{
+  position:relative;
+  float:right;
+  width:40%;
+  border:none;
+  text-align:center;
+}
+
+div.ar_gp_1
+{
+  width:45%;
+  position:relative;
+  border:solid black 1px;
+  float:left;
+  margin:1%;
+  background-color:#cee7ff;
+}
+
+div.ar_gp_2
+{
+  width:45%;
+  position:relative;
+  border:solid black 1px;
+  float:right;
+  margin:1%;
+  background-color:#cee7ff;
+}
+
+a.fleche_gp_1
+{
+  width:100%;
+  border:none;
+  position:relative;
+  margin:1%;
+}
+
+div.gp_1
+{
+  width:98%;
+  border:solid black 1px;
+  position:relative;
+  margin-left:auto;
+  margin-right:auto;
+  background-color:#cee7ff;
+}
+
+div.fiche_centrale
+{
+  width:60%;
+  border:solid black 1px;
+  clear:both;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:20px;
+  margin-bottom:5px;
+  background-color:#cee7ff;
+  text-align:left;
+}
+
+table.famille_proche
+{
+  font-size:small;
+  border-collapse:separate;
+  border:none;
+  margin:0px;
+  padding:0;
+  width:auto;
+  border-spacing:15px;
+}
+
+table.famille_proche td
+{
+  padding:10px;
+  text-align:center;
+  margin:15px;
+}
+
+div.famille_proche
+{
+  position:relative;
+  clear:both;
+  padding:5px;
+  border:2px solid black;
+  text-align:center;
+  margin-top:20px;
+  margin-left:5%;
+  margin-right:5%;
+  margin-bottom:10px;
+  background-color:#EFEFEF;
+  width:auto;
+}
+
+table.taggedcom {
+    border: 2px ridge gray;
+    padding:0px;
+    margin-top:0px;
+    margin-left:5%;
+    margin-right:5%;
+    background-color:#bfdfc5;
+    width:auto;
+    font-size:smaller;
+    border-collapse: collapse;
+}
+table.taggedcom TR{
+  padding:0;
+  margin:0;
+  background :#AAC9E7;
+  text-align: center;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
+}
+
+table.taggedcom td{
+  padding:3px;
+  margin:0;
+  width:auto;
+  border: 2px ridge gray;
+  border-color:green;
+  border-collapse: collapse;
+  margin-bottom:0;
+}
+/* fin famille proche */
+
+
+/* style pous le menu */
+
+li.ssmenu, li.ssmenu a
+{
+  display:block;
+  font-size:0.9em;
+  margin:0;
+  padding:1px;
+	border:0;
+  z-index:10;
+  background-color:#AAC9E7;  
+  width:auto;
+}
+
+
+ul.menu {
+  position:absolute;
+  float:left;
+  margin:5px;
+  left:0;
+  top:100px;
+  background-color:#EDECEC;
+  list-style-type:none;
+  padding:2px;
+  border:2px ridge blue;
+  width:150px;
+}
+
+ul.ssmenu {
+  margin:0px;
+  padding:0px;
+  border-top:1px dashed black;
+  width:auto;
+  list-style-type:none;
+  background-color:transparent;
+}
+
+li.menu {
+/*  font-size:0.9em; */
+  display:block;
+  background-color:#AAC9E7;
+  list-style-type:none;
+  margin:2px;
+  margin-bottom:2px;
+  padding:1px;
+  text-align:left;
+  width:auto;
+}
+
+/* hovers with specificity */
+li.ssmenu:hover, li.ssmenu:hover a
+{
+  background-color: #DDEEEE;
+}
+	
+li.menu:hover 
+{ 
+	z-index:10; 
+}		
+		
+ul.menu ul.ssmenu
+{
+	display:block;
+}
+
+li.menu:hover ul.ssmenu
+{
+	display:block;
+}		
+
+/* bande en bois en haut*/
+div.bois
+{
+  display:none;
+}
+
+/* liste de descendance */
+ul.descendance
+{
+  border-left:1px solid black;
+  padding-left:22px;
+  list-style-type:none;
+  margin:0;
+  
+}
+
+li.descendance
+{
+  list-style-image:url(images/trait-hor.png);
+  padding-left:0px;
+  margin:0;
+  
+}
+
+/* menu admin pour l'edition des fiches, familles, notes ... */
+div.menu_interne
+{
+  border:none;
+  margin:0;
+  padding-bottom:0.1em;
+  padding-top:0.1em;
+  background:none;
+  text-align:center;
+  margin-bottom:0em;
+}
+
+a.admin:link
+{
+  line-height:170%;
+  color:red;
+  background-color:#FFC6C3;
+  padding:1px;
+  border:black 1px solid;
+  font-size:x-small;
+  vertical-align:middle;
+}
+a.admin:visited
+{
+  line-height:170%;
+  color:red;
+  background-color:#FFC6C3;
+  padding:1px;
+  border:black 1px solid;
+    font-size:x-small;
+  vertical-align:middle;
+}
+a.admin:hover
+{
+  line-height:170%;
+  color:red;
+  background-color:#d2eacc;
+  padding:1px;
+  border:black 1px solid;
+    font-size:x-small;
+  vertical-align:middle;
+}
+/* fin menu interne */
+
+
+a.retour
+{
+  color:green;
+
+}
+
+/****  Style pour les tabulations *******/
+ul.tabnav {
+    list-style-type: none;
+    height: 29px;
+    margin: 0;
+    padding:0;
+    border-bottom:1px solid blue;
+}
+
+ul.tabnav li {
+    float: left;
+    height: 21px;
+    vertical-align:baseline;
+    background-color: #DDDDEE;
+    margin-left: 20px;
+    margin-right:0;
+    margin-top:3px;
+    margin-bottom:0;
+    padding:2px;
+    border: 1px solid blue;
+}
+
+ul.tabnav li.active {
+	float: left;
+	height: 21px;
+	vertical-align:baseline;
+	background-color: #EFEFEF;
+	margin-left: 20px;
+	margin-right:0;
+	margin-top:3px;
+	margin-bottom:0;
+	padding:2px;
+	border-bottom: 1px solid #EFEFEF;
+    }
+
+ul.tabnav li.active a {
+    color: #000;
+}
+
+.tabnav a {
+    float: left;
+    display: block;
+    color: #666;
+    text-decoration: none;
+    margin: 0;
+    padding:0;
+}
+
+.tabnav a:hover {
+    background: #EFEFEF;
+}
+
+.boite_tabulation
+{
+  margin-top:0;
+  border-left:1px solid blue;
+  border-right:1px solid blue;
+  border-bottom:1px solid blue;
+  padding:5px;
+  background-color:#EFEFEF;
+}
+
+/****** Collapsed dl *******/
+dl.collapsed
+{
+	margin-bottom: 1em;
+}
+
+.collapsed dt
+{
+	font-weight:bold;
+	color:#00008b;
+	float: left;
+	clear: both;
+	margin: 0;
+	padding: 0;
+	width: auto;
+}
+
+.collapsed dd
+{
+	padding: 0;
+	margin: 0;
+}
+

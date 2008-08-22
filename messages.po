@@ -1,0 +1,921 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: index.php:29 index.php:169 index.php:172 index.php:173 index.php:174
+#: index.php:175 index.php:176 index.php:177 index.php:193 index.php:202
+#: index.php:248 index.php:270 index.php:312 index.php:316 index.php:320
+#: index.php:322 index.php:331 index.php:403 index.php:416 index.php:423
+#: index.php:439 index.php:452 index.php:458 index.php:473 index.php:480
+#: index.php:496 index.php:509 index.php:548
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-11 23:38+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: index.php:32 index.php:38
+msgid "p_conf/g4p_config.php"
+msgstr ""
+
+#: index.php:34
+msgid "location:"
+msgstr ""
+
+#: index.php:34
+msgid "install.php"
+msgstr ""
+
+#: index.php:39
+msgid "p_conf/script_start.php"
+msgstr ""
+
+#: index.php:40
+msgid "include_sys/sys_functions.php"
+msgstr ""
+
+#: index.php:41 index.php:42 index.php:44
+msgid "g4p_action"
+msgstr ""
+
+#: index.php:42
+msgid "accueil"
+msgstr ""
+
+#: index.php:49
+msgid "fiche_indi"
+msgstr ""
+
+#: index.php:51 index.php:57 index.php:60 index.php:63 index.php:67
+#: index.php:74 index.php:75 index.php:76 index.php:77
+msgid "id_pers"
+msgstr ""
+
+#: index.php:53
+msgid "Date: "
+msgstr ""
+
+#: index.php:53 index.php:60 index.php:87
+msgid "D, d M Y H:i:s"
+msgstr ""
+
+#: index.php:53
+msgid " GMT"
+msgstr ""
+
+#: index.php:54
+msgid "Cache-Control: Public, must-revalidate"
+msgstr ""
+
+#: index.php:55
+msgid "Pragma: public"
+msgstr ""
+
+#: index.php:56
+msgid "ETag: "
+msgstr ""
+
+#: index.php:56 index.php:65
+msgid "g4p_id_membre"
+msgstr ""
+
+#: index.php:56 index.php:65
+msgid "langue"
+msgstr ""
+
+#: index.php:56 index.php:65
+msgid "theme"
+msgstr ""
+
+#: index.php:56 index.php:65
+msgid "place"
+msgstr ""
+
+#: index.php:56 index.php:65
+msgid "entete_charset"
+msgstr ""
+
+#: index.php:57 index.php:60 index.php:63 index.php:87
+msgid "cache/"
+msgstr ""
+
+#: index.php:57 index.php:60 index.php:63 index.php:87
+msgid "genea_db_nom"
+msgstr ""
+
+#: index.php:57 index.php:60 index.php:63 index.php:87
+msgid "/indi_"
+msgstr ""
+
+#: index.php:57 index.php:60 index.php:63 index.php:87
+msgid ".txt"
+msgstr ""
+
+#: index.php:63
+msgid "HTTP_IF_MODIFIED_SINCE"
+msgstr ""
+
+#: index.php:63
+msgid "U"
+msgstr ""
+
+#: index.php:65
+msgid "HTTP_IF_NONE_MATCH"
+msgstr ""
+
+#: index.php:67 index.php:74 index.php:75 index.php:76 index.php:77
+#: index.php:78 index.php:87 index.php:90 index.php:99 index.php:107
+#: index.php:109 index.php:116 index.php:117 index.php:118 index.php:119
+#: index.php:126 index.php:127 index.php:129 index.php:133 index.php:136
+#: index.php:137 index.php:140 index.php:141 index.php:142 index.php:143
+#: index.php:144 index.php:145 index.php:146 index.php:147 index.php:148
+#: index.php:149 index.php:150 index.php:151 index.php:152 index.php:153
+#: index.php:156 index.php:157 index.php:160 index.php:163 index.php:164
+#: index.php:177 index.php:185 index.php:188 index.php:213 index.php:215
+#: index.php:216 index.php:219 index.php:222 index.php:225
+msgid "mon_indi"
+msgstr ""
+
+#: index.php:68
+msgid "Not Modified"
+msgstr ""
+
+#: index.php:80 index.php:92 index.php:101 index.php:111 index.php:235
+#: index.php:385 index.php:527 index.php:559
+msgid "entete.php"
+msgstr ""
+
+#: index.php:81 index.php:93 index.php:102 index.php:112
+msgid "<div class=\"cadre\">"
+msgstr ""
+
+#: index.php:81 index.php:93
+msgid "index_person_inconnu"
+msgstr ""
+
+#: index.php:81 index.php:93 index.php:102 index.php:154 index.php:179
+#: index.php:209 index.php:227 index.php:269 index.php:408 index.php:532
+#: index.php:552
+msgid "</div>"
+msgstr ""
+
+#: index.php:82 index.php:94 index.php:103 index.php:239 index.php:565
+msgid "pied_de_page.php"
+msgstr ""
+
+#: index.php:99 index.php:113 index.php:121 index.php:123 index.php:218
+#: index.php:221 index.php:224 index.php:236 index.php:294 index.php:417
+#: index.php:474
+msgid "permission"
+msgstr ""
+
+#: index.php:99 index.php:126 index.php:133 index.php:417 index.php:474
+msgid "privacy"
+msgstr ""
+
+#: index.php:102
+msgid "acces_non_autorise"
+msgstr ""
+
+#: index.php:107 index.php:215 index.php:219 index.php:222 index.php:225
+msgid "indi"
+msgstr ""
+
+#: index.php:109 index.php:140 index.php:203 index.php:458 index.php:471
+msgid " "
+msgstr ""
+
+#: index.php:115
+msgid ""
+"<div class=\"menu_interne\">\n"
+"          <a href=\""
+msgstr ""
+
+#: index.php:116 index.php:117 index.php:118 index.php:119 index.php:122
+#: index.php:125 index.php:127 index.php:129 index.php:130
+msgid "admin"
+msgstr ""
+
+#: index.php:116 index.php:117 index.php:118 index.php:119 index.php:125
+#: index.php:193 index.php:202 index.php:403 index.php:458 index.php:548
+msgid "index.php"
+msgstr ""
+
+#: index.php:116
+msgid "g4p_opt=ajout_note&amp;g4p_id="
+msgstr ""
+
+#: index.php:116 index.php:117 index.php:118 index.php:119
+msgid "&amp;g4p_type=indi"
+msgstr ""
+
+#: index.php:116 index.php:117 index.php:118 index.php:119 index.php:125
+#: index.php:127 index.php:129 index.php:130
+msgid "\" class=\"admin\">"
+msgstr ""
+
+#: index.php:116
+msgid "menu_ajout_note"
+msgstr ""
+
+#: index.php:116 index.php:117 index.php:118
+msgid ""
+"</a> -\n"
+"          <a href=\""
+msgstr ""
+
+#: index.php:117
+msgid "g4p_opt=ajout_source&amp;g4p_id="
+msgstr ""
+
+#: index.php:117
+msgid "menu_ajout_source"
+msgstr ""
+
+#: index.php:118
+msgid "g4p_opt=ajout_media&amp;g4p_id="
+msgstr ""
+
+#: index.php:118
+msgid "menu_ajout_media"
+msgstr ""
+
+#: index.php:119
+msgid "g4p_opt=ajout_asso&amp;g4p_lien="
+msgstr ""
+
+#: index.php:119
+msgid "menu_ajout_relation"
+msgstr ""
+
+#: index.php:119 index.php:122
+msgid "</a> - "
+msgstr ""
+
+#: index.php:122 index.php:125 index.php:403 index.php:548
+msgid "<a href=\""
+msgstr ""
+
+#: index.php:122 index.php:127 index.php:129 index.php:130
+msgid "exec.php"
+msgstr ""
+
+#: index.php:122
+msgid "g4p_opt=suppr_fiche"
+msgstr ""
+
+#: index.php:122
+msgid "\" class=\"admin\" onclick=\" return confirme(this, '"
+msgstr ""
+
+#: index.php:122
+msgid "menu_sppr_confirme"
+msgstr ""
+
+#: index.php:122
+msgid "')\">"
+msgstr ""
+
+#: index.php:122
+msgid "menu_sppr_indi"
+msgstr ""
+
+#: index.php:125
+msgid "g4p_opt=mod_fich"
+msgstr ""
+
+#: index.php:125
+msgid "menu_modif_fiche"
+msgstr ""
+
+#: index.php:125 index.php:127 index.php:129
+msgid "</a> -"
+msgstr ""
+
+#: index.php:127 index.php:129 index.php:130 index.php:177
+msgid " <a href=\""
+msgstr ""
+
+#: index.php:127
+msgid "g4p_opt=mask_fich&amp;g4p_id="
+msgstr ""
+
+#: index.php:127
+msgid "menu_masque_fiche"
+msgstr ""
+
+#: index.php:129
+msgid "g4p_opt=demask_fich&amp;g4p_id="
+msgstr ""
+
+#: index.php:129
+msgid "menu_demasque_fiche"
+msgstr ""
+
+#: index.php:130
+msgid "g4p_opt=del_cache"
+msgstr ""
+
+#: index.php:130
+msgid "menu_recreer_cache"
+msgstr ""
+
+#: index.php:130
+msgid "</a></div>"
+msgstr ""
+
+#: index.php:134 index.php:137
+msgid "<span class=\"petit\">"
+msgstr ""
+
+#: index.php:134
+msgid "index_masquer"
+msgstr ""
+
+#: index.php:134 index.php:137 index.php:142
+msgid "</span><br />"
+msgstr ""
+
+#: index.php:136
+msgid "0000-00-00 00:00:00"
+msgstr ""
+
+#: index.php:137
+#, php-format
+msgid "index_chan"
+msgstr ""
+
+#: index.php:137
+msgid "date_complete"
+msgstr ""
+
+#: index.php:139
+msgid "<div class=\"etat_civil\">"
+msgstr ""
+
+#: index.php:140
+msgid "<span><em>Id : </em>"
+msgstr ""
+
+#: index.php:140 index.php:296 index.php:310 index.php:314 index.php:318
+#: index.php:356
+msgid ","
+msgstr ""
+
+#: index.php:140 index.php:141 index.php:143 index.php:145 index.php:147
+#: index.php:149 index.php:151 index.php:153 index.php:177 index.php:198
+#: index.php:206 index.php:207 index.php:521
+msgid "<br />"
+msgstr ""
+
+#: index.php:141 index.php:142 index.php:143 index.php:145 index.php:147
+#: index.php:149 index.php:151 index.php:153 index.php:171 index.php:190
+msgid "<em>"
+msgstr ""
+
+#: index.php:141
+msgid "index_nom"
+msgstr ""
+
+#: index.php:141 index.php:142 index.php:143 index.php:145 index.php:147
+#: index.php:149 index.php:151 index.php:153 index.php:190
+msgid "</em>"
+msgstr ""
+
+#: index.php:142
+msgid "index_prenom"
+msgstr ""
+
+#: index.php:143
+msgid "index_sexe"
+msgstr ""
+
+#: index.php:143
+msgid "index_sexe_valeur"
+msgstr ""
+
+#: index.php:145
+msgid "index_npfx"
+msgstr ""
+
+#: index.php:147
+msgid "index_givn"
+msgstr ""
+
+#: index.php:149
+msgid "index_nick"
+msgstr ""
+
+#: index.php:151
+msgid "index_spfx"
+msgstr ""
+
+#: index.php:153
+msgid "index_nsfx"
+msgstr ""
+
+#: index.php:162
+msgid "<div class=\"evenements\">"
+msgstr ""
+
+#: index.php:163
+msgid "jd_count"
+msgstr ""
+
+#: index.php:167 index.php:172 index.php:395 index.php:540
+msgid " ("
+msgstr ""
+
+#: index.php:167 index.php:395 index.php:447 index.php:449 index.php:451
+#: index.php:453 index.php:504 index.php:506 index.php:508 index.php:510
+#: index.php:540
+msgid ")"
+msgstr ""
+
+#: index.php:171
+msgid ""
+" :\n"
+"                </em><span class=\"date\">"
+msgstr ""
+
+#: index.php:172 index.php:195 index.php:203 index.php:454 index.php:456
+#: index.php:511 index.php:513
+msgid "</span>"
+msgstr ""
+
+#: index.php:172
+msgid "index_lieu"
+msgstr ""
+
+#: index.php:172
+msgid ") "
+msgstr ""
+
+#: index.php:173
+msgid " <span style=\"color:blue; font-size:x-small;\">-S-</span> "
+msgstr ""
+
+#: index.php:174
+msgid " <span style=\"color:blue; font-size:x-small;\">-N-</span> "
+msgstr ""
+
+#: index.php:175
+msgid " <span style=\"color:blue; font-size:x-small;\">-M-</span> "
+msgstr ""
+
+#: index.php:176
+msgid " <span style=\"color:blue; font-size:x-small;\">-T-</span> "
+msgstr ""
+
+#: index.php:177
+msgid "detail_event.php"
+msgstr ""
+
+#: index.php:177
+msgid "g4p_id=i|"
+msgstr ""
+
+#: index.php:177
+msgid "|"
+msgstr ""
+
+#: index.php:177
+msgid "\" class=\"noprint\">"
+msgstr ""
+
+#: index.php:177
+msgid "detail"
+msgstr ""
+
+#: index.php:177
+msgid "</a><br />"
+msgstr ""
+
+#: index.php:187
+msgid "<div class=\"parents\">"
+msgstr ""
+
+#: index.php:190
+msgid "index_ype_parent"
+msgstr ""
+
+#: index.php:190
+msgid "rela_type"
+msgstr ""
+
+#: index.php:191 index.php:193 index.php:194 index.php:195
+msgid "pere"
+msgstr ""
+
+#: index.php:193 index.php:202
+msgid "<br /><a href=\""
+msgstr ""
+
+#: index.php:193 index.php:202
+msgid "g4p_action=fiche_indi&amp;id_pers="
+msgstr ""
+
+#: index.php:193
+msgid "&genea_db_id="
+msgstr ""
+
+#: index.php:193 index.php:202 index.php:458
+msgid "fiche-"
+msgstr ""
+
+#: index.php:193 index.php:202 index.php:254 index.php:288 index.php:403
+#: index.php:458 index.php:548
+msgid "-"
+msgstr ""
+
+#: index.php:193 index.php:202 index.php:458
+msgid "\">"
+msgstr ""
+
+#: index.php:194
+msgid ""
+"\n"
+"                       "
+msgstr ""
+
+#: index.php:195 index.php:203
+msgid "</a> <span class=\"petit\">"
+msgstr ""
+
+#: index.php:198 index.php:206
+msgid "index_parent_inconnu"
+msgstr ""
+
+#: index.php:200 index.php:202 index.php:203
+msgid "mere"
+msgstr ""
+
+#: index.php:202
+msgid "&amp;genea_db_id="
+msgstr ""
+
+#: index.php:212
+msgid "show_ext_rela"
+msgstr ""
+
+#: index.php:216
+msgid "events"
+msgstr ""
+
+#: index.php:234
+msgid "liste_patronyme"
+msgstr ""
+
+#: index.php:238
+msgid "liste_patro_acces_interdis"
+msgstr ""
+
+#: index.php:243
+msgid "<div class=\"cadre\" style=\"text-align:center;\">"
+msgstr ""
+
+#: index.php:244 index.php:246 index.php:247 index.php:253 index.php:254
+#: index.php:255 index.php:257 index.php:258 index.php:260 index.php:261
+#: index.php:263 index.php:267
+msgid "patronyme"
+msgstr ""
+
+#: index.php:244
+msgid "all"
+msgstr ""
+
+#: index.php:253 index.php:287
+msgid "!1!"
+msgstr ""
+
+#: index.php:253 index.php:287
+msgid "?"
+msgstr ""
+
+#: index.php:254 index.php:288
+msgid "!2!"
+msgstr ""
+
+#: index.php:255 index.php:289
+msgid "!3!"
+msgstr ""
+
+#: index.php:255 index.php:289
+msgid "&"
+msgstr ""
+
+#: index.php:267
+msgid "g4p_cpt"
+msgstr ""
+
+#: index.php:270
+msgid ""
+"<center><a style=\"font-size:xx-small;padding-top:0:margin-top:0;\" href=\""
+msgstr ""
+
+#: index.php:270
+msgid "liste_patronymes.php"
+msgstr ""
+
+#: index.php:270
+msgid ""
+"\">Liste complète de tous les patronymes, toutes bases confondues</a></"
+"center>"
+msgstr ""
+
+#: index.php:280
+msgid "liste_prenom"
+msgstr ""
+
+#: index.php:281 index.php:282 index.php:296 index.php:400 index.php:545
+msgid "g4p_page"
+msgstr ""
+
+#: index.php:284 index.php:285 index.php:287 index.php:288 index.php:289
+#: index.php:293 index.php:403 index.php:548
+msgid "nom"
+msgstr ""
+
+#: index.php:285
+msgid "id_nom"
+msgstr ""
+
+#: index.php:292
+msgid ""
+"SELECT indi_id, indi_nom, indi_prenom, indi_sexe, resn FROM "
+"`genea_individuals`"
+msgstr ""
+
+#: index.php:293
+msgid " WHERE base ="
+msgstr ""
+
+#: index.php:293 index.php:403 index.php:458 index.php:548
+msgid "genea_db_id"
+msgstr ""
+
+#: index.php:293
+msgid " AND indi_nom='"
+msgstr ""
+
+#: index.php:293
+msgid "'"
+msgstr ""
+
+#: index.php:295
+msgid " AND (resn IS NULL OR resn<>'privacy')"
+msgstr ""
+
+#: index.php:296
+msgid " ORDER BY indi_nom, indi_prenom LIMIT "
+msgstr ""
+
+#: index.php:302 index.php:304 index.php:306 index.php:355 index.php:371
+#: index.php:381 index.php:419 index.php:421 index.php:435 index.php:437
+#: index.php:458 index.php:461 index.php:463 index.php:469 index.php:476
+#: index.php:478 index.php:492 index.php:494
+msgid "indi_id"
+msgstr ""
+
+#: index.php:303 index.php:458
+msgid "indi_sexe"
+msgstr ""
+
+#: index.php:303
+msgid "M"
+msgstr ""
+
+#: index.php:324
+msgid ""
+"SELECT CONCAT('i',familles_husb) as familles_husb, indi_id, indi_nom, "
+"indi_prenom, resn FROM genea_familles LEFT JOIN genea_individuals ON "
+"(familles_wife=indi_id) WHERE familles_husb IN ("
+msgstr ""
+
+#: index.php:324 index.php:333
+msgid ") AND indi_id IS NOT NULL"
+msgstr ""
+
+#: index.php:326
+msgid "familles_husb"
+msgstr ""
+
+#: index.php:333
+msgid ""
+"SELECT CONCAT('i',familles_wife) as familles_wife, indi_id, indi_nom, "
+"indi_prenom, resn FROM genea_familles LEFT JOIN genea_individuals ON "
+"(familles_husb=indi_id) WHERE familles_wife IN ("
+msgstr ""
+
+#: index.php:335
+msgid "familles_wife"
+msgstr ""
+
+#: index.php:365
+msgid ""
+"SELECT genea_individuals.indi_id AS indi_id, date_event AS naissance\n"
+"        FROM `genea_individuals`\n"
+"        JOIN rel_indi_event AS a ON ( genea_individuals.indi_id=a.indi_id )\n"
+"        JOIN genea_events AS n ON ( a.events_id = n.id)\n"
+"        WHERE genea_individuals.indi_id IN ("
+msgstr ""
+
+#: index.php:369
+msgid ") AND (n.type = 'BIRT' OR n.type = 'BAPM' )"
+msgstr ""
+
+#: index.php:375
+msgid ""
+"SELECT genea_individuals.indi_id AS indi_id, date_event AS deces\n"
+"        FROM `genea_individuals`\n"
+"        JOIN rel_indi_event AS a ON ( genea_individuals.indi_id=a.indi_id )\n"
+"        JOIN genea_events AS n ON ( a.events_id = n.id)\n"
+"        WHERE genea_individuals.indi_id IN ("
+msgstr ""
+
+#: index.php:379
+msgid ") AND (n.type = 'DEAT' OR n.type = 'BURI' )"
+msgstr ""
+
+#: index.php:384
+msgid "Patronyme : "
+msgstr ""
+
+#: index.php:384 index.php:458 index.php:471
+msgid "indi_nom"
+msgstr ""
+
+#: index.php:387 index.php:390 index.php:392 index.php:403 index.php:536
+#: index.php:537 index.php:548
+msgid "g4p_nbre"
+msgstr ""
+
+#: index.php:388 index.php:534
+msgid "<div class=\"page_prenom\">"
+msgstr ""
+
+#: index.php:389 index.php:535
+msgid "<a href='javascript:history.back()' class=\"retour\">"
+msgstr ""
+
+#: index.php:389 index.php:535
+msgid "retour"
+msgstr ""
+
+#: index.php:389 index.php:535
+msgid "</a>&nbsp;"
+msgstr ""
+
+#: index.php:390 index.php:394 index.php:395 index.php:536 index.php:539
+#: index.php:540
+msgid "&nbsp;"
+msgstr ""
+
+#: index.php:390 index.php:536
+msgid "personnes_trouvees"
+msgstr ""
+
+#: index.php:394 index.php:539
+msgid ", page n°"
+msgstr ""
+
+#: index.php:394 index.php:539
+msgid "index_prenoms_page"
+msgstr ""
+
+#: index.php:395 index.php:540
+msgid "personnes_page"
+msgstr ""
+
+#: index.php:396 index.php:541
+msgid "<br />- "
+msgstr ""
+
+#: index.php:401 index.php:454 index.php:511 index.php:518 index.php:546
+msgid " - "
+msgstr ""
+
+#: index.php:403 index.php:548
+msgid "g4p_action=liste_prenom&genea_db_id="
+msgstr ""
+
+#: index.php:403 index.php:548
+msgid "&g4p_nbre="
+msgstr ""
+
+#: index.php:403 index.php:548
+msgid "&g4p_page="
+msgstr ""
+
+#: index.php:403 index.php:548
+msgid "&nom="
+msgstr ""
+
+#: index.php:403 index.php:548
+msgid "prenoms-"
+msgstr ""
+
+#: index.php:403 index.php:548
+msgid "\"> "
+msgstr ""
+
+#: index.php:403 index.php:548
+msgid " </a>-"
+msgstr ""
+
+#: index.php:409
+msgid "<div class=\"liste_prenoms\">"
+msgstr ""
+
+#: index.php:411
+msgid " <img src=\""
+msgstr ""
+
+#: index.php:411
+msgid "images/mariage.png\" alt=\"mariage\" class=\"icone_mar\" /> "
+msgstr ""
+
+#: index.php:412
+msgid "celibataire"
+msgstr ""
+
+#: index.php:417 index.php:474
+msgid "resn"
+msgstr ""
+
+#: index.php:423 index.php:425 index.php:480 index.php:482
+msgid "naissance"
+msgstr ""
+
+#: index.php:431 index.php:488
+msgid "(°"
+msgstr ""
+
+#: index.php:433 index.php:451 index.php:453 index.php:490 index.php:508
+#: index.php:510
+msgid "("
+msgstr ""
+
+#: index.php:439 index.php:441 index.php:496 index.php:498
+msgid "deces"
+msgstr ""
+
+#: index.php:447 index.php:504
+msgid "+"
+msgstr ""
+
+#: index.php:454 index.php:456 index.php:511 index.php:513
+msgid " <span class=\"petit\">"
+msgstr ""
+
+#: index.php:458
+msgid "<img src=\""
+msgstr ""
+
+#: index.php:458
+msgid "images/"
+msgstr ""
+
+#: index.php:458
+msgid ".png\" alt=\""
+msgstr ""
+
+#: index.php:458
+msgid "\" class=\"icone_sexe\" /> <a class=\"liste\" href=\""
+msgstr ""
+
+#: index.php:458
+msgid "g4p_action=fiche_indi&genea_db_id="
+msgstr ""
+
+#: index.php:458
+msgid "&id_pers="
+msgstr ""
+
+#: index.php:458 index.php:471
+msgid "indi_prenom"
+msgstr ""
+
+#: index.php:458
+msgid "</a>"
+msgstr ""
+
+#: index.php:461 index.php:463 index.php:469
+msgid "i"
+msgstr ""
+
+#: index.php:528
+msgid "<h2>Aucune personnes trouvée</h2>"
+msgstr ""
+
+#: index.php:560
+msgid "include_html/accueil.php"
+msgstr ""

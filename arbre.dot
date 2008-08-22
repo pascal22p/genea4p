@@ -1,0 +1,14 @@
+digraph structs {
+ranksep=.75; concentrate=true;
+node [shape=record];
+{ rank = same; "i34"; "i37"};
+node [shape=triangle];
+{ rank = same; "f19"};
+i34 [label="Pascal PAROIS\n "];
+i37 [label="Alexandre Auguste Jean Marie PAROIS\n "];
+f19 [label=""];
+edge[arrowhead=none, arrowtail=none];
+f19->i37;
+}
+
+bouh
