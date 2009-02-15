@@ -732,7 +732,7 @@ function g4p_agregat_noms()
 
 function g4p_update_agregat_noms($nom)
 {
-  global $cpt_fn, $g4p_table_agregats, $g4p_langue;
+  global $cpt_fn, $g4p_table_agregats, $g4p_langue, $g4p_mysqli;
   $i=0;
 
   $tmp='';
@@ -1995,3 +1995,4 @@ function g4p_affiche_adresse($adresse)
 
 
 ?>
+

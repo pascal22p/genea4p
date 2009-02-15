@@ -1017,3 +1017,18 @@ dl.collapsed
 	margin: 0;
 }
 
+/* formulaires */
+.form dl dd
+{
+	height:20pt;
+	border:1px solid black;
+}
+.form dl dt
+{
+	height:10pt;
+}
+
+h2
+{
+	font-size:30pt;
+}

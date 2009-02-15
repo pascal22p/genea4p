@@ -168,11 +168,11 @@ function g4p_gedcom2sql($file)
     global $g4p_requetes, $g4p_gedcom, $g4p_base, $g4p_ligne, $g4p_links;
     global $log, $g4p_chemin, $g4p_store_ids;
 
-    #$ansel_to_ansi=array('âe'=>'é','áe'=>'è','ãe'=>'ê','èe'=>'ë','âo'=>'ó','áo'=>'ò','ão'=>'ô','èo'=>'ö','âa'=>'á','áa'=>'à','ãa'=>'â','èa'=>'ä','âu'=>'ú','áu'=>'ù','ãu'=>'û','èu'=>'ü','âi'=>'í','ái'=>'ì','ãi'=>'î','èi'=>'ï','ây'=>'ý','èy'=>'ÿ','ðc'=>'ç','~n'=>'ñ','âE'=>'É','áE'=>'È','ãE'=>'Ê','èE'=>'Ë','âO'=>'Ó','áO'=>'Ò','ãO'=>'Ô','èO'=>'Ö','âA'=>'Á','áA'=>'À','ãA'=>'Â','èA'=>'Ä','âU'=>'Ú','áU'=>'Ù','ãU'=>'Û','èU'=>'Ü','âI'=>'Í','áI'=>'Ì','ãI'=>'Î','èI'=>'Ï','âY'=>'Ý','èY'=>'Ÿ','ðC'=>'Ç','~N'=>'Ñ');
-   # $ansel_map=array_keys($ansel_to_ansi);
-  #  foreach($ansel_map as $ansel_a_map_key=>$ansel_a_map_value)
- #     $ansel_map[$ansel_a_map_key]='/'.$ansel_a_map_value.'/';
-#    $ansel_replacement=array_values($ansel_to_ansi);
+    $ansel_to_ansi=array('âe'=>'é','áe'=>'è','ãe'=>'ê','èe'=>'ë','âo'=>'ó','áo'=>'ò','ão'=>'ô','èo'=>'ö','âa'=>'á','áa'=>'à','ãa'=>'â','èa'=>'ä','âu'=>'ú','áu'=>'ù','ãu'=>'û','èu'=>'ü','âi'=>'í','ái'=>'ì','ãi'=>'î','èi'=>'ï','ây'=>'ý','èy'=>'ÿ','ðc'=>'ç','~n'=>'ñ','âE'=>'É','áE'=>'È','ãE'=>'Ê','èE'=>'Ë','âO'=>'Ó','áO'=>'Ò','ãO'=>'Ô','èO'=>'Ö','âA'=>'Á','áA'=>'À','ãA'=>'Â','èA'=>'Ä','âU'=>'Ú','áU'=>'Ù','ãU'=>'Û','èU'=>'Ü','âI'=>'Í','áI'=>'Ì','ãI'=>'Î','èI'=>'Ï','âY'=>'Ý','èY'=>'Ÿ','ðC'=>'Ç','~N'=>'Ñ');
+    $ansel_map=array_keys($ansel_to_ansi);
+    foreach($ansel_map as $ansel_a_map_key=>$ansel_a_map_value)
+      $ansel_map[$ansel_a_map_key]='/'.$ansel_a_map_value.'/';
+    $ansel_replacement=array_values($ansel_to_ansi);
 
     $g4p_start_id=array();
     $g4p_links=array();
@@ -849,12 +849,6 @@ function g4p_fgets($g4p_gedcom)
         flush();
     }*/
     
-    $ansel_to_ansi=array('âe'=>'é','áe'=>'è','ãe'=>'ê','èe'=>'ë','âo'=>'ó','áo'=>'ò','ão'=>'ô','èo'=>'ö','âa'=>'á','áa'=>'à','ãa'=>'â','èa'=>'ä','âu'=>'ú','áu'=>'ù','ãu'=>'û','èu'=>'ü','âi'=>'í','ái'=>'ì','ãi'=>'î','èi'=>'ï','ây'=>'ý','èy'=>'ÿ','ðc'=>'ç','~n'=>'ñ','âE'=>'É','áE'=>'È','ãE'=>'Ê','èE'=>'Ë','âO'=>'Ó','áO'=>'Ò','ãO'=>'Ô','èO'=>'Ö','âA'=>'Á','áA'=>'À','ãA'=>'Â','èA'=>'Ä','âU'=>'Ú','áU'=>'Ù','ãU'=>'Û','èU'=>'Ü','âI'=>'Í','áI'=>'Ì','ãI'=>'Î','èI'=>'Ï','âY'=>'Ý','èY'=>'Ÿ','ðC'=>'Ç','~N'=>'Ñ');
-    $ansel_map=array_keys($ansel_to_ansi);
-    foreach($ansel_map as $ansel_a_map_key=>$ansel_a_map_value)
-      $ansel_map[$ansel_a_map_key]='/'.$ansel_a_map_value.'/';
-    $ansel_replacement=array_values($ansel_to_ansi);
-
     if(!feof($g4p_gedcom))
     {
         $g4p_ligne=trim(fgets($g4p_gedcom));
