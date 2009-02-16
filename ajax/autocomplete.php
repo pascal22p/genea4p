@@ -26,7 +26,7 @@ require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 	
-$_GET['q']='%'.str_replace(' ','%',$_GET['q']).'%';
+$_GET['q']='%'.str_replace(' ','%',mysql_escape_string($_GET['q'])).'%';
 $g4p_query=$g4p_mysqli->g4p_query("SELECT indi_id, indi_prenom, indi_nom 
     FROM genea_individuals 
     WHERE CONCAT(indi_prenom,' ',indi_nom) LIKE '".$_GET['q']."' OR
@@ -37,25 +37,32 @@ if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
 {
     foreach($g4p_result as $g4p_a_result)
     {
-        echo $g4p_a_result['indi_id'].'  '.$g4p_a_result['indi_prenom'].'  '.$g4p_a_result['indi_nom']."\n";
+        $indi=g4p_load_indi_infos($g4p_a_result['indi_id']);
+        if(isset($indi->events))
+        {
+            foreach($indi->events as $aevent)
+            {
+                if($aevent->tag=='BIRT' or $aevent->tag=='BAPM')
+                    $naissance=g4p_date($aevent->date->gedcom_date);
+                elseif($aevent->tag=='DEAT' or $aevent->tag=='BURI')
+                    $deces=g4p_date($aevent->date->gedcom_date);
+            }
+        
+            if(!empty($naissance) and !empty($deces))
+                $tmp='(° '.$naissance.' - † '.$deces.')';
+            elseif(empty($naissance) and empty($deces))
+                $tmp='';
+            elseif(!empty($naissance))
+                $tmp='(° '.$naissance.')';
+            elseif(!empty($naissance))
+                $tmp='(† '.$deces.')';
+        }
+        else
+            $tmp='';
+    
+        echo $g4p_a_result['indi_id'].'  '.$g4p_a_result['indi_prenom'].'  '.$g4p_a_result['indi_nom'].'<br />'.$tmp."\n";
     }
 }
-
-/*   $sql="INSERT INTO genea_individuals (indi_nom, indi_prenom, indi_sexe, base, indi_npfx, indi_givn, indi_nick, indi_spfx, indi_nsfx) VALUES (
-         '".mysql_escape_string($_POST['g4p_nom'])."', '".mysql_escape_string($_POST['g4p_prenom'])."', 
-         '".mysql_escape_string($_POST['g4p_sexe'])."',".(int)$_POST['g4p_base'].",
-         '".mysql_escape_string($_POST['npfx'])."', '".mysql_escape_string($_POST['givn'])."', 
-         '".mysql_escape_string($_POST['nick'])."', '".mysql_escape_string($_POST['spfx'])."', 
-         '".mysql_escape_string($_POST['nsfx'])."')";
-    if($g4p_query=$g4p_mysqli->g4p_query($sql))
-      $_SESSION['message']='Requète éffectuée avec succès';
-    else
-      $_SESSION['message']='Erreur lors de la requète';
-    $g4p_last_id=$g4p_mysqli->insert_id;
-
-    $g4p_indi=g4p_load_indi_infos($g4p_last_id);
-*/
-
 
 
 ?>

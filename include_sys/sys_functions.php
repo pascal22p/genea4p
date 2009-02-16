@@ -499,7 +499,7 @@ function g4p_load_indi_infos($id, $debug=false)
 	global $g4p_chemin;
 	static $cache_count;
 	$g4p_mon_indi=new g4p_individu($id);
-	//$g4p_mon_indi->ignore_cache(true);
+	$g4p_mon_indi->ignore_cache(true);
 	$g4p_mon_indi->g4p_load();
 	
 	

@@ -121,24 +121,53 @@ if(empty($_POST))
 }
 else
 {
+    if(!empty($_POST['femme2']))
+        $_POST['femme']=$_POST['femme2'];
+    if(!empty($_POST['mari2']))
+        $_POST['mari']=$_POST['mari2'];
 
-    $_POST['g4p_nom']=strtoupper($_POST['g4p_nom']);
+    if(!$_POST['femme'] && !$_POST['mari'])
+    {
+      //$_SESSION['message']='Veuillez remplir au moins un des champs';
+      //header('location:'.g4p_make_url('admin','index.php','g4p_opt=mod_fams&g4p_id='.$g4p_last_id,0,0));
+      //break;
+      echo 'Veuillez remplir au moins un des champs';
+      exit;
+    }
+    
+    $_POST['femme']=explode(' ',$_POST['femme']);
+    $_POST['femme']=(int)$_POST['femme'][0];
+    $_POST['mari']=explode(' ',$_POST['mari']);
+    $_POST['mari']=(int)$_POST['mari'][0];
+    
+    if(!$_POST['femme'])
+        $_POST['femme']='NULL';
+    if(!$_POST['mari'])
+        $_POST['mari']='NULL';
+    if($_POST['mari']=='NULL' and $_POST['femme']=='NULL')
+    {
+        echo 'Veuillez remplir au moins un des champs';
+        exit;
+    }
 
-    $sql="INSERT INTO genea_individuals (indi_nom, indi_prenom, indi_sexe, base, indi_npfx, indi_givn, indi_nick, indi_spfx, indi_nsfx) VALUES (
-         '".mysql_escape_string($_POST['g4p_nom'])."', '".mysql_escape_string($_POST['g4p_prenom'])."', 
-         '".mysql_escape_string($_POST['g4p_sexe'])."',".(int)$_POST['g4p_base'].",
-         '".mysql_escape_string($_POST['npfx'])."', '".mysql_escape_string($_POST['givn'])."', 
-         '".mysql_escape_string($_POST['nick'])."', '".mysql_escape_string($_POST['spfx'])."', 
-         '".mysql_escape_string($_POST['nsfx'])."')";
-    if($g4p_query=$g4p_mysqli->g4p_query($sql))
-      $_SESSION['message']='Requète éffectuée avec succès';
+    $sql="INSERT INTO genea_familles (familles_husb , familles_wife) VALUES (".$_POST['mari'].", ".$_POST['femme'].")";
+    if($g4p_mysqli->g4p_query($sql))
+        $_SESSION['message']='Requète éffectuée avec succès';
     else
-      $_SESSION['message']='Erreur lors de la requète';
-    $g4p_last_id=$g4p_mysqli->insert_id;
+        $_SESSION['message']='Erreur lors de la requète';
 
-    $g4p_indi=g4p_load_indi_infos($g4p_last_id);
-    g4p_update_agregat_noms($_POST['g4p_nom']);
-    header('location:'.g4p_make_url('','fiche_individuelle.php','id_pers='.$g4p_last_id,0));
+    if($_POST['femme'])
+    {
+        g4p_destroy_cache($_POST['femme']);
+        $id_pers=$_POST['femme'];
+    }
+    if($_POST['mari'])
+    {
+        g4p_destroy_cache($_POST['mari']);
+        $id_pers=$_POST['mari'];
+    }
+    
+    header('location:'.g4p_make_url('','fiche_individuelle.php','id_pers='.$id_pers,0,0));
 }
 
 
