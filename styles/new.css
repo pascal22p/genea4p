@@ -543,7 +543,7 @@ span.petit
 	column-width:200px;
 	lcolumn-count:3;
 	-moz-column-width:200px;
-	-webkit-column-count:200px;
+	-webkit-column-width:200px;
 	lcolumn-gap: 10px;
 
 }
