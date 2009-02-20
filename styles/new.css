@@ -543,7 +543,7 @@ span.petit
 	column-width:200px;
 	lcolumn-count:3;
 	-moz-column-width:200px;
-	l-webkit-column-count:200px;
+	-webkit-column-count:200px;
 	lcolumn-gap: 10px;
 
 }
@@ -597,6 +597,11 @@ div.liste_prenoms
 .link_nom
 {
 	font-size:inherit;
+}
+
+form
+{
+		margin:1em;
 }
 
 
