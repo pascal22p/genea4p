@@ -52,7 +52,7 @@ fwrite($dot, 'digraph family {
 
 function g4p_print_label($indi, $option='')
 {
-    return 'i'.$indi->indi_id.' '.$option.' [URL="'.g4p_make_url('','famille_proche.php','id_pers='.$indi->indi_id,0).'"] [label="'.$indi->prenom.' '.$indi->nom.'\n'.$indi->date_rapide().'"]'."\n";
+    return 'i'.$indi->indi_id.' '.$option.' [URL="'.g4p_make_url('','famille_proche.php','id_pers='.$indi->indi_id,0).'", label="'.$indi->prenom.' '.$indi->nom.'\n'.$indi->date_rapide().'"]'."\n";
 }
 
 function g4p_load_gp($g4p_indi, $prefixe='')
