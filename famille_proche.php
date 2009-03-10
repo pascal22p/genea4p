@@ -47,9 +47,13 @@ $filedot=uniqid();
 $dot=fopen('/tmp/'.$filedot.'.dot','w');
 fwrite($dot, 'digraph family {
     size="8,6";
-    ranksep="0.15";
+    ranksep="0.3";
     node [shape = record,height=.1, fontsize=18];'."\n");
 
+function g4p_print_label($indi, $option='')
+{
+    return 'i'.$indi->indi_id.' '.$option.' [URL="'.g4p_make_url('','famille_proche.php','id_pers='.$indi->indi_id,0).'"] [label="'.$indi->prenom.' '.$indi->nom.'\n'.$indi->date_rapide().'"]'."\n";
+}
 
 function g4p_load_gp($g4p_indi, $prefixe='')
 {
@@ -110,9 +114,9 @@ function g4p_load_gp($g4p_indi, $prefixe='')
             fwrite($dot, 'subgraph {'.
 //                'rank="same";'.
 //                'margin="0,0";'.
-                'ranksep="0.01";'."\n".
-                'i'.$grand_pere_p->indi_id.' [label="'.$grand_pere_p->prenom.' '.$grand_pere_p->nom.'\n'.$grand_pere_p->date_rapide().'"]'."\n".
-                'i'.$grand_mere_p->indi_id.' [label="'.$grand_mere_p->prenom.' '.$grand_mere_p->nom.'\n'.$grand_mere_p->date_rapide().'"]'."\n".
+//                'ranksep="0.1";'."\n".
+                g4p_print_label($grand_pere_p).
+                g4p_print_label($grand_mere_p).
                 'f'.$grand_parent_p_fam.' [label="mariés le : "];'."\n".
                 'i'.$grand_pere_p->indi_id.' -> f'.$grand_parent_p_fam.";\n".
                 'i'.$grand_mere_p->indi_id.' -> f'.$grand_parent_p_fam.";\n".
@@ -131,9 +135,9 @@ function g4p_load_gp($g4p_indi, $prefixe='')
             fwrite($dot, 'subgraph {'.
 //                'rank="same";'.
 //                'margin="0,0";'.
-                'ranksep="0.01";'."\n".
-                'i'.$grand_pere_m->indi_id.' [label="'.$grand_pere_m->prenom.' '.$grand_pere_m->nom.'\n'.$grand_pere_m->date_rapide().'"]'."\n".
-                'i'.$grand_mere_m->indi_id.' [label="'.$grand_mere_m->prenom.' '.$grand_mere_m->nom.'\n'.$grand_mere_m->date_rapide().'"]'."\n".
+//                'ranksep="0.1";'."\n".
+                g4p_print_label($grand_pere_m).
+                g4p_print_label($grand_mere_m).
                 'f'.$grand_parent_m_fam.' [label="mariés le : "];'."\n".
                 'i'.$grand_pere_m->indi_id.' -> f'.$grand_parent_m_fam.";\n".
                 'i'.$grand_mere_m->indi_id.' -> f'.$grand_parent_m_fam.";\n".
@@ -159,9 +163,9 @@ function g4p_load_gp($g4p_indi, $prefixe='')
             fwrite($dot, 'subgraph {'.
 //                'rank="same";'.
 //                'margin="0,0";'.
-                'ranksep="0.01";'."\n".
-                'i'.$pere->indi_id.' [label="'.$pere->prenom.' '.$pere->nom.'\n'.$pere->date_rapide().'"]'."\n".
-                'i'.$mere->indi_id.' [label="'.$mere->prenom.' '.$mere->nom.'\n'.$mere->date_rapide().'"]'."\n".
+//                'ranksep="0.1";'."\n".
+                g4p_print_label($pere).
+                g4p_print_label($mere).
                 'f'.$parent_fam.' [label="mariés le : "];'."\n".
                 'i'.$pere->indi_id.' -> f'.$parent_fam.";\n".
                 'i'.$mere->indi_id.' -> f'.$parent_fam.";\n".
@@ -175,8 +179,8 @@ function g4p_load_gp($g4p_indi, $prefixe='')
                 fwrite($dot, 'subgraph {'.
     //                'rank="same";'.
     //                'margin="0,0";'.
-                    'ranksep="0.01";'."\n".
-                    'i'.$pere->indi_id.' [label="'.$pere->prenom.' '.$pere->nom.'\n'.$pere->date_rapide().'"]'."\n".
+//                    'ranksep="0.1";'."\n".
+                    g4p_print_label($pere).
                     'f'.$parent_fam.' [label="mariés le : "];'."\n".
                     'i'.$pere->indi_id.' -> f'.$parent_fam.";\n".
                     "}\n");        
@@ -185,8 +189,8 @@ function g4p_load_gp($g4p_indi, $prefixe='')
              fwrite($dot, 'subgraph {'.
 //                'rank="same";'.
 //                'margin="0,0";'.
-                'ranksep="0.01";'."\n".
-                'i'.$mere->indi_id.' [label="'.$mere->prenom.' '.$mere->nom.'\n'.$mere->date_rapide().'"]'."\n".
+//                'ranksep="0.1";'."\n".
+                g4p_print_label($mere).
                 'f'.$parent_fam.' [label="mariés le : "];'."\n".
                 'i'.$mere->indi_id.' -> f'.$parent_fam.";\n".
                 "}\n");        
@@ -211,17 +215,17 @@ if($parent_fam=g4p_load_gp($g4p_indi))
              fwrite($dot, 'subgraph {'.
 //                'rank="same";'.
 //                'margin="0,0";'.
-                'ranksep="0.01";'."\n".
-                'i'.$g4p_indi->indi_id.' [label="'.$g4p_indi->prenom.' '.$g4p_indi->nom.'\n'.$g4p_indi->date_rapide().'"]'."\n");
+//                'ranksep="0.1";'."\n".
+                g4p_print_label($g4p_indi,' [style="filled", fillcolor="#ffffaa"] '));
 foreach($g4p_indi->familles as $key=>$a_famille)
 {
     if(!empty($a_famille->husb->indi_id) and $a_famille->husb->indi_id!=$g4p_indi->indi_id)
     {
-        fwrite($dot,'i'.$a_famille->husb->indi_id.' [label="'.$a_famille->husb->prenom.' '.$a_famille->husb->nom.'\n'.$a_famille->husb->date_rapide().'"];'."\n".
+        fwrite($dot,g4p_print_label($a_famille->husb).
                 'f'.$key.' [label="mariés le : "];'."\n".
                 'i'.$g4p_indi->indi_id.' -> f'.$key.";\n".
-                'i'.$a_famille->husb->indi_id.' -> f'.$key.";\n".
-                "}\n");
+                'i'.$a_famille->husb->indi_id.' -> f'.$key.";\n");
+                //"}\n");
         $conjoint=g4p_load_indi_infos($a_famille->husb->indi_id);
         if($conjoint_parent=g4p_load_gp($conjoint,'c'))
             fwrite($dot, 'f'.$conjoint_parent.' -> i'.$a_famille->husb->indi_id.' ;'."\n");
@@ -229,11 +233,11 @@ foreach($g4p_indi->familles as $key=>$a_famille)
     }
     elseif(!empty($a_famille->wife->indi_id) and $a_famille->wife->indi_id!=$g4p_indi->indi_id)
     {
-        fwrite($dot,'i'.$a_famille->wife->indi_id.' [label="'.$a_famille->wife->prenom.' '.$a_famille->wife->nom.'\n'.$a_famille->wife->date_rapide().'"];'."\n".
+        fwrite($dot,g4p_print_label($a_famille->wife).
                 'f'.$key.' [label="mariés le : "];'."\n".
-                'i'.$g4p_indi->indi_id.' -> f'.$key.";\n}\n".
-                'i'.$a_famille->wife->indi_id.' -> f'.$key.";\n".
-                "}\n");
+                'i'.$g4p_indi->indi_id.' -> f'.$key.";\n\n".
+                'i'.$a_famille->wife->indi_id.' -> f'.$key.";\n");
+                //"}\n");
         $conjoint=g4p_load_indi_infos($a_famille->wife->indi_id);
         if($conjoint_parent=g4p_load_gp($conjoint,'c'))
             fwrite($dot, 'f'.$conjoint_parent.' -> i'.$a_famille->wife->indi_id.' ;'."\n");
@@ -244,7 +248,7 @@ foreach($g4p_indi->familles as $key=>$a_famille)
     {
         foreach($a_famille->enfants as $a_enfant)
         {
-            $enfants[$conjoint]=array('label'=>'i'.$a_enfant['indi']->indi_id.' [label="'.$a_enfant['indi']->prenom.' '.$a_enfant['indi']->nom.'\n'.$a_enfant['indi']->date_rapide().'"]'."\n",
+            $enfants[$key][]=array('label'=>g4p_print_label($a_enfant['indi']),
                 'link'=>$a_enfant['indi']->indi_id);
         }
     }
