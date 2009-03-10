@@ -26,43 +26,45 @@ require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 	
-$_GET['q']='%'.str_replace(' ','%',mysql_escape_string($_GET['q'])).'%';
-$g4p_query=$g4p_mysqli->g4p_query("SELECT indi_id, indi_prenom, indi_nom 
-    FROM genea_individuals 
-    WHERE CONCAT(indi_prenom,' ',indi_nom) LIKE '".$_GET['q']."' OR
-    CONCAT(indi_nom,' ',indi_prenom) LIKE '".$_GET['q']."' 
-    ORDER BY indi_prenom, indi_nom
-    LIMIT 40   ");
-if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
+if(!empty($_GET['q']))
 {
-    foreach($g4p_result as $g4p_a_result)
+    $_GET['q']='%'.str_replace(' ','%',mysql_escape_string($_GET['q'])).'%';
+    $g4p_query=$g4p_mysqli->g4p_query("SELECT indi_id, indi_prenom, indi_nom 
+        FROM genea_individuals 
+        WHERE CONCAT(indi_prenom,' ',indi_nom) LIKE '".$_GET['q']."' OR
+        CONCAT(indi_nom,' ',indi_prenom) LIKE '".$_GET['q']."' 
+        ORDER BY indi_prenom, indi_nom
+        LIMIT 40   ");
+    if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
     {
-        $indi=g4p_load_indi_infos($g4p_a_result['indi_id']);
-        if(isset($indi->events))
+        foreach($g4p_result as $g4p_a_result)
         {
-            foreach($indi->events as $aevent)
+            $indi=g4p_load_indi_infos($g4p_a_result['indi_id']);
+            if(isset($indi->events))
             {
-                if($aevent->tag=='BIRT' or $aevent->tag=='BAPM')
-                    $naissance=g4p_date($aevent->date->gedcom_date);
-                elseif($aevent->tag=='DEAT' or $aevent->tag=='BURI')
-                    $deces=g4p_date($aevent->date->gedcom_date);
+                foreach($indi->events as $aevent)
+                {
+                    if($aevent->tag=='BIRT' or $aevent->tag=='BAPM')
+                        $naissance=g4p_date($aevent->date->gedcom_date);
+                    elseif($aevent->tag=='DEAT' or $aevent->tag=='BURI')
+                        $deces=g4p_date($aevent->date->gedcom_date);
+                }
+            
+                if(!empty($naissance) and !empty($deces))
+                    $tmp='(° '.$naissance.' - † '.$deces.')';
+                elseif(empty($naissance) and empty($deces))
+                    $tmp='';
+                elseif(!empty($naissance))
+                    $tmp='(° '.$naissance.')';
+                elseif(!empty($naissance))
+                    $tmp='(† '.$deces.')';
             }
-        
-            if(!empty($naissance) and !empty($deces))
-                $tmp='(° '.$naissance.' - † '.$deces.')';
-            elseif(empty($naissance) and empty($deces))
+            else
                 $tmp='';
-            elseif(!empty($naissance))
-                $tmp='(° '.$naissance.')';
-            elseif(!empty($naissance))
-                $tmp='(† '.$deces.')';
+        
+            echo $g4p_a_result['indi_id'].'  '.$g4p_a_result['indi_prenom'].'  '.$g4p_a_result['indi_nom'].'<br />'.$tmp."\n";
         }
-        else
-            $tmp='';
-    
-        echo $g4p_a_result['indi_id'].'  '.$g4p_a_result['indi_prenom'].'  '.$g4p_a_result['indi_nom'].'<br />'.$tmp."\n";
     }
 }
-
 
 ?>

@@ -34,7 +34,7 @@ if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     <ul class="ssmenu">
         <li class="ssmenu"><a href="',g4p_make_url('','new_indi.php','',0),'">',$g4p_langue['menu_creer_indi'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','new_family.php','',0),'">',$g4p_langue['menu_creer_famille'],'</a></li>
-        <li class="ssmenu"><a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_repo',0),'">',$g4p_langue['menu_creer_depot'],'</a></li>
+        <li class="ssmenu"><a href="',g4p_make_url('','new_repo.php','',0),'">',$g4p_langue['menu_creer_depot'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('admin','creer.php','g4p_opt=ajout_place',0),'">',$g4p_langue['menu_creer_lieu'],'</a></li>
     </ul>
     </li>';

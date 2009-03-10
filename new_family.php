@@ -35,11 +35,9 @@ $g4p_javascript='<script src="javascript/jquery/jquery-1.3.1.min.js"></script>
   <script type="text/javascript" src="javascript/jquery/jquery.autocomplete.min.js"></script>
   <script>
   $(document).ready(function(){
-    var data = "Core Selectors Attributes Traversing Manipulation CSS Events Effects Ajax Utilities".split(" ");
     $("#mari").autocomplete(\'ajax/autocomplete.php\', {max:40});
   });
   $(document).ready(function(){
-    var data = "Core Selectors Attributes Traversing Manipulation CSS Events Effects Ajax Utilities".split(" ");
     $("#femme").autocomplete(\'ajax/autocomplete.php\', {max:40});
   });
   </script>

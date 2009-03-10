@@ -41,10 +41,10 @@ else
     $accept_xml = false;
 
 //Si on veut du vrai XML, on envoie un en-tête correct
-if ($accept_xml)
+//if ($accept_xml)
     header('Content-type:application/xhtml+xml; charset='.$g4p_langue['entete_charset']);
-else
-    header('Content-Type: text/html; charset='.$g4p_langue['entete_charset']);
+//else
+//    header('Content-Type: text/html; charset='.$g4p_langue['entete_charset']);
 
 if(isset($g4p_titre_page))
   $g4p_langue['entete_titre']=$g4p_titre_page;

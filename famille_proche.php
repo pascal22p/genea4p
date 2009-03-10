@@ -32,42 +32,10 @@ $g4p_chemin='';
 require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
+//echo '<textarea cols=1000 rows=100>';
 
-//une petite fonction
-function affiche_case($un_indi)
-{
-  global $g4p_langue, $g4p_tag_def, $g4p_parent;
-  $g4p_parent_event=$g4p_parent='';
-  if(substr_count($un_indi->prenom,' ')>0)
-  {
-    $g4p_prenom_court=explode(' ',$un_indi->prenom);
-    $g4p_prenom_court=$g4p_prenom_court[0];
-  }
-  else
-    $g4p_prenom_court=$un_indi->prenom;
-    
-  $g4p_parent='<a href="'.g4p_make_url('','famille_proche.php','g4p_id='.$un_indi->indi_id,0).'">'.$un_indi->nom.' '.$g4p_prenom_court.'</a>';
-  $g4p_parent_event.=$un_indi->nom.' '.$un_indi->prenom.'<br />';
-  
-  if(isset($un_indi->evenements))
-  {
-    foreach($un_indi->evenements as $g4p_a_event)
-    {
-      $g4p_parent_event.='<em>'.$g4p_tag_def[$g4p_a_event->type].'</em> :'.g4p_date($g4p_a_event->date).' ';
-      if(trim($g4p_a_event->description)!='')
-        $g4p_parent_event.='('.$g4p_langue['fproche_description'].trim($g4p_a_event->description).') ';
-      if(!empty($g4p_a_event->lieu))
-        $g4p_parent_event.='('.$g4p_langue['fproche_lieu'].$g4p_a_event->lieu->toCompactString().') ';
-      $g4p_parent_event.='<br />';
-    }
-  }
-  $g4p_parent_event=preg_replace("/[\'|\"]/",'&quote;',$g4p_parent_event);
-  return $g4p_parent_event='onmouseover="AffBulle(\''.htmlspecialchars( addslashes($g4p_parent_event), ENT_QUOTES ).'\')" onmouseout="HideBulle()"';
-}
-
-
-if(isset($_GET['g4p_id']))
-  $g4p_indi=g4p_load_indi_infos($_GET['g4p_id']);
+if(isset($_GET['id_pers']))
+  $g4p_indi=g4p_load_indi_infos($_GET['id_pers']);
 
 if (!isset($g4p_indi))
   die($g4p_langue['id_inconnu']);
@@ -75,293 +43,252 @@ if (!isset($g4p_indi))
 $g4p_titre_page='Famille proche de : '.$g4p_indi->nom.' '.$g4p_indi->prenom;
 require_once($g4p_chemin.'entete.php');
 
-//hack pour NPDS
-if($g4p_config['g4p_type_install']=='module-npds' or $g4p_config['g4p_type_install']=='module-npds-mod_rewrite')
-  echo '<br /><table style="width:800px;position:relative;"><tr><td style="width:800px">';
-else
-  echo '<div class="famille_proche">';
+$filedot=uniqid();
+$dot=fopen('/tmp/'.$filedot.'.dot','w');
+fwrite($dot, 'digraph family {
+    size="8,6";
+    ranksep="0.15";
+    node [shape = record,height=.1, fontsize=18];'."\n");
 
-  // j'ai fumé qd j'ai choisis mes variables, grand_parents, c'est pour les parents, ar_grand_parents c'est pour les grand parents
-  if(isset($g4p_indi->parents))
-  {
-    foreach($g4p_indi->parents as $g4p_a_parent)
-    {
-      if($g4p_a_parent['rela_type']=='BIRTH' and !empty($g4p_a_parent['pere']))
-      {
-        $g4p_grand_parents1=g4p_load_indi_infos($g4p_a_parent['pere']->indi_id);
-        if(isset($g4p_grand_parents1->parents))
-        {
-          foreach($g4p_grand_parents1->parents as $g4p_a_gparent1)
-          {
-            if($g4p_a_gparent1['rela_type']=='BIRTH' and $g4p_a_gparent1['pere']!=0)
-              $g4p_ar_grand_parents1=g4p_load_indi_infos($g4p_a_gparent1['pere']->indi_id);
-            if($g4p_a_gparent1['rela_type']=='BIRTH' and $g4p_a_gparent1['mere']!=0)
-              $g4p_ar_grand_parents2=g4p_load_indi_infos($g4p_a_gparent1['mere']->indi_id);
-          }
-        }
-      }
-      if($g4p_a_parent['rela_type']=='BIRTH' and !empty($g4p_a_parent['mere']))
-      {
-        $g4p_grand_parents2=g4p_load_indi_infos($g4p_a_parent['mere']->indi_id);
-        if(isset($g4p_grand_parents2->parents))
-        {
-          foreach($g4p_grand_parents2->parents as $g4p_a_gparent2)
-          {
-            if($g4p_a_gparent2['rela_type']=='BIRTH' and $g4p_a_gparent2['pere']!=0)
-              $g4p_ar_grand_parents4=g4p_load_indi_infos($g4p_a_gparent2['pere']->indi_id);
-            if($g4p_a_gparent2['rela_type']=='BIRTH' and $g4p_a_gparent2['mere']!=0)
-              $g4p_ar_grand_parents3=g4p_load_indi_infos($g4p_a_gparent2['mere']->indi_id);
-          }
-        }
-      }
-    }
-  }
 
-  //bloc gauche
-  $g4p_parent_event='';
-  echo '<div class="bloc_gauche">';
-  if(isset($g4p_ar_grand_parents1))
-    $g4p_parent_event=affiche_case($g4p_ar_grand_parents1);
-  else
-    $g4p_parent=$g4p_langue['fproche_parent_inconnu'];
-
-  echo '<div class="ar_gp_1" ',$g4p_parent_event,'>',$g4p_parent,'</div>';
-
-  $g4p_parent_event='';
-  if(isset($g4p_ar_grand_parents2))
-    $g4p_parent_event=affiche_case($g4p_ar_grand_parents2);
-  else
-    $g4p_parent=$g4p_langue['fproche_parent_inconnu'];
-  echo '<div class="ar_gp_2" ',$g4p_parent_event,'>',$g4p_parent,'</div>';
-
-  echo '<div class="spacer">&nbsp;</div>';
-
-  $g4p_parent_event='';
-  if(isset($g4p_grand_parents1))
-  {
-    echo '<a href="'.g4p_make_url('','famille_proche.php','g4p_id='.$g4p_grand_parents1->indi_id,0),'"><img src="',$g4p_chemin,'images/fleche.png" alt="^" /></a>';
-    $g4p_parent_event=affiche_case($g4p_grand_parents1);
-  }
-  else
-    $g4p_parent=$g4p_langue['fproche_parent_inconnu'];
-  echo '<div class="gp_1" ',$g4p_parent_event,'>',$g4p_parent,'</div>';
-  echo '</div>';
-  //fin bloc gauche
-
-  // bloc de droite
-  echo '<div class="bloc_droit">';
-  $g4p_parent_event='';
-  if(isset($g4p_ar_grand_parents4))
-    $g4p_parent_event=affiche_case($g4p_ar_grand_parents4);
-  else
-    $g4p_parent=$g4p_langue['fproche_parent_inconnu'];
-  echo '<div class="ar_gp_1" ',$g4p_parent_event,'>',$g4p_parent,'</div>';
-
-  $g4p_parent_event='';
-  if(isset($g4p_ar_grand_parents3))
-    $g4p_parent_event=affiche_case($g4p_ar_grand_parents3);
-  else
-    $g4p_parent=$g4p_langue['fproche_parent_inconnu'];
-  echo '<div class="ar_gp_2" ',$g4p_parent_event,'>',$g4p_parent,'</div>';
-
-  echo '<div class="spacer">&nbsp;</div>';
-
-  $g4p_parent_event='';
-  if(isset($g4p_grand_parents2))
-  {
-    echo '<a href="'.g4p_make_url('','famille_proche.php','g4p_id='.$g4p_grand_parents2->indi_id,0),'"><img src="',$g4p_chemin,'images/fleche.png" alt="^" /></a>';
-    $g4p_parent_event=affiche_case($g4p_grand_parents2);
-  }
-  else
-    $g4p_parent=$g4p_langue['fproche_parent_inconnu'];
-  echo '<div class="gp_1" ',$g4p_parent_event,'>',$g4p_parent,'</div>';
-  echo '</div>';
-
- //fin bloc droit
-  echo '<div class="spacer">&nbsp;</div>';
-
-  $g4p_parent_event=$g4p_indi->nom.' '.$g4p_indi->prenom.'</strong><br />';
-  if(isset($g4p_indi->evenements))
-  {
-    foreach($g4p_indi->evenements as $g4p_a_event)
-    {
-      $g4p_parent_event.='<em>'.$g4p_tag_def[$g4p_a_event->type].'</em> : '.g4p_date($g4p_a_event->date).' ';
-      if(trim($g4p_a_event->description)!='')
-        $g4p_parent_event.='('.$g4p_langue['fproche_description'].trim($g4p_a_event->description).') ';
-      if(!empty($g4p_a_event->lieu))
-        $g4p_parent_event.='('.$g4p_langue['fproche_lieu'].$g4p_a_event->lieu->toCompactString().') ';
-      $g4p_parent_event.='<br />';
-    }
-    $g4p_parent_event.='<br /><em>'.$g4p_langue['fproche_freres_soeurs'].'</em><br />';
-    if(isset($g4p_grand_parents2->familles) or isset($g4p_grand_parents1->familles))
-    {
-      if(isset($g4p_grand_parents2->familles))
-        $g4p_tmp=$g4p_grand_parents2->familles;
-      else
-        $g4p_tmp=$g4p_grand_parents1->familles;
-      foreach($g4p_tmp as $g4p_a_famille)
-        if(isset($g4p_a_famille->enfants) and array_key_exists($g4p_indi->indi_id,$g4p_a_famille->enfants))
-          foreach($g4p_a_famille->enfants as $g4p_a_enfant)
-            if($g4p_a_enfant->indi_id!=$g4p_indi->indi_id)
-              $g4p_parent_event.=$g4p_a_enfant->nom.' '.$g4p_a_enfant->prenom.' '.g4p_date(substr($g4p_a_enfant->date_rapide,20,-7)).'<br />';
-    }
-  }
-  $g4p_parent_event=preg_replace("/['|\"]/","&quote;",$g4p_parent_event);
-  $g4p_parent_event='onmouseover="AffBulle(\''.htmlspecialchars(addslashes('<strong>'.$g4p_parent_event), ENT_QUOTES ).'\')" onmouseout="HideBulle()"';
-
-  echo '<div class="fiche_centrale">
-  <span style="font-weight:bold;" ',$g4p_parent_event,'>',$g4p_indi->nom,' ',$g4p_indi->prenom,' <span class="petit">',g4p_date($g4p_indi->date_rapide,'date3'),'</span></span>';
-  $g4p_nbre_enfant=0;
-  if(isset($g4p_indi->familles))
-  {
-    $i=0;
-    foreach($g4p_indi->familles as $g4p_a_famille)
-    {
-      $g4p_code_couleur_famille[$g4p_a_famille->id]=$g4p_couleur2[$i];
-      if(++$i>=count($g4p_couleur2))
-        $i=1;
-  
-      if(!empty($g4p_a_famille->conjoint->nom) or !empty($g4p_a_famille->conjoint->prenom))
-        $g4p_tmp=$g4p_a_famille->conjoint->nom.' '.$g4p_a_famille->conjoint->prenom;
-      else
-        $g4p_tmp=$g4p_langue['fproche_conjoint_inc'];
-  
-      $g4p_parent_event='<b>'.$g4p_tmp.'</b><br />';
-      
-      if(!empty($g4p_a_famille->conjoint))
-      {
-        $g4p_conjoint=g4p_load_indi_infos($g4p_a_famille->conjoint->indi_id);
-        if(isset($g4p_conjoint->evenements))
-        {
-          foreach($g4p_conjoint->evenements as $g4p_a_event)
-          {
-            $g4p_parent_event.='<em>'.$g4p_tag_def[$g4p_a_event->type].'</em> : '.g4p_date($g4p_a_event->date).' ';
-            if(trim($g4p_a_event->description)!='')
-              $g4p_parent_event.='('.$g4p_langue['fproche_description'].trim($g4p_a_event->description).') ';
-            if(!empty($g4p_a_event->lieu))
-              $g4p_parent_event.='('.$g4p_langue['fproche_lieu'].$g4p_a_event->lieu->toCompactString().') ';
-            $g4p_parent_event.='<br />';
-          }
-        }
-        $g4p_parent_event='onmouseover="AffBulle(\''.htmlspecialchars(addslashes($g4p_parent_event), ENT_QUOTES).'\')" onmouseout="HideBulle()"';
-  
-        echo '
-         <div ',$g4p_parent_event,' style="background-color:',$g4p_code_couleur_famille[$g4p_a_famille->id],'">'
-         ,$g4p_langue['fproche_marie'],'<a href="'.g4p_make_url('','famille_proche.php','g4p_id='.$g4p_a_famille->conjoint->indi_id,0),'">
-         ',$g4p_tmp,'</a> <span class="petit">',g4p_date( $g4p_a_famille->conjoint->date_rapide,'date3'),'</span></div>';
-      }
-      else
-      {
-        $g4p_parent_event='onmouseover="AffBulle(\''.htmlspecialchars(addslashes($g4p_parent_event), ENT_QUOTES).'\')" onmouseout="HideBulle()"';
-         echo '<div ',$g4p_parent_event,' style="background-color:',$g4p_code_couleur_famille[$g4p_a_famille->id],'">'
-         ,$g4p_langue['fproche_marie'],$g4p_langue['fproche_conjoint_inc'],'</div>';
-      }
-      if(isset($g4p_a_famille->enfants))
-        $g4p_nbre_enfant+=count($g4p_a_famille->enfants);
-    }
-  }
-  echo '</div>';
-
-// les enfants   $g4p_nbre_enfant;
-  $i=$j=0;
-  if(isset($g4p_indi->familles))
-  {
-  	echo '<div style="text-align:center; overflow:auto; padding:10px; height:auto;">';
-  	echo '<table class="famille_proche"><tr>';
-    foreach($g4p_indi->familles as $g4p_a_famille)
-    {
-      if(isset($g4p_a_famille->enfants))
-      {
-        foreach($g4p_a_famille->enfants as $g4p_a_enfant)
-        {
-          if(substr_count($g4p_a_enfant->prenom,' ')>0)
-          {
-            $g4p_prenom_court=explode(' ',$g4p_a_enfant->prenom);
-            $g4p_prenom_court=$g4p_prenom_court[0];
-          }
-          else
-            $g4p_prenom_court=$g4p_a_enfant->prenom;
-  
-          $g4p_liste_enfant[$i][$j]=g4p_load_indi_infos($g4p_a_enfant->indi_id);
-
-          $g4p_parent_event='<b>'.$g4p_liste_enfant[$i][$j]->nom.' '.$g4p_liste_enfant[$i][$j]->prenom.'</b><br />';
-          if(isset($g4p_liste_enfant[$i][$j]->evenements))
-          {
-            foreach($g4p_liste_enfant[$i][$j]->evenements as $g4p_a_event)
-            {
-              $g4p_parent_event.='<em>'.$g4p_tag_def[$g4p_a_event->type].'</em> : '.g4p_date($g4p_a_event->date).' ';
-              if(trim($g4p_a_event->description)!='')
-                $g4p_parent_event.='('.$g4p_langue['fproche_description'].trim($g4p_a_event->description).') ';
-              if(!empty($g4p_a_event->lieu))
-                $g4p_parent_event.='('.$g4p_langue['fproche_lieu'].$g4p_a_event->lieu->toCompactString().') ';
-              $g4p_parent_event.='<br />';
-            }
+function g4p_load_gp($g4p_indi, $prefixe='')
+{
+    global $dot;
     
-            if(isset($g4p_liste_enfant[$i][$j]->familles))
+    if(!empty($g4p_indi->parents))
+    {
+        foreach($g4p_indi->parents as $a_parent)
+        {
+            if($a_parent->rela_type=='birth' or $a_parent->rela_type=='')
             {
-              foreach($g4p_liste_enfant[$i][$j]->familles as $g4p_a_petite_famille)
-              {
-                $g4p_parent_event.='<br />';
-                if(isset($g4p_a_petite_famille->conjoint))
-                  $g4p_parent_event.=$g4p_langue['fproche_marie'].$g4p_a_petite_famille->conjoint->nom.' '.$g4p_a_petite_famille->conjoint->prenom.'<br />';
-                if(isset($g4p_a_petite_famille->evenements))
+                if(!empty($a_parent->pere->indi_id))
                 {
-                  foreach($g4p_a_petite_famille->evenements as $g4p_famille_event)
-                  {
-                    $g4p_parent_event.=' <em>'.$g4p_tag_def[$g4p_famille_event->type].' :</em>';
-                    $g4p_parent_event.=g4p_date($g4p_famille_event->date);
-                    $g4p_parent_event.=($g4p_famille_event->description!='')?(' ('.$g4p_langue['fproche_description'].$g4p_famille_event->description.') '):('');
-                    $g4p_parent_event.=(!empty($g4p_famille_event->lieu))?(' ('.$g4p_langue['fproche_lieu'].$g4p_famille_event->lieu->toCompactString().') '):('');
-                    $g4p_parent_event.='<br />';
-                  }
+                    $pere=g4p_load_indi_infos($a_parent->pere->indi_id);
+                    if(!empty($pere->parents))
+                    {
+                        foreach($pere->parents as $a_gparent)
+                        {
+                            if($a_gparent->rela_type=='birth' or $a_gparent->rela_type=='')
+                            {
+                                if(!empty($a_gparent->pere->indi_id))
+                                    $grand_pere_p=g4p_load_indi_infos($a_gparent->pere->indi_id);
+                                if(!empty($a_gparent->mere->indi_id))
+                                    $grand_mere_p=g4p_load_indi_infos($a_gparent->mere->indi_id);
+                                $grand_parent_p_fam=$a_gparent->famille_id;
+                                break;
+                            }
+                        }
+                    }
                 }
-              }
-            }
-          }
-          $g4p_parent_event='onmouseover="AffBulle(\''.htmlspecialchars(addslashes($g4p_parent_event), ENT_QUOTES).'\')" onmouseout="HideBulle()"'; 
-          echo '<td style="vertical-align:top; width:',round(100/$g4p_nbre_enfant),'%; border:black solid 1px; background-color:',$g4p_code_couleur_famille[$g4p_a_famille->id],'" >
-            <a href="'.g4p_make_url('','famille_proche.php','g4p_id='.$g4p_a_enfant->indi_id,0),'"><img src="',$g4p_chemin,'images/fleche.png" alt="^" /></a><br />
-            <a ',$g4p_parent_event,' href="',g4p_make_url('','famille_proche.php','g4p_id='.$g4p_a_enfant->indi_id,0),'">',$g4p_a_enfant->nom.' '.$g4p_prenom_court,'</a>';
-          
-          if(isset($g4p_liste_enfant[$i][$j]->familles))
-          {
-            echo '<br /><hr />';
-            foreach($g4p_liste_enfant[$i][$j]->familles as $g4p_a_petite_famille)
-            {
-              if(isset($g4p_a_petite_famille->enfants))
-              {
-                foreach($g4p_a_petite_famille->enfants as $g4p_petit_enfant)
+                if(!empty($a_parent->mere->indi_id))
                 {
-                  if(substr_count($g4p_petit_enfant->prenom,' ')>0)
-                  {
-                    $g4p_prenom_court=explode(' ',$g4p_petit_enfant->prenom);
-                    $g4p_prenom_court=$g4p_prenom_court[0];
-                  }
-                  else
-                   $g4p_prenom_court=$g4p_petit_enfant->prenom;
-                   $g4p_parent_event='<b>'.$g4p_petit_enfant->nom.' '.$g4p_petit_enfant->prenom.'</b><br />';
-                   $g4p_parent_event.=g4p_date( $g4p_petit_enfant->date_rapide ,'date3').'<br />';
-                   $g4p_parent_event='onmouseover="AffBulle(\''.htmlspecialchars(addslashes($g4p_parent_event), ENT_QUOTES).'\')" onmouseout="HideBulle()"';
-                   echo '<a ',$g4p_parent_event,' href="',g4p_make_url('','famille_proche.php','g4p_id='.$g4p_petit_enfant->indi_id,0),'">',$g4p_petit_enfant->nom,' ',$g4p_prenom_court,'</a><br />';
+                    $mere=g4p_load_indi_infos($a_parent->mere->indi_id);
+                    if(!empty($mere->parents))
+                    {
+                        foreach($mere->parents as $a_gparent)
+                        {
+                            if($a_gparent->rela_type=='birth' or $a_gparent->rela_type=='')
+                            {
+                                if(!empty($a_gparent->pere->indi_id))
+                                    $grand_pere_m=g4p_load_indi_infos($a_gparent->pere->indi_id);
+                                if(!empty($a_gparent->mere->indi_id))
+                                    $grand_mere_m=g4p_load_indi_infos($a_gparent->mere->indi_id);
+                                $grand_parent_m_fam=$a_gparent->famille_id;
+                                break;
+                            }
+                        }
+                    }
                 }
-              }
+                $parent_fam=$a_parent->famille_id;                
+                break;
             }
-          }
-  
-          echo '</td>';
-          $j++;
         }
-      }
-      $i++;
+
+        //on redescend toute la descendance.
+        if(!empty($grand_pere_p) and !empty($grand_mere_p))
+        {
+            fwrite($dot, 'subgraph {'.
+//                'rank="same";'.
+//                'margin="0,0";'.
+                'ranksep="0.01";'."\n".
+                'i'.$grand_pere_p->indi_id.' [label="'.$grand_pere_p->prenom.' '.$grand_pere_p->nom.'\n'.$grand_pere_p->date_rapide().'"]'."\n".
+                'i'.$grand_mere_p->indi_id.' [label="'.$grand_mere_p->prenom.' '.$grand_mere_p->nom.'\n'.$grand_mere_p->date_rapide().'"]'."\n".
+                'f'.$grand_parent_p_fam.' [label="mariés le : "];'."\n".
+                'i'.$grand_pere_p->indi_id.' -> f'.$grand_parent_p_fam.";\n".
+                'i'.$grand_mere_p->indi_id.' -> f'.$grand_parent_p_fam.";\n".
+                "}\n");
+        }
+        elseif(!empty($grand_pere_p) or !empty($grand_mere_p))
+        {
+            if(!empty($grand_pere_p))
+                fwrite($dot, $prefixe.'fgpp [label="'.$grand_pere_p->prenom.' '.$grand_pere_p->nom.'\n'.$grand_pere_p->date_rapide().'"]'."\n");
+            else
+                fwrite($dot, $prefixe.'fgpp [label="'.$grand_mere_p->prenom.' '.$grand_mere_p->nom.'\n'.$grand_mere_p->date_rapide().'"]'."\n");    
+        }
+
+        if(!empty($grand_pere_m) and !empty($grand_mere_m))
+        {
+            fwrite($dot, 'subgraph {'.
+//                'rank="same";'.
+//                'margin="0,0";'.
+                'ranksep="0.01";'."\n".
+                'i'.$grand_pere_m->indi_id.' [label="'.$grand_pere_m->prenom.' '.$grand_pere_m->nom.'\n'.$grand_pere_m->date_rapide().'"]'."\n".
+                'i'.$grand_mere_m->indi_id.' [label="'.$grand_mere_m->prenom.' '.$grand_mere_m->nom.'\n'.$grand_mere_m->date_rapide().'"]'."\n".
+                'f'.$grand_parent_m_fam.' [label="mariés le : "];'."\n".
+                'i'.$grand_pere_m->indi_id.' -> f'.$grand_parent_m_fam.";\n".
+                'i'.$grand_mere_m->indi_id.' -> f'.$grand_parent_m_fam.";\n".
+                "}\n");
+            //fwrite($dot, $prefixe.'fgpm [label="<i'.$grand_pere_m->indi_id.'>'.$grand_pere_m->prenom.' '.$grand_pere_m->nom.'\n'.$grand_pere_m->date_rapide().'|'.
+            //    '<f'.$grand_mere_m->indi_id.'>'.$grand_mere_m->prenom.' '.$grand_mere_m->nom.'\n'.$grand_mere_m->date_rapide().'"]'."\n");
+        }
+        elseif(!empty($grand_pere_m) or !empty($grand_mere_m))
+        {
+            if(!empty($grand_pere_m))
+                fwrite($dot, $prefixe.'fgpm [label="<i'.$grand_pere_m->indi_id.'>'.$grand_pere_m->prenom.' '.$grand_pere_m->nom.'\n'.$grand_pere_m->date_rapide().'"]'."\n");
+            else
+                fwrite($dot, $prefixe.'fgpm [label="<i'.$grand_mere_m->indi_id.'>'.$grand_mere_m->prenom.' '.$grand_mere_m->nom.'\n'.$grand_mere_m->date_rapide().'"]'."\n");    
+        }
+
+        if(!empty($grand_parent_p_fam))
+            fwrite($dot,'f'.$grand_parent_p_fam.' -> i'.$pere->indi_id.";\n");
+        if(!empty($grand_parent_m_fam))
+            fwrite($dot,'f'.$grand_parent_m_fam.' -> i'.$mere->indi_id.";\n");
+
+        if(!empty($pere) and !empty($mere))
+        {
+            fwrite($dot, 'subgraph {'.
+//                'rank="same";'.
+//                'margin="0,0";'.
+                'ranksep="0.01";'."\n".
+                'i'.$pere->indi_id.' [label="'.$pere->prenom.' '.$pere->nom.'\n'.$pere->date_rapide().'"]'."\n".
+                'i'.$mere->indi_id.' [label="'.$mere->prenom.' '.$mere->nom.'\n'.$mere->date_rapide().'"]'."\n".
+                'f'.$parent_fam.' [label="mariés le : "];'."\n".
+                'i'.$pere->indi_id.' -> f'.$parent_fam.";\n".
+                'i'.$mere->indi_id.' -> f'.$parent_fam.";\n".
+                "}\n");        
+            //fwrite($dot, $prefixe.'fp [label="<i'.$pere->indi_id.'>'.$pere->prenom.' '.$pere->nom.'\n'.$pere->date_rapide().'|'.
+             //   '<i'.$mere->indi_id.'>'.$mere->prenom.' '.$mere->nom.'\n'.$mere->date_rapide().'"]'."\n");
+        }
+        elseif(!empty($pere) or !empty($mere))
+        {
+            if(!empty($pere))
+                fwrite($dot, 'subgraph {'.
+    //                'rank="same";'.
+    //                'margin="0,0";'.
+                    'ranksep="0.01";'."\n".
+                    'i'.$pere->indi_id.' [label="'.$pere->prenom.' '.$pere->nom.'\n'.$pere->date_rapide().'"]'."\n".
+                    'f'.$parent_fam.' [label="mariés le : "];'."\n".
+                    'i'.$pere->indi_id.' -> f'.$parent_fam.";\n".
+                    "}\n");        
+//                fwrite($dot, $prefixe.'fp [label="<i'.$pere->indi_id.'>'.$pere->prenom.' '.$pere->nom.'\n'.$pere->date_rapide().'"]'."\n");
+            else
+             fwrite($dot, 'subgraph {'.
+//                'rank="same";'.
+//                'margin="0,0";'.
+                'ranksep="0.01";'."\n".
+                'i'.$mere->indi_id.' [label="'.$mere->prenom.' '.$mere->nom.'\n'.$mere->date_rapide().'"]'."\n".
+                'f'.$parent_fam.' [label="mariés le : "];'."\n".
+                'i'.$mere->indi_id.' -> f'.$parent_fam.";\n".
+                "}\n");        
+//               fwrite($dot, $prefixe.'fp [label="<i'.$mere->indi_id.'>'.$mere->prenom.' '.$mere->nom.'\n'.$mere->date_rapide().'"]'."\n");    
+        }
+        
+//        if(!empty($grand_pere_p) or !empty($grand_mere_p))
+//            fwrite($dot, $prefixe.'f'.$grand_parent_p_fam.' -> '.$prefixe.'fp:i'.$pere->indi_id.' ;'."\n");
+//        if(!empty($grand_pere_m) or !empty($grand_mere_m))
+//            fwrite($dot, $prefixe.'f'.$grand_parent_m_fam.' -> '.$prefixe.'fp:i'.$mere->indi_id.' ;'."\n");
+            
+        return $parent_fam;
     }
-    echo '</tr></table></div>';
-  }
+    else
+        return false;
+}
 
-//hack pour NPDS
-if($g4p_config['g4p_type_install']=='module-npds' or $g4p_config['g4p_type_install']=='module-npds-mod_rewrite')
-  echo '</td></tr></table>';
-else
-  echo '</div>';
+//mes grands parents + parents
+if($parent_fam=g4p_load_gp($g4p_indi))
+    fwrite($dot, 'f'.$parent_fam.' -> i'.$g4p_indi->indi_id.' ;'."\n");
 
+             fwrite($dot, 'subgraph {'.
+//                'rank="same";'.
+//                'margin="0,0";'.
+                'ranksep="0.01";'."\n".
+                'i'.$g4p_indi->indi_id.' [label="'.$g4p_indi->prenom.' '.$g4p_indi->nom.'\n'.$g4p_indi->date_rapide().'"]'."\n");
+foreach($g4p_indi->familles as $key=>$a_famille)
+{
+    if(!empty($a_famille->husb->indi_id) and $a_famille->husb->indi_id!=$g4p_indi->indi_id)
+    {
+        fwrite($dot,'i'.$a_famille->husb->indi_id.' [label="'.$a_famille->husb->prenom.' '.$a_famille->husb->nom.'\n'.$a_famille->husb->date_rapide().'"];'."\n".
+                'f'.$key.' [label="mariés le : "];'."\n".
+                'i'.$g4p_indi->indi_id.' -> f'.$key.";\n".
+                'i'.$a_famille->husb->indi_id.' -> f'.$key.";\n".
+                "}\n");
+        $conjoint=g4p_load_indi_infos($a_famille->husb->indi_id);
+        if($conjoint_parent=g4p_load_gp($conjoint,'c'))
+            fwrite($dot, 'f'.$conjoint_parent.' -> i'.$a_famille->husb->indi_id.' ;'."\n");
+        $conjoint=$a_famille->husb->indi_id;
+    }
+    elseif(!empty($a_famille->wife->indi_id) and $a_famille->wife->indi_id!=$g4p_indi->indi_id)
+    {
+        fwrite($dot,'i'.$a_famille->wife->indi_id.' [label="'.$a_famille->wife->prenom.' '.$a_famille->wife->nom.'\n'.$a_famille->wife->date_rapide().'"];'."\n".
+                'f'.$key.' [label="mariés le : "];'."\n".
+                'i'.$g4p_indi->indi_id.' -> f'.$key.";\n}\n".
+                'i'.$a_famille->wife->indi_id.' -> f'.$key.";\n".
+                "}\n");
+        $conjoint=g4p_load_indi_infos($a_famille->wife->indi_id);
+        if($conjoint_parent=g4p_load_gp($conjoint,'c'))
+            fwrite($dot, 'f'.$conjoint_parent.' -> i'.$a_famille->wife->indi_id.' ;'."\n");
+        $conjoint=$a_famille->wife->indi_id;
+    }
+        
+    if(!empty($a_famille->enfants))
+    {
+        foreach($a_famille->enfants as $a_enfant)
+        {
+            $enfants[$conjoint]=array('label'=>'i'.$a_enfant['indi']->indi_id.' [label="'.$a_enfant['indi']->prenom.' '.$a_enfant['indi']->nom.'\n'.$a_enfant['indi']->date_rapide().'"]'."\n",
+                'link'=>$a_enfant['indi']->indi_id);
+        }
+    }
+}
+fwrite($dot,"}\n");
+
+//if($familles)
+//    fwrite($dot, 'f'.$g4p_indi->indi_id.' [label="'.implode('|',$familles).'"]'."\n");
+
+if(!empty($enfants))
+{
+    foreach($enfants as $key=>$val)
+    {
+        foreach($val as $a_enfant)
+        {
+            fwrite($dot,$a_enfant['label']);
+            fwrite($dot, ' f'.$key.' -> i'.$a_enfant['link'].';'."\n");
+        }
+    }
+}
+
+fwrite($dot,"}\n");
+fclose($dot);
+
+$output=shell_exec('dot -Tsvg /tmp/'.$filedot.'.dot -o test.svg 2> /tmp/error');
+
+//echo '<pre>'.readfile('/tmp/error').'</pre>';
+//echo "<pre>$output</pre>";
+
+//echo '-------------------';
+//echo '<object type="image/svg+xml">';
+$bouh=file('test.svg');
+unset($bouh[0]);
+unset($bouh[1]);
+unset($bouh[2]);
+unset($bouh[3]);
+unset($bouh[4]);
+unset($bouh[5]);
+unset($bouh[6]);
+unset($bouh[7]);
+echo "\n";
+echo implode("\n",$bouh);
+//echo '</object>';
+
+echo '/tmp/'.$filedot.'.dot';
 include($g4p_chemin.'pied_de_page.php');
 ?>

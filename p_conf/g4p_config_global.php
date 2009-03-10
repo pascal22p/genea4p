@@ -228,7 +228,7 @@ $g4p_config['gns']['default_CC']='FR';
 
 $g4p_config['gns']['http']='http://earth-info.nga.mil/gns/html/cntyfile/';
 $g4p_config['gns']['ftp']='ftp.nga.mil';
-$g4p_config['gns']['ftp_rep']='/pub/gns_data/';
+$g4p_config['gns']['ftp_rep']='/pub2/gns_data/';
 $g4p_config['gns']['fichier_base']='_fips_adm1_code_def.txt';
 
 //Mettre � 1 seulement si les bases correspondant � la recherche

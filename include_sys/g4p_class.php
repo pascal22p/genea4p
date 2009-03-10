@@ -664,13 +664,13 @@ class g4p_individu
 		{
 			foreach($this->events as $a_event)
 			{
-				if($a_event->details_descriptor=='BIRT')
+				if($a_event->tag=='BIRT')
 					$date['BIRT']=$a_event->gedcom_date;
-				elseif($a_event->details_descriptor=='BAPM')
+				elseif($a_event->tag=='BAPM')
 					$date['BAPM']=$a_event->gedcom_date;
-				elseif($a_event->details_descriptor=='DEAT')
+				elseif($a_event->tag=='DEAT')
 					$date['DEAT']=$a_event->gedcom_date;
-				elseif($a_event->details_descriptor=='BURI')
+				elseif($a_event->tag=='BURI')
 					$date['BURI']=$a_event->gedcom_date;
 			}
 	
@@ -682,16 +682,16 @@ class g4p_individu
 				$naissance='';
 
 			if(!empty($date['DEAT']))
-				$deces='+'.$date['DEAT'];
+				$deces='†'.$date['DEAT'];
 			elseif(!empty($date['BURI']))
-				$deces='+'.$date['BURI'];
+				$deces='†'.$date['BURI'];
 			else
 				$deces='';
 			
 			if(empty($naissance) and empty($deces))
 				return NULL;
 			
-			if(!empty($deces) and !empty($nasissance))
+			if(!empty($deces) and !empty($naissance))
 				$naissance.=' - ';
 			
 			return '('.$naissance.$deces.')';
