@@ -42,8 +42,6 @@ if(file_exists('install.php'))
 	exit;
 }
 
-ob_start();
-
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 require_once($g4p_chemin.'include_sys/g4p_class.php');
 
@@ -132,6 +130,7 @@ $_COOKIE=strip_slashes($_COOKIE); //gère le magic_quote (stripslashes et utf8en
 
 $g4p_error=0;
 /* config pour une install seule */
+
 if(!isset($_SESSION['g4p_id_membre']))
 {
 // parsing du cookie    
@@ -171,7 +170,7 @@ if($g4p_error)
   setcookie('genea4p[g4p_id_membre]','',0,'/','',0);
 }
 
-/*
+
 if(isset($_GET['genea_db_id']) and (isset($_SESSION['genea_db_id']) and $_SESSION['genea_db_id']!=$_GET['genea_db_id'] or !isset($_SESSION['genea_db_id']))) //changement de base
 {
   $_SESSION['genea_db_id']=$_GET['genea_db_id'];
@@ -227,7 +226,8 @@ elseif(!empty($_SESSION['genea_db_id']) and empty($_SESSION['genea_db_nom']))
   if ($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
     $_SESSION['genea_db_nom']=$g4p_result[0]['nom'];
 }
-*/
+
+
 
 //vérif des répertoires de cache:
 if(!is_dir($g4p_chemin.'cache'))

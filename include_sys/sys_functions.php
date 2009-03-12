@@ -1995,4 +1995,3 @@ function g4p_affiche_adresse($adresse)
 
 
 ?>
-

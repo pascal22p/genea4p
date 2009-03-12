@@ -31,6 +31,7 @@
 //header("Content-type: text/html; charset=ISO-8859-1");
 //header('Content-type:application/xhtml+xml charset="'.$g4p_langue['entete_charset']);
 
+ob_start();
 
 //Le navigateur accepte application/xhtml+xml ? (permet de filtrer IE) + prise en compte du fichier de config
 if(!empty($g4p_config['allow_xml_header']))
@@ -41,10 +42,10 @@ else
     $accept_xml = false;
 
 //Si on veut du vrai XML, on envoie un en-tête correct
-//if ($accept_xml)
+if ($accept_xml)
     header('Content-type:application/xhtml+xml; charset='.$g4p_langue['entete_charset']);
-//else
-//    header('Content-Type: text/html; charset='.$g4p_langue['entete_charset']);
+else
+    header('Content-Type: text/html; charset='.$g4p_langue['entete_charset']);
 
 if(isset($g4p_titre_page))
   $g4p_langue['entete_titre']=$g4p_titre_page;
