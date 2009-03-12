@@ -134,7 +134,7 @@ foreach($g4p_indi->familles as $key=>$a_famille)
                 'i'.$a_famille->wife->indi_id.' -> f'.$key.";\n");
                 //"}\n");
         $conjoint=g4p_load_indi_infos($a_famille->wife->indi_id);
-        if($conjoint_parent=g4p_load_parent($conjoint,'c'))
+        if($conjoint_parent=g4p_load_parent($conjoint))
             fwrite($dot, 'f'.$conjoint_parent.' -> i'.$a_famille->wife->indi_id.' ;'."\n");
         $conjoint=$a_famille->wife->indi_id;
     }
