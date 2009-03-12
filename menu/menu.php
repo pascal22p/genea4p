@@ -50,7 +50,7 @@ if (isset($g4p_indi->indi_id))
         <li class="ssmenu"><a href="',g4p_make_url('','arbre_ascendant.php','genea_db_id='.$_SESSION['genea_db_id'].'&amp;g4p_id='.$g4p_indi->indi_id,'arbre_ascendant-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_arbre_asc'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','liste_descendance.php','id_pers='.$g4p_indi->indi_id,'liste_descendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_liste_desc'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','liste_ascendance.php','id_pers='.$g4p_indi->indi_id,'liste_ascendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_liste_asc'],'</a></li>
-        <li class="ssmenu"><a href="',g4p_make_url('','famille_proche.php','g4p_id='.$g4p_indi->indi_id,0),'">',$g4p_langue['menu_famille_proche'],'</a></li>
+        <li class="ssmenu"><a href="',g4p_make_url('','famille_proche.php','id_pers='.$g4p_indi->indi_id,0),'">',$g4p_langue['menu_famille_proche'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','index.php','g4p_action=fiche_indi',0),'">',$g4p_langue['menu_fiche'],'</a></li>';
 }
 
