@@ -46,7 +46,7 @@ $dot_filename=uniqid();
 $dot=fopen('/tmp/'.$dot_filename, 'w');
 fwrite($dot, 'digraph family {
     ranksep="0.3";
-    node [shape = record, fontsize=18];'."\n");
+    node [shape = record, fontname="Arial",fontsize="16"];'."\n");
 
 function g4p_print_label($indi, $option='')
 {
@@ -83,13 +83,13 @@ function g4p_load_parent($g4p_indi, $generation=0)
                 fwrite($dot, 'f'.$a_parent->famille_id.' [label="mariés le : "];'."\n");
                 fwrite($dot, "}\n");
                 
-                if(!empty($pere) and $generation<2)
+                if(!empty($pere) and $generation<35)
                 {
                     if($famille_id=g4p_load_parent($pere, $generation))
                         fwrite($dot, 'f'.$famille_id.' -> i'.$pere->indi_id."\n");
                     //fwrite($dot, 'i'.$pere->indi_id.' -> f'.$famille_id."\n");
                 }
-                if(!empty($mere) and $generation<2)
+                if(!empty($mere) and $generation<35)
                 {
                     if($famille_id=g4p_load_parent($mere, $generation))
                         fwrite($dot, 'f'.$famille_id.' -> i'.$mere->indi_id."\n");

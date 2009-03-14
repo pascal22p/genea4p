@@ -12,6 +12,11 @@ html,body
 	background-position: -30px 10px;
 }
 
+body
+{
+		font-size=0.8em;
+}
+
 p
 {
 	margin:0 10px 10px
