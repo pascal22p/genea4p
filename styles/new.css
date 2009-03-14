@@ -14,7 +14,7 @@ html,body
 
 body
 {
-		font-size:0.8em;
+		font-size:0.9em;
 }
 
 p
@@ -175,7 +175,7 @@ ul
 li.ssmenu, li.ssmenu a
 {
 	display:block;
-	font-size:0.7em;
+	font-size:0.8em;
 	margin:none;
 	padding:1px;
 	border:0;
@@ -530,7 +530,7 @@ dl.source
 /* affichage de la date entre-parenth�e*/
 span.petit
 {
-    font-size: small;
+    font-size: x-small;
     font-style : italic;
 	margin-left:0.5em;
 }
