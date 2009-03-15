@@ -1,0 +1,298 @@
+<?php
+ /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                          *
+ *  Copyright (C) 2004  PAROIS Pascal                                       *
+ *                                                                          *
+ *  This program is free software; you can redistribute it and/or modify    *
+ *  it under the terms of the GNU General Public License as published by    *
+ *  the Free Software Foundation; either version 2 of the License, or       *
+ *  (at your option) any later version.                                     *
+ *                                                                          *
+ *  This program is distributed in the hope that it will be useful,         *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
+ *  GNU General Public License for more details.                            *
+ *                                                                          *
+ *  You should have received a copy of the GNU General Public License       *
+ *  along with this program; if not, write to the Free Software             *
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA *
+ *                                                                          *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *               Détail d'un évènement individuel                          *
+ *                                                                         *
+ * dernière mise à jour : 06/11/2004                                       *
+ * En cas de problème : http://www.parois.net                              *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+$g4p_chemin='';
+// $g4p_chemin='modules/genea4p/';
+
+require_once($g4p_chemin.'p_conf/g4p_config.php');
+require_once($g4p_chemin.'p_conf/script_start.php');
+require_once($g4p_chemin.'include_sys/sys_functions.php');
+
+if(isset($_GET['id_pers']))
+  $g4p_indi=g4p_load_indi_infos($_GET['id_pers']);
+else
+    exit;
+    
+if (!isset($g4p_indi))
+  die($g4p_langue['id_inconnu']);
+
+$liste_nodes=array();
+$liste_links=array();
+$output_list=array('svg'=>'svg', 'png'=>'png', 'pdf'=>'pdf');
+$output_headers=array('svg'=>'Content-Type: image/svg+xml', 'png'=>'Content-Type: image/png', 
+    'pdf'=>"Content-type: application/pdf");
+        
+if(isset($_GET['limite_ascendance']) and $_GET['limite_ascendance']<10)
+    $limite_ascendance=$_GET['limite_ascendance'];
+else
+    $limite_ascendance=2;
+if(isset($_GET['limite_descendance']) and $_GET['limite_descendance']<10)
+    $limite_descendance=$_GET['limite_descendance'];
+else
+    $limite_descendance=1;
+if(!empty($_GET['fulldesc']))
+    define('_fulldesc_',true);
+else
+    define('_fulldesc_',false);
+if(!empty($_GET['output']) and !empty($output_list[$_GET['output']]))
+    $output=$output_list[$_GET['output']];
+else
+    $output='svg';
+define('_origine_',$_GET['id_pers']);
+
+header($output_headers[$output]);
+
+$dot_filename=uniqid();
+$dot=fopen('/tmp/'.$dot_filename, 'w');
+fwrite($dot, 'digraph family {
+    ranksep="0.6";
+    bgcolor=transparent;
+    node [shape = record];'."\n");
+/*
+    dpi="72";
+    size="8,100";
+*/
+
+function g4p_print_label($indi, $option=' [style="filled", fillcolor="#ffffff"] ')
+{
+    global $liste_nodes;
+    if(empty($liste_nodes['i'.$indi->indi_id]))
+    {
+        $liste_nodes['i'.$indi->indi_id]=true;
+        //return 'i'.$indi->indi_id.' '.$option.' [URL="'.g4p_make_url('','famille_proche_svg.php','id_pers='.$indi->indi_id,0).'", label="'.$indi->prenom.' '.$indi->nom.'\n'.$indi->date_rapide().'"]'.";\n";
+        $date=$indi->date_rapide();
+        if(!empty($date))
+           return 'i'.$indi->indi_id.' '.$option.' [label=<
+                <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" 
+                    HREF="'.g4p_make_url('','arbre.php','id_pers='.$indi->indi_id,0).'"
+                    TARGET="_top" ALIGN="CENTER" TITLE="">
+                <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="12.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
+                <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="9.0">'.$date.'</FONT></TD></TR>
+                </TABLE>
+                >]'."\n";        
+        else
+            return 'i'.$indi->indi_id.' '.$option.' [label=<
+                <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" 
+                    HREF="'.g4p_make_url('','arbre.php','id_pers='.$indi->indi_id,0).'"
+                    TARGET="_top" ALIGN="CENTER"  TITLE="">
+                <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="12.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
+                </TABLE>
+                >]'."\n";                
+    }
+    else
+        return '';
+}
+
+function g4p_print_family($famille, $option=' [style="filled", fillcolor="#ffffff"] ')
+{
+    global $liste_nodes;
+    if(empty($liste_nodes['f'.$famille->id]))
+    {
+        $liste_nodes['f'.$famille->id]=true;
+        $date='';
+        if(!empty($famille->events))
+        {
+            foreach($famille->events as $a_event)
+            {
+                if($a_event->tag=='MARR')
+                {
+                    $date='mariés le : '.g4p_date($a_event->gedcom_date);
+                    break;
+                }
+            }   
+        }
+        return 'f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="10.0">'.$date.' </FONT> >];'."\n";
+    }
+    else
+        return '';
+}
+
+function g4p_print_link($link, $option='')
+{
+    static $liste_links=array();
+    if(empty($liste_links[$link[0].'->'.$link[1]]))
+    {
+        $liste_links[$link[0].'->'.$link[1]]=true;
+        return $link[0].' -> '.$link[1].";\n";
+    }
+    else
+        return '';
+}
+
+function g4p_load_parent($g4p_indi, $generation, $descendance=false)
+{
+    global $dot;
+    global $liste_nodes, $liste_links, $limite_ascendance, $asc_and_desc;
+    static $famille_index=0;
+    
+    if(!empty($g4p_indi->parents))
+    {
+        foreach($g4p_indi->parents as $a_parent)
+        {
+            if($a_parent->rela_type=='birth' or $a_parent->rela_type=='')
+            {
+                if($generation>$limite_ascendance)
+                    return false;
+
+                if(!_fulldesc_)
+                {
+                    if(empty($liste_nodes['f'.$a_parent->famille_id]))
+                    {
+                        fwrite($dot, 'subgraph cluster_famille'.$famille_index++.'{'."\n");
+                        fwrite($dot, 'style="invisible";'."\n");
+                        if(!empty($a_parent->pere->indi_id))
+                        {
+                            $pere=g4p_load_indi_infos($a_parent->pere->indi_id);
+                            fwrite($dot, g4p_print_label($pere));
+                            fwrite($dot, g4p_print_link(array('i'.$pere->indi_id,'f'.$a_parent->famille_id)));
+                        }
+                        if(!empty($a_parent->mere->indi_id))
+                        {
+                            $mere=g4p_load_indi_infos($a_parent->mere->indi_id);
+                            fwrite($dot, g4p_print_label($mere));
+                            fwrite($dot, g4p_print_link(array('i'.$mere->indi_id,'f'.$a_parent->famille_id)));
+                        }
+                        if(!empty($pere))
+                            $a_famille=$pere->familles[$a_parent->famille_id];
+                        else
+                            $a_famille=$mere->familles[$a_parent->famille_id];
+                        fwrite($dot, g4p_print_family($a_famille));
+                        fwrite($dot, "}\n");
+                    }
+                
+                    if(!empty($pere))
+                        if($famille_id=g4p_load_parent($pere, $generation+1, _fulldesc_))
+                            fwrite($dot, g4p_print_link(array('f'.$famille_id, 'i'.$pere->indi_id)));
+                    if(!empty($mere))
+                        if($famille_id=g4p_load_parent($mere, $generation+1, _fulldesc_))
+                            fwrite($dot, g4p_print_link(array('f'.$famille_id, 'i'.$mere->indi_id)));
+                }
+                else
+                {
+                    //descendance des parents
+                    $pere=g4p_load_indi_infos($a_parent->pere->indi_id);
+                    g4p_load_enfants($pere, $generation);
+                    $mere=g4p_load_indi_infos($a_parent->mere->indi_id);
+                    g4p_load_enfants($mere, $generation);
+                }
+                return $a_parent->famille_id;                
+            }
+        }
+    }
+    return false;
+}
+
+function g4p_load_enfants($g4p_indi, $generation)
+{
+    global $dot;
+    global $liste_nodes, $liste_links, $limite_descendance, $limite_ascendance;
+    static $famille_index=0;
+    
+    //fwrite($dot, 'subgraph {'.g4p_print_label($g4p_indi,' [style="filled", fillcolor="#ffffaa"] '));
+    if(_origine_==$g4p_indi->indi_id)
+        $tmp=g4p_print_label($g4p_indi, ' [style="filled", fillcolor="#ffffaa"] ');
+    else
+        $tmp=g4p_print_label($g4p_indi);
+    if(empty($tmp))
+        return  false;
+    else 
+    {
+        fwrite($dot, 'subgraph cluster_familleb'.$famille_index++.'{'."\n");
+        fwrite($dot, 'style="invisible";'."\n");
+        fwrite($dot,$tmp);
+        
+        if($generation>-$limite_descendance and !empty($g4p_indi->familles))
+        {
+            foreach($g4p_indi->familles as $key=>$a_famille)
+            {
+                if(!empty($a_famille->husb->indi_id) and $a_famille->husb->indi_id!=$g4p_indi->indi_id)
+                {
+                    fwrite($dot, g4p_print_label($a_famille->husb));
+                    fwrite($dot, g4p_print_family($a_famille));
+                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key)));
+                    fwrite($dot, g4p_print_link(array('i'.$a_famille->husb->indi_id, 'f'.$key)));                        
+                    $conjoint[]=g4p_load_indi_infos($a_famille->husb->indi_id);
+                }
+                elseif(!empty($a_famille->wife->indi_id) and $a_famille->wife->indi_id!=$g4p_indi->indi_id)
+                {
+                    fwrite($dot, g4p_print_label($a_famille->wife));
+                    fwrite($dot, g4p_print_family($a_famille));
+                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key)));
+                    fwrite($dot, g4p_print_link(array('i'.$a_famille->wife->indi_id, 'f'.$key)));                                                
+                    $conjoint[]=g4p_load_indi_infos($a_famille->wife->indi_id);
+                }
+                
+                if(!empty($a_famille->enfants))
+                    foreach($a_famille->enfants as $a_enfant)
+                        $enfants[$key][]=$a_enfant['indi']->indi_id;
+            }
+        }
+        fwrite($dot, "}\n");
+    }
+
+    if(!empty($enfants))
+    {
+        foreach($enfants as $key=>$val)
+        {
+            foreach($val as $enfant_id)
+            {
+                $tmp=g4p_load_indi_infos($enfant_id);
+                if($generation>=-$limite_descendance)
+                    g4p_load_enfants($tmp, $generation-1);
+                else
+                    fwrite($dot, g4p_print_label($tmp));
+                    
+                fwrite($dot, g4p_print_link(array('f'.$key, 'i'.$enfant_id)));    
+            }
+        }
+    }
+    
+    if(!empty($conjoint) and $generation<$limite_ascendance)
+        foreach($conjoint as $a_conjoint)
+            if($conjoint_parent=g4p_load_parent($a_conjoint, $generation+1, _fulldesc_))
+                fwrite($dot, g4p_print_link(array('f'.$conjoint_parent, 'i'.$a_famille->wife->indi_id)));                
+
+    if($generation<$limite_ascendance)
+        if($famille_id=g4p_load_parent($g4p_indi, $generation+1, _fulldesc_))
+            fwrite($dot, g4p_print_link(array('f'.$famille_id, 'i'.$g4p_indi->indi_id)));   
+}
+
+g4p_load_enfants($g4p_indi,0);
+
+//fwrite($dot, 'sql [label="Nbre requètes sql: '.$g4p_mysqli->nb_requetes."\"]\n");
+
+fwrite($dot, "}\n");
+fclose($dot);
+
+shell_exec('dot -T'.$output.' /tmp/'.$dot_filename.' -o /tmp/'.$dot_filename.'.'.$output);
+if($output=='svg')
+    shell_exec('sed -i \'s/font-size:\([0-9.]*\);/font-size:\1px;/g\' /tmp/'.$dot_filename.'.'.$output);
+
+readfile('/tmp/'.$dot_filename.'.'.$output);
+
+//print_r($liste_nodes);
+?>
