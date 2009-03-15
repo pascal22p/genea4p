@@ -42,6 +42,11 @@ if (!isset($g4p_indi))
 
 header("Content-Type: image/svg+xml");
 
+$liste_nodes=array();
+$liste_links=array();
+
+$limite_ascendance=35;
+
 $dot_filename=uniqid();
 $dot=fopen('/tmp/'.$dot_filename, 'w');
 fwrite($dot, 'digraph family {
@@ -50,12 +55,20 @@ fwrite($dot, 'digraph family {
 
 function g4p_print_label($indi, $option='')
 {
-    return 'i'.$indi->indi_id.' '.$option.' [URL="'.g4p_make_url('','famille_proche_svg.php','id_pers='.$indi->indi_id,0).'", label="'.$indi->prenom.' '.$indi->nom.'\n'.$indi->date_rapide().'"]'."\n";
+    global $liste_nodes;
+    if(empty($liste_nodes['i'.$indi->indi_id]))
+    {
+        $liste_nodes['i'.$indi->indi_id]=true;
+        return 'i'.$indi->indi_id.' '.$option.' [URL="'.g4p_make_url('','famille_proche_svg.php','id_pers='.$indi->indi_id,0).'", label="'.$indi->prenom.' '.$indi->nom.'\n'.$indi->date_rapide().'"]'."\n";
+    }
+    else
+        return '';
 }
 
 function g4p_load_parent($g4p_indi, $generation=0)
 {
     global $dot;
+    global $liste_nodes, $liste_links, $limite_ascendance;
     $generation++;
     if(!empty($g4p_indi->parents))
     {
@@ -63,33 +76,34 @@ function g4p_load_parent($g4p_indi, $generation=0)
         {
             if($a_parent->rela_type=='birth' or $a_parent->rela_type=='')
             {
-                fwrite($dot, 'subgraph {');
-                    //                'rank="same";'.
-                    //                'margin="0,0";'.
-                    //                'ranksep="0.1";'."\n".
+                if(empty($liste_nodes['f'.$a_parent->famille_id]))
+                {
+                    fwrite($dot, 'subgraph {');
                     
-                if(!empty($a_parent->pere->indi_id))
-                {
-                    $pere=g4p_load_indi_infos($a_parent->pere->indi_id);
-                    fwrite($dot, g4p_print_label($pere));
-                    fwrite($dot, 'i'.$pere->indi_id.' -> f'.$a_parent->famille_id.";\n");
+                    if(!empty($a_parent->pere->indi_id))
+                    {
+                        $pere=g4p_load_indi_infos($a_parent->pere->indi_id);
+                        fwrite($dot, g4p_print_label($pere));
+                        fwrite($dot, 'i'.$pere->indi_id.' -> f'.$a_parent->famille_id.";\n");
+                    }
+                    if(!empty($a_parent->mere->indi_id))
+                    {
+                        $mere=g4p_load_indi_infos($a_parent->mere->indi_id);
+                        fwrite($dot, g4p_print_label($mere));
+                        fwrite($dot, 'i'.$mere->indi_id.' -> f'.$a_parent->famille_id.";\n");
+                    }
+                    $liste_nodes['f'.$a_parent->famille_id]=true;
+                    fwrite($dot, 'f'.$a_parent->famille_id.' [label="mariés le : "];'."\n");
+                    fwrite($dot, "}\n");
                 }
-                if(!empty($a_parent->mere->indi_id))
-                {
-                    $mere=g4p_load_indi_infos($a_parent->mere->indi_id);
-                   fwrite($dot, g4p_print_label($mere));
-                    fwrite($dot, 'i'.$mere->indi_id.' -> f'.$a_parent->famille_id.";\n");
-                }
-                fwrite($dot, 'f'.$a_parent->famille_id.' [label="mariés le : "];'."\n");
-                fwrite($dot, "}\n");
-                
-                if(!empty($pere) and $generation<35)
+            
+                if(!empty($pere) and $generation<$limite_ascendance)
                 {
                     if($famille_id=g4p_load_parent($pere, $generation))
                         fwrite($dot, 'f'.$famille_id.' -> i'.$pere->indi_id."\n");
                     //fwrite($dot, 'i'.$pere->indi_id.' -> f'.$famille_id."\n");
                 }
-                if(!empty($mere) and $generation<35)
+                if(!empty($mere) and $generation<$limite_ascendance)
                 {
                     if($famille_id=g4p_load_parent($mere, $generation))
                         fwrite($dot, 'f'.$famille_id.' -> i'.$mere->indi_id."\n");

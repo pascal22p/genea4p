@@ -43,7 +43,22 @@ if (!isset($g4p_indi))
 $g4p_titre_page='Famille proche de : '.$g4p_indi->nom.' '.$g4p_indi->prenom;
 require_once($g4p_chemin.'entete.php');
 
-echo '<object type="image/svg+xml" name="famille" data="famille_proche_svg.php?id_pers='.$_GET['id_pers'].'" width="100%" ></object>';
+//echo '<object type="image/svg+xml" name="famille" data="famille_proche_svg.php?id_pers='.$_GET['id_pers'].'" width="100%" ></object>';
+?>
+<Applet code="net.claribole.zgrviewer.ZGRApplet.class" archive="zvtm-0.9.6-SNAPSHOT.jar,zgrviewer-0.8.1.jar" width="100%" height="600">  
+    <param name="type" value="application/x-java-Applet;version=1.4" />  
+    <param name="scriptable" value="false" />  
+    <param name="width" value="800" />  
+    <param name="height" value="600" />  
+<?php
+    echo '<param name="svgURL" value="famille_proche_svg.php?id_pers='.$_GET['id_pers'].'" />  ';
+?>
+    <param name="title" value="zgrviewer - Applet" />  
+    <param name="appletBackgroundColor" value="#DDD" />  
+    <param name="graphBackgroundColor" value="#DDD" />  
+    <param name="highlightColor" value="red" />  </Applet>
+<?php
+
 
 include($g4p_chemin.'pied_de_page.php');
 ?>
