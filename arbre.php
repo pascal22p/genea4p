@@ -43,22 +43,46 @@ if (!isset($g4p_indi))
 $g4p_titre_page='Famille proche de : '.$g4p_indi->nom.' '.$g4p_indi->prenom;
 require_once($g4p_chemin.'entete.php');
 
-//echo '<object type="image/svg+xml" name="famille" data="famille_proche_svg.php?id_pers='.$_GET['id_pers'].'" width="100%" ></object>';
-?>
+echo '
+<script type="text/javascript">
+var arbre_width;
+function Resizep(ID) {
+if(!arbre_width){ 
+    arbre_width=document.getElementById(\'arbre_div\').offsetWidth;
+}
+arbre_width=arbre_width+100;
+document.getElementById(ID).width=arbre_width+\'px\';
+}
+function Resizem(ID) {
+if(!arbre_width){ 
+    arbre_width=document.getElementById(\'arbre_div\').offsetWidth;
+}
+arbre_width=arbre_width-100;
+document.getElementById(ID).width=arbre_width+\'px\';
+}
+</script>
+';
+
+echo '<a href="#" onClick="Resizep(\'arbre\')">Zoom +</a> | <a href="#" onClick="Resizem(\'arbre\')">Zoom -</a> | <a href="arbre_svg.php?id_pers='.$_GET['id_pers'].'&output=png" >png</a>  | <a href="arbre_svg.php?id_pers='.$_GET['id_pers'].'&output=pdf" >pdf</a>';
+
+echo '<div id="arbre_div" style="overflow:auto;width:auto;max-height:650px">';
+echo '<object type="image/svg+xml" id="arbre" name="arbre" data="arbre_svg.php?id_pers='.$_GET['id_pers'].'" width="100%" ></object>';
+echo '</div>';
+//echo '<iframe src="arbre_svg.php?id_pers='.$_GET['id_pers'].'" width="100%" height="700px" ></iframe>';
+/*
+echo '
 <Applet code="net.claribole.zgrviewer.ZGRApplet.class" archive="zvtm-0.9.6-SNAPSHOT.jar,zgrviewer-0.8.1.jar" width="100%" height="600">  
     <param name="type" value="application/x-java-Applet;version=1.4" />  
     <param name="scriptable" value="false" />  
     <param name="width" value="800" />  
-    <param name="height" value="600" />  
-<?php
-    echo '<param name="svgURL" value="famille_proche_svg.php?id_pers='.$_GET['id_pers'].'" />  ';
-?>
+    <param name="height" value="600" />  ';
+echo '<param name="svgURL" value="arbre_svg.php?id_pers='.$_GET['id_pers'].'" />  ';
+echo '
     <param name="title" value="zgrviewer - Applet" />  
     <param name="appletBackgroundColor" value="#DDD" />  
     <param name="graphBackgroundColor" value="#DDD" />  
-    <param name="highlightColor" value="red" />  </Applet>
-<?php
-
+    <param name="highlightColor" value="red" />  </Applet>';
+*/
 
 include($g4p_chemin.'pied_de_page.php');
 ?>

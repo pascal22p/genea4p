@@ -49,9 +49,10 @@ $limite_ascendance=35;
 
 $dot_filename=uniqid();
 $dot=fopen('/tmp/'.$dot_filename, 'w');
+//$dot=fopen('arbre.dot', 'w');
 fwrite($dot, 'digraph family {
     ranksep="0.3";
-    node [shape = record, fontname="Arial",fontsize="16"];'."\n");
+    node [shape = record, fontname="Arial"];'."\n");
 
 function g4p_print_label($indi, $option='')
 {
@@ -59,7 +60,15 @@ function g4p_print_label($indi, $option='')
     if(empty($liste_nodes['i'.$indi->indi_id]))
     {
         $liste_nodes['i'.$indi->indi_id]=true;
-        return 'i'.$indi->indi_id.' '.$option.' [URL="'.g4p_make_url('','famille_proche_svg.php','id_pers='.$indi->indi_id,0).'", label="'.$indi->prenom.' '.$indi->nom.'\n'.$indi->date_rapide().'"]'."\n";
+        //URL="'.g4p_make_url('','famille_proche_svg.php','id_pers='.$indi->indi_id,0).'", 
+        return 'i'.$indi->indi_id.' '.$option.' [label=<
+            <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" 
+                HREF="'.g4p_make_url('','famille_proche.php','id_pers='.$indi->indi_id,0).'"
+                TARGET="_top">
+            <TR><TD><FONT POINT-SIZE="16.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
+            <TR><TD><FONT POINT-SIZE="10.0">'.$indi->date_rapide().'</FONT></TD></TR>
+            </TABLE>
+            >]'."\n";
     }
     else
         return '';
@@ -183,6 +192,7 @@ fwrite($dot, "}\n");
 fclose($dot);
 
 $output=shell_exec('dot -Tsvg /tmp/'.$dot_filename.' -o /tmp/'.$dot_filename.'.svg');
+$output=shell_exec('sed -i \'s/font-size:\([0-9.]*\);/font-size:\1px;/g\' /tmp/'.$dot_filename.'.svg');
 
 readfile('/tmp/'.$dot_filename.'.svg');
 

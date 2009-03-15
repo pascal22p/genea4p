@@ -1,14 +1,1553 @@
-digraph structs {
-ranksep=.75; concentrate=true;
-node [shape=record];
-{ rank = same; "i34"; "i37"};
-node [shape=triangle];
-{ rank = same; "f19"};
-i34 [label="Pascal PAROIS\n "];
-i37 [label="Alexandre Auguste Jean Marie PAROIS\n "];
-f19 [label=""];
-edge[arrowhead=none, arrowtail=none];
-f19->i37;
+digraph family {
+    ranksep="0.3";
+    node [shape = record, fontname="Arial",fontsize="16"];
+subgraph {i12985  [label=<
+            <TABLE>
+            <TR><TD>Edmund MORTIMER</TD></TR>
+            <TR>TD>(†1381)</TD></TR>
+            </TABLE>
+            >]
+i12985 -> f5570;
+i12984  [label=<
+            <TABLE>
+            <TR><TD>Philippa of_Ulster </TD></TR>
+            <TR>TD>(†1382)</TD></TR>
+            </TABLE>
+            >]
+i12984 -> f5570;
+f5570 [label="mariés le : "];
 }
-
-bouh
+subgraph {i13540  [label=<
+            <TABLE>
+            <TR><TD>Roger MORTIMER</TD></TR>
+            <TR>TD>(†1360)</TD></TR>
+            </TABLE>
+            >]
+i13540 -> f5574;
+f5574 [label="mariés le : "];
+}
+subgraph {i13541  [label=<
+            <TABLE>
+            <TR><TD>Edmund MORTIMER</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13541 -> f5757;
+f5757 [label="mariés le : "];
+}
+subgraph {i13542  [label=<
+            <TABLE>
+            <TR><TD>Roger MORTIMER</TD></TR>
+            <TR>TD>(†1330)</TD></TR>
+            </TABLE>
+            >]
+i13542 -> f5758;
+f5758 [label="mariés le : "];
+}
+subgraph {i13543  [label=<
+            <TABLE>
+            <TR><TD>Edmund MORTIMER</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13543 -> f5759;
+f5759 [label="mariés le : "];
+}
+subgraph {i13544  [label=<
+            <TABLE>
+            <TR><TD>Roger MORTIMER</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13544 -> f5760;
+i13545  [label=<
+            <TABLE>
+            <TR><TD>Maud </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13545 -> f5760;
+f5760 [label="mariés le : "];
+}
+subgraph {i13546  [label=<
+            <TABLE>
+            <TR><TD>Ralph MORTIMER</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13546 -> f5761;
+i13547  [label=<
+            <TABLE>
+            <TR><TD>Gwladus DDU </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13547 -> f5761;
+f5761 [label="mariés le : "];
+}
+subgraph {i13549  [label=<
+            <TABLE>
+            <TR><TD>Llywelyn Fawr the_Great </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13549 -> f5763;
+i13592  [label=<
+            <TABLE>
+            <TR><TD> UNKNOWN</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13592 -> f5763;
+f5763 [label="mariés le : "];
+}
+subgraph {i13589  [label=<
+            <TABLE>
+            <TR><TD>Iorwerth Drwyndwn </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13589 -> f5765;
+f5765 [label="mariés le : "];
+}
+subgraph {i13588  [label=<
+            <TABLE>
+            <TR><TD>Owain Gwynedd </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13588 -> f5790;
+i13590  [label=<
+            <TABLE>
+            <TR><TD> UNKNOWN</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13590 -> f5790;
+f5790 [label="mariés le : "];
+}
+subgraph {i13587  [label=<
+            <TABLE>
+            <TR><TD>Gruffydd Ap_Cynan </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13587 -> f5789;
+f5789 [label="mariés le : "];
+}
+subgraph {i13586  [label=<
+            <TABLE>
+            <TR><TD>Cynan </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13586 -> f5788;
+f5788 [label="mariés le : "];
+}
+subgraph {i13585  [label=<
+            <TABLE>
+            <TR><TD>Iago </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13585 -> f5787;
+f5787 [label="mariés le : "];
+}
+subgraph {i13584  [label=<
+            <TABLE>
+            <TR><TD>Idwal </TD></TR>
+            <TR>TD>(†996)</TD></TR>
+            </TABLE>
+            >]
+i13584 -> f5786;
+f5786 [label="mariés le : "];
+}
+subgraph {i13580  [label=<
+            <TABLE>
+            <TR><TD>Meurig </TD></TR>
+            <TR>TD>(†986)</TD></TR>
+            </TABLE>
+            >]
+i13580 -> f5785;
+f5785 [label="mariés le : "];
+}
+subgraph {i13576  [label=<
+            <TABLE>
+            <TR><TD>Idwal Foel (the_Bald) </TD></TR>
+            <TR>TD>(†942)</TD></TR>
+            </TABLE>
+            >]
+i13576 -> f5782;
+i13577  [label=<
+            <TABLE>
+            <TR><TD> UNKNOWN</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13577 -> f5782;
+f5782 [label="mariés le : "];
+}
+subgraph {i13575  [label=<
+            <TABLE>
+            <TR><TD>Anarawd </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13575 -> f5781;
+f5781 [label="mariés le : "];
+}
+subgraph {i13574  [label=<
+            <TABLE>
+            <TR><TD>Rhodri Mawr (the_Great) </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13574 -> f5780;
+f5780 [label="mariés le : "];
+}
+f5780 -> i13575
+f5781 -> i13576
+f5782 -> i13580
+f5785 -> i13584
+f5786 -> i13585
+f5787 -> i13586
+f5788 -> i13587
+f5789 -> i13588
+f5790 -> i13589
+f5765 -> i13549
+f5763 -> i13547
+f5761 -> i13544
+subgraph {i13555  [label=<
+            <TABLE>
+            <TR><TD>William DE_BRAOSE</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13555 -> f5762;
+i13852  [label=<
+            <TABLE>
+            <TR><TD>Eva </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13852 -> f5762;
+f5762 [label="mariés le : "];
+}
+subgraph {i13548  [label=<
+            <TABLE>
+            <TR><TD>Reginald De_Braose </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13548 -> f5769;
+f5769 [label="mariés le : "];
+}
+subgraph {i13556  [label=<
+            <TABLE>
+            <TR><TD>William DE_BRAOSE</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13556 -> f5764;
+i13557  [label=<
+            <TABLE>
+            <TR><TD>Bertha </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13557 -> f5764;
+f5764 [label="mariés le : "];
+}
+subgraph {i13558  [label=<
+            <TABLE>
+            <TR><TD>Miles of_Gloucester </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13558 -> f5770;
+i13559  [label=<
+            <TABLE>
+            <TR><TD>Sybil </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13559 -> f5770;
+f5770 [label="mariés le : "];
+}
+subgraph {i13560  [label=<
+            <TABLE>
+            <TR><TD>Bernard of_Neufmarche </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13560 -> f5771;
+i13561  [label=<
+            <TABLE>
+            <TR><TD>Nest </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13561 -> f5771;
+f5771 [label="mariés le : "];
+}
+subgraph {i13562  [label=<
+            <TABLE>
+            <TR><TD>Osbern Fitz Richard </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13562 -> f5772;
+i13563  [label=<
+            <TABLE>
+            <TR><TD>Nest </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13563 -> f5772;
+f5772 [label="mariés le : "];
+}
+subgraph {i13564  [label=<
+            <TABLE>
+            <TR><TD>Gruffydd Ap_Llywelyn </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13564 -> f5773;
+i13175  [label=<
+            <TABLE>
+            <TR><TD>Edith Swan-neck (Ealdgyth) </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13175 -> f5773;
+f5773 [label="mariés le : "];
+}
+subgraph {i13566  [label=<
+            <TABLE>
+            <TR><TD>Llywelyn Ap_Seisyll </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13566 -> f5774;
+i13567  [label=<
+            <TABLE>
+            <TR><TD>Angharad </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13567 -> f5774;
+f5774 [label="mariés le : "];
+}
+subgraph {i13570  [label=<
+            <TABLE>
+            <TR><TD>Maredudd </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13570 -> f5775;
+f5775 [label="mariés le : "];
+}
+subgraph {i13571  [label=<
+            <TABLE>
+            <TR><TD>Owain </TD></TR>
+            <TR>TD>(†968)</TD></TR>
+            </TABLE>
+            >]
+i13571 -> f5777;
+f5777 [label="mariés le : "];
+}
+subgraph {i13572  [label=<
+            <TABLE>
+            <TR><TD>Hywel Dda (the_Good) </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13572 -> f5778;
+f5778 [label="mariés le : "];
+}
+subgraph {i13573  [label=<
+            <TABLE>
+            <TR><TD>Cadell </TD></TR>
+            <TR>TD>(†909)</TD></TR>
+            </TABLE>
+            >]
+i13573 -> f5779;
+f5779 [label="mariés le : "];
+}
+f5780 -> i13573
+f5779 -> i13572
+f5778 -> i13571
+f5777 -> i13570
+f5775 -> i13567
+f5774 -> i13564
+subgraph {i13410  [label=<
+            <TABLE>
+            <TR><TD>Alfgar of_Mercia </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13410 -> f5657;
+f5657 [label="mariés le : "];
+}
+f5657 -> i13175
+f5773 -> i13563
+f5772 -> i13561
+f5771 -> i13559
+f5770 -> i13557
+f5764 -> i13548
+f5769 -> i13555
+subgraph {i13853  [label=<
+            <TABLE>
+            <TR><TD>William MARSHAL</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13853 -> f5909;
+i13854  [label=<
+            <TABLE>
+            <TR><TD>Isabel </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13854 -> f5909;
+f5909 [label="mariés le : "];
+}
+subgraph {i13855  [label=<
+            <TABLE>
+            <TR><TD>Richard (Strongbow) </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13855 -> f5910;
+i13856  [label=<
+            <TABLE>
+            <TR><TD>Aoife (Eva) </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13856 -> f5910;
+f5910 [label="mariés le : "];
+}
+subgraph {i13857  [label=<
+            <TABLE>
+            <TR><TD>Dermot MACMURROUGH</TD></TR>
+            <TR>TD>(†1171)</TD></TR>
+            </TABLE>
+            >]
+i13857 -> f5903;
+f5903 [label="mariés le : "];
+}
+subgraph {i13858  [label=<
+            <TABLE>
+            <TR><TD>Enna </TD></TR>
+            <TR>TD>(†1126)</TD></TR>
+            </TABLE>
+            >]
+i13858 -> f5911;
+f5911 [label="mariés le : "];
+}
+subgraph {i13859  [label=<
+            <TABLE>
+            <TR><TD>Donchad </TD></TR>
+            <TR>TD>(†1126)</TD></TR>
+            </TABLE>
+            >]
+i13859 -> f5912;
+f5912 [label="mariés le : "];
+}
+subgraph {i13851  [label=<
+            <TABLE>
+            <TR><TD>Murchad </TD></TR>
+            <TR>TD>(†1090)</TD></TR>
+            </TABLE>
+            >]
+i13851 -> f5913;
+f5913 [label="mariés le : "];
+}
+subgraph {i13850  [label=<
+            <TABLE>
+            <TR><TD>Dermot MACMAILNAMO</TD></TR>
+            <TR>TD>(†1072)</TD></TR>
+            </TABLE>
+            >]
+i13850 -> f5908;
+i13849  [label=<
+            <TABLE>
+            <TR><TD>Dearbforgail </TD></TR>
+            <TR>TD>(†1080)</TD></TR>
+            </TABLE>
+            >]
+i13849 -> f5908;
+f5908 [label="mariés le : "];
+}
+subgraph {i13848  [label=<
+            <TABLE>
+            <TR><TD>Brian Boru </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13848 -> f5907;
+f5907 [label="mariés le : "];
+}
+f5907 -> i13849
+f5908 -> i13851
+f5913 -> i13859
+f5912 -> i13858
+f5911 -> i13857
+f5903 -> i13856
+f5910 -> i13854
+f5909 -> i13852
+f5762 -> i13545
+f5760 -> i13543
+f5759 -> i13542
+f5758 -> i13541
+f5757 -> i13540
+f5574 -> i12985
+subgraph {i12871  [label=<
+            <TABLE>
+            <TR><TD>Lionel of_Antwerp </TD></TR>
+            <TR>TD>(°29 NOV 1338 - †10 DEC 1363)</TD></TR>
+            </TABLE>
+            >]
+i12871 -> f5573;
+i13054  [label=<
+            <TABLE>
+            <TR><TD>Elizabeth de_Burgh </TD></TR>
+            <TR>TD>(†10 DEC 1363)</TD></TR>
+            </TABLE>
+            >]
+i13054 -> f5573;
+f5573 [label="mariés le : "];
+}
+subgraph {i12865  [label=<
+            <TABLE>
+            <TR><TD>Edward_III </TD></TR>
+            <TR>TD>(°13 NOV 1312 - †21 JUN 1377)</TD></TR>
+            </TABLE>
+            >]
+i12865 -> f5528;
+i12866  [label=<
+            <TABLE>
+            <TR><TD>Philippa of_Hainault </TD></TR>
+            <TR>TD>(°24 JUN 1311 - †14 AUG 1369)</TD></TR>
+            </TABLE>
+            >]
+i12866 -> f5528;
+f5528 [label="mariés le : "];
+}
+subgraph {i11922  [label=<
+            <TABLE>
+            <TR><TD>Edward_II </TD></TR>
+            <TR>TD>(°25 APR 1284 - †21 SEP 1327)</TD></TR>
+            </TABLE>
+            >]
+i11922 -> f5526;
+i11763  [label=<
+            <TABLE>
+            <TR><TD>Isabella of_France </TD></TR>
+            <TR>TD>(°1292 - †22 AUG 1358)</TD></TR>
+            </TABLE>
+            >]
+i11763 -> f5526;
+f5526 [label="mariés le : "];
+}
+subgraph {i12897  [label=<
+            <TABLE>
+            <TR><TD>Edward_I (Longshanks) </TD></TR>
+            <TR>TD>(°17 JUN 1239 - †7 JUL 1307)</TD></TR>
+            </TABLE>
+            >]
+i12897 -> f5219;
+i12898  [label=<
+            <TABLE>
+            <TR><TD>Eleanor of_Castile </TD></TR>
+            <TR>TD>(°ABT    1244 - †24 NOV 1290)</TD></TR>
+            </TABLE>
+            >]
+i12898 -> f5219;
+f5219 [label="mariés le : "];
+}
+subgraph {i12917  [label=<
+            <TABLE>
+            <TR><TD>Henry_III </TD></TR>
+            <TR>TD>(°1 OCT 1207 - †16 NOV 1272)</TD></TR>
+            </TABLE>
+            >]
+i12917 -> f5539;
+i12918  [label=<
+            <TABLE>
+            <TR><TD>Eleanor of_Provence </TD></TR>
+            <TR>TD>(°ABT    1217 - †24 JUN 1291)</TD></TR>
+            </TABLE>
+            >]
+i12918 -> f5539;
+f5539 [label="mariés le : "];
+}
+subgraph {i13000  [label=<
+            <TABLE>
+            <TR><TD>John Lackland </TD></TR>
+            <TR>TD>(°24 DEC 1167 - †19 OCT 1216)</TD></TR>
+            </TABLE>
+            >]
+i13000 -> f5543;
+i13002  [label=<
+            <TABLE>
+            <TR><TD>Isabella of_Angouleme </TD></TR>
+            <TR>TD>(°ABT    1188 - †31 MAY 1246)</TD></TR>
+            </TABLE>
+            >]
+i13002 -> f5543;
+f5543 [label="mariés le : "];
+}
+subgraph {i13007  [label=<
+            <TABLE>
+            <TR><TD>Henry_II Curtmantle </TD></TR>
+            <TR>TD>(°25 MAR 1133 - †6 JUL 1189)</TD></TR>
+            </TABLE>
+            >]
+i13007 -> f5578;
+i13008  [label=<
+            <TABLE>
+            <TR><TD>Eleanor of_Aquitaine </TD></TR>
+            <TR>TD>(°ABT    1122 - †1 APR 1204)</TD></TR>
+            </TABLE>
+            >]
+i13008 -> f5578;
+f5578 [label="mariés le : "];
+}
+subgraph {i13041  [label=<
+            <TABLE>
+            <TR><TD>Geoffrey_V PLANTAGENET</TD></TR>
+            <TR>TD>(†7 SEP 1151)</TD></TR>
+            </TABLE>
+            >]
+i13041 -> f5581;
+i13031  [label=<
+            <TABLE>
+            <TR><TD>Matilda </TD></TR>
+            <TR>TD>(°ABT    1103/1104 - †10 SEP 1167)</TD></TR>
+            </TABLE>
+            >]
+i13031 -> f5581;
+f5581 [label="mariés le : "];
+}
+subgraph {i13027  [label=<
+            <TABLE>
+            <TR><TD>Henry_I Beauclerc </TD></TR>
+            <TR>TD>(°ABT    SEP 1068 - †1 DEC 1135)</TD></TR>
+            </TABLE>
+            >]
+i13027 -> f5587;
+i13028  [label=<
+            <TABLE>
+            <TR><TD>Matilda (Edith) of_Scotland </TD></TR>
+            <TR>TD>(°1079/1080 - †1 MAY 1118)</TD></TR>
+            </TABLE>
+            >]
+i13028 -> f5587;
+f5587 [label="mariés le : "];
+}
+subgraph {i13016  [label=<
+            <TABLE>
+            <TR><TD>William_I the_Conqueror </TD></TR>
+            <TR>TD>(°1027/1028 - †7 SEP 1087)</TD></TR>
+            </TABLE>
+            >]
+i13016 -> f5585;
+i13017  [label=<
+            <TABLE>
+            <TR><TD>Matilda of_Flanders </TD></TR>
+            <TR>TD>(°ABT    1031 - †2 NOV 1083)</TD></TR>
+            </TABLE>
+            >]
+i13017 -> f5585;
+f5585 [label="mariés le : "];
+}
+subgraph {i13161  [label=<
+            <TABLE>
+            <TR><TD>Robert the_Devil </TD></TR>
+            <TR>TD>(†1035)</TD></TR>
+            </TABLE>
+            >]
+i13161 -> f5583;
+i13162  [label=<
+            <TABLE>
+            <TR><TD>Herleva </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13162 -> f5583;
+f5583 [label="mariés le : "];
+}
+subgraph {i13163  [label=<
+            <TABLE>
+            <TR><TD>Richard_II of_Normandy </TD></TR>
+            <TR>TD>(†1026)</TD></TR>
+            </TABLE>
+            >]
+i13163 -> f5652;
+i13164  [label=<
+            <TABLE>
+            <TR><TD>Judith of_Brittany </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13164 -> f5652;
+f5652 [label="mariés le : "];
+}
+subgraph {i13166  [label=<
+            <TABLE>
+            <TR><TD>Richard_I the_Fearless of_Normandy </TD></TR>
+            <TR>TD>(†996)</TD></TR>
+            </TABLE>
+            >]
+i13166 -> f5653;
+i13167  [label=<
+            <TABLE>
+            <TR><TD>Gunnor of_Denmark </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13167 -> f5653;
+f5653 [label="mariés le : "];
+}
+f5653 -> i13163
+f5652 -> i13161
+f5583 -> i13016
+subgraph {i13486  [label=<
+            <TABLE>
+            <TR><TD>Baldwin_V of_Flanders </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13486 -> f5584;
+f5584 [label="mariés le : "];
+}
+f5584 -> i13017
+f5585 -> i13027
+subgraph {i13147  [label=<
+            <TABLE>
+            <TR><TD>Malcolm_III Canmore </TD></TR>
+            <TR>TD>(†1093)</TD></TR>
+            </TABLE>
+            >]
+i13147 -> f5586;
+i13148  [label=<
+            <TABLE>
+            <TR><TD>St_Margaret </TD></TR>
+            <TR>TD>(†1093)</TD></TR>
+            </TABLE>
+            >]
+i13148 -> f5586;
+f5586 [label="mariés le : "];
+}
+subgraph {i13875  [label=<
+            <TABLE>
+            <TR><TD>Duncan_I </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13875 -> f5647;
+i13876  [label=<
+            <TABLE>
+            <TR><TD>Sybil </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13876 -> f5647;
+f5647 [label="mariés le : "];
+}
+subgraph {i13878  [label=<
+            <TABLE>
+            <TR><TD>Crinan </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13878 -> f5919;
+i13879  [label=<
+            <TABLE>
+            <TR><TD>Bethoc </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13879 -> f5919;
+f5919 [label="mariés le : "];
+}
+subgraph {i13884  [label=<
+            <TABLE>
+            <TR><TD>Malcolm_II </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13884 -> f5920;
+f5920 [label="mariés le : "];
+}
+subgraph {i13885  [label=<
+            <TABLE>
+            <TR><TD>Kenneth_II </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13885 -> f5923;
+f5923 [label="mariés le : "];
+}
+subgraph {i13886  [label=<
+            <TABLE>
+            <TR><TD>Malcolm_I </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13886 -> f5924;
+f5924 [label="mariés le : "];
+}
+subgraph {i13887  [label=<
+            <TABLE>
+            <TR><TD>Donald_II </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13887 -> f5925;
+f5925 [label="mariés le : "];
+}
+subgraph {i13888  [label=<
+            <TABLE>
+            <TR><TD>Constantine_II </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13888 -> f5926;
+f5926 [label="mariés le : "];
+}
+subgraph {i13897  [label=<
+            <TABLE>
+            <TR><TD>Kenneth_I MACALPIN</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13897 -> f5927;
+f5927 [label="mariés le : "];
+}
+subgraph {i13901  [label=<
+            <TABLE>
+            <TR><TD>Alpin </TD></TR>
+            <TR>TD>(†834)</TD></TR>
+            </TABLE>
+            >]
+i13901 -> f5934;
+f5934 [label="mariés le : "];
+}
+f5934 -> i13897
+f5927 -> i13888
+f5926 -> i13887
+f5925 -> i13886
+f5924 -> i13885
+f5923 -> i13884
+f5920 -> i13879
+f5919 -> i13875
+f5647 -> i13147
+subgraph {i13181  [label=<
+            <TABLE>
+            <TR><TD>Edward ATHLING</TD></TR>
+            <TR>TD>(°ABT    1016 - †1057)</TD></TR>
+            </TABLE>
+            >]
+i13181 -> f5648;
+i13182  [label=<
+            <TABLE>
+            <TR><TD>Agatha </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13182 -> f5648;
+f5648 [label="mariés le : "];
+}
+subgraph {i13179  [label=<
+            <TABLE>
+            <TR><TD>Edmund_II Ironside </TD></TR>
+            <TR>TD>(†1016)</TD></TR>
+            </TABLE>
+            >]
+i13179 -> f5661;
+i13180  [label=<
+            <TABLE>
+            <TR><TD>Ealdgyth </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13180 -> f5661;
+f5661 [label="mariés le : "];
+}
+subgraph {i13169  [label=<
+            <TABLE>
+            <TR><TD>Ethelred_II the_Unready </TD></TR>
+            <TR>TD>(°ABT     968 - †1016)</TD></TR>
+            </TABLE>
+            >]
+i13169 -> f5660;
+i13178  [label=<
+            <TABLE>
+            <TR><TD>Elfreda (Elfgiva) </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13178 -> f5660;
+f5660 [label="mariés le : "];
+}
+subgraph {i13415  [label=<
+            <TABLE>
+            <TR><TD>Edgar the_Peaceful </TD></TR>
+            <TR>TD>(°944 - †975)</TD></TR>
+            </TABLE>
+            >]
+i13415 -> f5654;
+i13416  [label=<
+            <TABLE>
+            <TR><TD>Elfrida </TD></TR>
+            <TR>TD>(†1000)</TD></TR>
+            </TABLE>
+            >]
+i13416 -> f5654;
+f5654 [label="mariés le : "];
+}
+subgraph {i13422  [label=<
+            <TABLE>
+            <TR><TD>Edmund_I the_Elder </TD></TR>
+            <TR>TD>(°939 - †946)</TD></TR>
+            </TABLE>
+            >]
+i13422 -> f5724;
+i13423  [label=<
+            <TABLE>
+            <TR><TD>St._Elgiva </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13423 -> f5724;
+f5724 [label="mariés le : "];
+}
+subgraph {i13428  [label=<
+            <TABLE>
+            <TR><TD>Edward the_Elder </TD></TR>
+            <TR>TD>(†924)</TD></TR>
+            </TABLE>
+            >]
+i13428 -> f5728;
+i13429  [label=<
+            <TABLE>
+            <TR><TD>Edgiva </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13429 -> f5728;
+f5728 [label="mariés le : "];
+}
+subgraph {i13600  [label=<
+            <TABLE>
+            <TR><TD>Alfred the_Great </TD></TR>
+            <TR>TD>(°849 - †899)</TD></TR>
+            </TABLE>
+            >]
+i13600 -> f5730;
+i13601  [label=<
+            <TABLE>
+            <TR><TD>Ealhswith </TD></TR>
+            <TR>TD>(†905)</TD></TR>
+            </TABLE>
+            >]
+i13601 -> f5730;
+f5730 [label="mariés le : "];
+}
+subgraph {i13602  [label=<
+            <TABLE>
+            <TR><TD>Ethelwulf </TD></TR>
+            <TR>TD>(†858)</TD></TR>
+            </TABLE>
+            >]
+i13602 -> f5794;
+i13603  [label=<
+            <TABLE>
+            <TR><TD>Osburh </TD></TR>
+            <TR>TD>(†846)</TD></TR>
+            </TABLE>
+            >]
+i13603 -> f5794;
+f5794 [label="mariés le : "];
+}
+subgraph {i13609  [label=<
+            <TABLE>
+            <TR><TD>Egbert </TD></TR>
+            <TR>TD>(†839)</TD></TR>
+            </TABLE>
+            >]
+i13609 -> f5796;
+i13610  [label=<
+            <TABLE>
+            <TR><TD>Redburh </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13610 -> f5796;
+f5796 [label="mariés le : "];
+}
+subgraph {i13690  [label=<
+            <TABLE>
+            <TR><TD>Ealhmund of_Kent </TD></TR>
+            <TR>TD>(†786)</TD></TR>
+            </TABLE>
+            >]
+i13690 -> f5798;
+f5798 [label="mariés le : "];
+}
+subgraph {i13691  [label=<
+            <TABLE>
+            <TR><TD>Eaba </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13691 -> f5846;
+f5846 [label="mariés le : "];
+}
+subgraph {i13692  [label=<
+            <TABLE>
+            <TR><TD>Eoppa </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13692 -> f5847;
+f5847 [label="mariés le : "];
+}
+subgraph {i13686  [label=<
+            <TABLE>
+            <TR><TD>Ingild </TD></TR>
+            <TR>TD>(†718)</TD></TR>
+            </TABLE>
+            >]
+i13686 -> f5848;
+f5848 [label="mariés le : "];
+}
+subgraph {i13683  [label=<
+            <TABLE>
+            <TR><TD>Cenred </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13683 -> f5843;
+f5843 [label="mariés le : "];
+}
+subgraph {i13684  [label=<
+            <TABLE>
+            <TR><TD>Ceolwald </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13684 -> f5844;
+f5844 [label="mariés le : "];
+}
+subgraph {i13676  [label=<
+            <TABLE>
+            <TR><TD>Cuthwulf (Cutha) </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13676 -> f5845;
+f5845 [label="mariés le : "];
+}
+subgraph {i13673  [label=<
+            <TABLE>
+            <TR><TD>Cuthwine </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13673 -> f5838;
+f5838 [label="mariés le : "];
+}
+subgraph {i13629  [label=<
+            <TABLE>
+            <TR><TD>Ceawlin </TD></TR>
+            <TR>TD>(†593)</TD></TR>
+            </TABLE>
+            >]
+i13629 -> f5837;
+f5837 [label="mariés le : "];
+}
+subgraph {i13628  [label=<
+            <TABLE>
+            <TR><TD>Cynric </TD></TR>
+            <TR>TD>(†560)</TD></TR>
+            </TABLE>
+            >]
+i13628 -> f5804;
+f5804 [label="mariés le : "];
+}
+subgraph {i13627  [label=<
+            <TABLE>
+            <TR><TD>Cerdic </TD></TR>
+            <TR>TD>(†534)</TD></TR>
+            </TABLE>
+            >]
+i13627 -> f5803;
+f5803 [label="mariés le : "];
+}
+subgraph {i13631  [label=<
+            <TABLE>
+            <TR><TD>Elesa </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13631 -> f5802;
+f5802 [label="mariés le : "];
+}
+subgraph {i13632  [label=<
+            <TABLE>
+            <TR><TD>Elsa </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13632 -> f5805;
+f5805 [label="mariés le : "];
+}
+subgraph {i13633  [label=<
+            <TABLE>
+            <TR><TD>Gewis </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13633 -> f5806;
+f5806 [label="mariés le : "];
+}
+subgraph {i13634  [label=<
+            <TABLE>
+            <TR><TD>Wig </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13634 -> f5807;
+f5807 [label="mariés le : "];
+}
+f5807 -> i13633
+f5806 -> i13632
+f5805 -> i13631
+f5802 -> i13627
+f5803 -> i13628
+f5804 -> i13629
+f5837 -> i13673
+f5838 -> i13676
+f5845 -> i13684
+f5844 -> i13683
+f5843 -> i13686
+f5848 -> i13692
+f5847 -> i13691
+f5846 -> i13690
+f5798 -> i13609
+f5796 -> i13602
+subgraph {i13612  [label=<
+            <TABLE>
+            <TR><TD>Oslac </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13612 -> f5797;
+f5797 [label="mariés le : "];
+}
+f5797 -> i13603
+f5794 -> i13600
+subgraph {i13617  [label=<
+            <TABLE>
+            <TR><TD>Ethelred MUCEL</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13617 -> f5795;
+f5795 [label="mariés le : "];
+}
+f5795 -> i13601
+f5730 -> i13428
+f5728 -> i13422
+f5724 -> i13415
+subgraph {i13421  [label=<
+            <TABLE>
+            <TR><TD>Ordgar of_Devon Ealdorman </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13421 -> f5725;
+f5725 [label="mariés le : "];
+}
+f5725 -> i13416
+f5654 -> i13169
+subgraph {i13088  [label=<
+            <TABLE>
+            <TR><TD>Thored </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13088 -> f5659;
+f5659 [label="mariés le : "];
+}
+subgraph {i13388  [label=<
+            <TABLE>
+            <TR><TD>Gunnor </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13388 -> f5619;
+f5619 [label="mariés le : "];
+}
+f5619 -> i13088
+f5659 -> i13178
+f5660 -> i13179
+f5661 -> i13181
+subgraph {i13399  [label=<
+            <TABLE>
+            <TR><TD>Stephen_I </TD></TR>
+            <TR>TD>(°ABT     975 - †1038)</TD></TR>
+            </TABLE>
+            >]
+i13399 -> f5662;
+f5662 [label="mariés le : "];
+}
+f5662 -> i13182
+f5648 -> i13148
+f5586 -> i13028
+f5587 -> i13031
+f5581 -> i13007
+subgraph {i13504  [label=<
+            <TABLE>
+            <TR><TD>William_X of_Aquitaine </TD></TR>
+            <TR>TD>(°1099 - †1137)</TD></TR>
+            </TABLE>
+            >]
+i13504 -> f5582;
+f5582 [label="mariés le : "];
+}
+f5582 -> i13008
+f5578 -> i13000
+subgraph {i12169  [label=<
+            <TABLE>
+            <TR><TD>Aymer of_Angouleme TAILLEFER</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i12169 -> f5580;
+i12168  [label=<
+            <TABLE>
+            <TR><TD>Alice de_Courtenay </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i12168 -> f5580;
+f5580 [label="mariés le : "];
+}
+f5580 -> i13002
+f5543 -> i12917
+subgraph {i13517  [label=<
+            <TABLE>
+            <TR><TD>Raymond of_Provence </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13517 -> f5544;
+f5544 [label="mariés le : "];
+}
+f5544 -> i12918
+f5539 -> i12897
+subgraph {i13382  [label=<
+            <TABLE>
+            <TR><TD>Ferdinand_III </TD></TR>
+            <TR>TD>(°1199 - †1252)</TD></TR>
+            </TABLE>
+            >]
+i13382 -> f5540;
+f5540 [label="mariés le : "];
+}
+subgraph {i13527  [label=<
+            <TABLE>
+            <TR><TD>Alfonso_IX </TD></TR>
+            <TR>TD>(†1230)</TD></TR>
+            </TABLE>
+            >]
+i13527 -> f5719;
+i13383  [label=<
+            <TABLE>
+            <TR><TD>Berengaria </TD></TR>
+            <TR>TD>(°1171 - †1246)</TD></TR>
+            </TABLE>
+            >]
+i13383 -> f5719;
+f5719 [label="mariés le : "];
+}
+subgraph {i13156  [label=<
+            <TABLE>
+            <TR><TD>Alfonso_VIII </TD></TR>
+            <TR>TD>(°1155 - †1214)</TD></TR>
+            </TABLE>
+            >]
+i13156 -> f5720;
+i13014  [label=<
+            <TABLE>
+            <TR><TD>Eleanor </TD></TR>
+            <TR>TD>(°13 OCT 1162 - †31 OCT 1214)</TD></TR>
+            </TABLE>
+            >]
+i13014 -> f5720;
+f5720 [label="mariés le : "];
+}
+subgraph {i13384  [label=<
+            <TABLE>
+            <TR><TD>Sancho_III </TD></TR>
+            <TR>TD>(°ABT    1134 - †ABT    1158)</TD></TR>
+            </TABLE>
+            >]
+i13384 -> f5649;
+f5649 [label="mariés le : "];
+}
+f5649 -> i13156
+f5578 -> i13014
+f5720 -> i13383
+f5719 -> i13382
+f5540 -> i12898
+f5219 -> i11922
+subgraph {i13539  [label=<
+            <TABLE>
+            <TR><TD>Philip_IV the_Fair </TD></TR>
+            <TR>TD>(°1268 - †29 NOV 1314)</TD></TR>
+            </TABLE>
+            >]
+i13539 -> f5173;
+i14122  [label=<
+            <TABLE>
+            <TR><TD>Joan of_Navarre </TD></TR>
+            <TR>TD>(°1271 - †1305)</TD></TR>
+            </TABLE>
+            >]
+i14122 -> f5173;
+f5173 [label="mariés le : "];
+}
+subgraph {i13375  [label=<
+            <TABLE>
+            <TR><TD>Philip_III the_Bold </TD></TR>
+            <TR>TD>(°1 MAY 1245 - †5 OCT 1285)</TD></TR>
+            </TABLE>
+            >]
+i13375 -> f5541;
+i14121  [label=<
+            <TABLE>
+            <TR><TD>Mary of_Brabant </TD></TR>
+            <TR>TD>(†1321)</TD></TR>
+            </TABLE>
+            >]
+i14121 -> f5541;
+f5541 [label="mariés le : "];
+}
+subgraph {i13376  [label=<
+            <TABLE>
+            <TR><TD>Louis_IX (St._Louis) </TD></TR>
+            <TR>TD>(°25 APR 1214 - †25 AUG 1270)</TD></TR>
+            </TABLE>
+            >]
+i13376 -> f5714;
+i14118  [label=<
+            <TABLE>
+            <TR><TD>Margaret of_Provence </TD></TR>
+            <TR>TD>(°1221 - †1295)</TD></TR>
+            </TABLE>
+            >]
+i14118 -> f5714;
+f5714 [label="mariés le : "];
+}
+subgraph {i13377  [label=<
+            <TABLE>
+            <TR><TD>Louis_VIII the_Lion </TD></TR>
+            <TR>TD>(°5 SEP 1187 - †8 NOV 1226)</TD></TR>
+            </TABLE>
+            >]
+i13377 -> f5715;
+i13378  [label=<
+            <TABLE>
+            <TR><TD>Blanche of_Castile </TD></TR>
+            <TR>TD>(°1188 - †1252)</TD></TR>
+            </TABLE>
+            >]
+i13378 -> f5715;
+f5715 [label="mariés le : "];
+}
+subgraph {i14087  [label=<
+            <TABLE>
+            <TR><TD>Philip_II Augustus </TD></TR>
+            <TR>TD>(°21 AUG 1165 - †14 JUL 1223)</TD></TR>
+            </TABLE>
+            >]
+i14087 -> f5716;
+i14113  [label=<
+            <TABLE>
+            <TR><TD>Isabella of_Hainault </TD></TR>
+            <TR>TD>(†1190)</TD></TR>
+            </TABLE>
+            >]
+i14113 -> f5716;
+f5716 [label="mariés le : "];
+}
+subgraph {i13505  [label=<
+            <TABLE>
+            <TR><TD>Louis_VII the_Younger </TD></TR>
+            <TR>TD>(°ABT    1121 - †18 SEP 1180)</TD></TR>
+            </TABLE>
+            >]
+i13505 -> f5964;
+i14112  [label=<
+            <TABLE>
+            <TR><TD>Adele of_Champagne </TD></TR>
+            <TR>TD>(†1206)</TD></TR>
+            </TABLE>
+            >]
+i14112 -> f5964;
+f5964 [label="mariés le : "];
+}
+subgraph {i14088  [label=<
+            <TABLE>
+            <TR><TD>Louis_VI the_Fat </TD></TR>
+            <TR>TD>(°ABT    1081 - †1 AUG 1137)</TD></TR>
+            </TABLE>
+            >]
+i14088 -> f5751;
+i14089  [label=<
+            <TABLE>
+            <TR><TD>Adelaide of_Savoy </TD></TR>
+            <TR>TD>(†1154)</TD></TR>
+            </TABLE>
+            >]
+i14089 -> f5751;
+f5751 [label="mariés le : "];
+}
+subgraph {i14090  [label=<
+            <TABLE>
+            <TR><TD>Philip_I the_Fair </TD></TR>
+            <TR>TD>(°1052 - †29 JUL 1108)</TD></TR>
+            </TABLE>
+            >]
+i14090 -> f5965;
+i14091  [label=<
+            <TABLE>
+            <TR><TD>Bertha of_Holland </TD></TR>
+            <TR>TD>(†1093)</TD></TR>
+            </TABLE>
+            >]
+i14091 -> f5965;
+f5965 [label="mariés le : "];
+}
+subgraph {i14093  [label=<
+            <TABLE>
+            <TR><TD>Henry_I </TD></TR>
+            <TR>TD>(°APR 1008 - †4 AUG 1060)</TD></TR>
+            </TABLE>
+            >]
+i14093 -> f5966;
+i14171  [label=<
+            <TABLE>
+            <TR><TD>Anne of_Kiev </TD></TR>
+            <TR>TD>(°ABT    1024 - †ABT    1066)</TD></TR>
+            </TABLE>
+            >]
+i14171 -> f5966;
+f5966 [label="mariés le : "];
+}
+subgraph {i14094  [label=<
+            <TABLE>
+            <TR><TD>Robert_II the_Pious </TD></TR>
+            <TR>TD>(°ABT     970 - †1031)</TD></TR>
+            </TABLE>
+            >]
+i14094 -> f5967;
+i14095  [label=<
+            <TABLE>
+            <TR><TD>Constance of_Arles </TD></TR>
+            <TR>TD>(†1032)</TD></TR>
+            </TABLE>
+            >]
+i14095 -> f5967;
+f5967 [label="mariés le : "];
+}
+subgraph {i14099  [label=<
+            <TABLE>
+            <TR><TD>Hugh CAPET</TD></TR>
+            <TR>TD>(°ABT     938 - †AUG  996)</TD></TR>
+            </TABLE>
+            >]
+i14099 -> f5968;
+f5968 [label="mariés le : "];
+}
+f5968 -> i14094
+f5967 -> i14093
+f5966 -> i14090
+f5965 -> i14088
+f5751 -> i13505
+f5964 -> i14087
+f5716 -> i13377
+subgraph {i13527 -> f5717;
+f5717 [label="mariés le : "];
+}
+f5717 -> i13378
+f5715 -> i13376
+subgraph {i14119  [label=<
+            <TABLE>
+            <TR><TD>Raymond of_Provence BERENGER</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i14119 -> f5972;
+f5972 [label="mariés le : "];
+}
+f5972 -> i14118
+f5714 -> i13375
+f5541 -> i13539
+f5173 -> i11763
+f5526 -> i12865
+subgraph {i13693  [label=<
+            <TABLE>
+            <TR><TD>William of_Hainault </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13693 -> f5527;
+f5527 [label="mariés le : "];
+}
+f5527 -> i12866
+f5528 -> i12871
+subgraph {i13695  [label=<
+            <TABLE>
+            <TR><TD>William DE_BURGH</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13695 -> f5599;
+f5599 [label="mariés le : "];
+}
+f5599 -> i13054
+f5573 -> i12984
+f5570 -> i13920 ;
+subgraph {i13920  [style="filled", fillcolor="#ffffaa"]  [label=<
+            <TABLE>
+            <TR><TD>Elizabeth MORTIMER</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+i13922  [label=<
+            <TABLE>
+            <TR><TD>Henry (Hotspur) PERCY</TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+f6378 [label="mariés le : "];
+i13920 -> f6378;
+i13922 -> f6378;
+i13923  [label=<
+            <TABLE>
+            <TR><TD>Thomas </TD></TR>
+            <TR>TD></TD></TR>
+            </TABLE>
+            >]
+f6379 [label="mariés le : "];
+i13920 -> f6379;
+i13923 -> f6379;
+}
+}
