@@ -41,32 +41,134 @@ if (!isset($g4p_indi))
   die($g4p_langue['id_inconnu']);
 
 $g4p_titre_page='Famille proche de : '.$g4p_indi->nom.' '.$g4p_indi->prenom;
+
+$g4p_javascript='<style type="text/css">
+#arbre_div {
+    overflow:auto;
+    width:auto;
+    padding:0;
+    margin:0;
+    border-top:1px solid black;
+}
+</style>';
+
+$body=' onload="onload();" onresize="onload();" ';
+
 require_once($g4p_chemin.'entete.php');
 
 echo '
 <script type="text/javascript">
+    function onload() {';
+    if(!empty($_GET['pleinecran']))
+    {
+        echo 'pleinecran();';
+        $offset=140;
+    }
+    else
+        $offset=0;
+    echo 'document.getElementById(\'arbre_div\').style.height=(window.innerHeight-'.(210-$offset).')+\'px\';';
+echo '}
+
 var arbre_width;
 function Resizep(ID) {
 if(!arbre_width){ 
     arbre_width=document.getElementById(\'arbre_div\').offsetWidth;
 }
-arbre_width=arbre_width+100;
+arbre_width=arbre_width+150;
 document.getElementById(ID).width=arbre_width+\'px\';
 }
 function Resizem(ID) {
 if(!arbre_width){ 
     arbre_width=document.getElementById(\'arbre_div\').offsetWidth;
 }
-arbre_width=arbre_width-100;
+arbre_width=arbre_width-150;
 document.getElementById(ID).width=arbre_width+\'px\';
+}
+
+function pleinecran() {
+    document.getElementById(\'header\').style.display=\'none\';
+    document.getElementById(\'navigation\').style.display=\'none\';
+    document.getElementById(\'wrapper\').style.margin=\'0px\';
+    document.getElementById(\'wrapper\').style.padding=\'0px\';
+    document.getElementById(\'wrapper\').style.float=\'none\';
+    document.getElementById(\'wrapper\').style.width=\'100%\';
+    document.getElementById(\'content\').style.margin=\'0px\';
+    document.getElementById(\'content\').style.padding=\'0px\';
+    document.getElementById(\'content\').style.width=\'100%\';
 }
 </script>
 ';
 
-echo '<a href="#" onClick="Resizep(\'arbre\')">Zoom +</a> | <a href="#" onClick="Resizem(\'arbre\')">Zoom -</a> | <a href="arbre_svg.php?id_pers='.$_GET['id_pers'].'&output=png" >png</a>  | <a href="arbre_svg.php?id_pers='.$_GET['id_pers'].'&output=pdf" >pdf</a>';
+$get=array();
+if(!empty($_GET['output']))
+    $get['output']='&output='.$_GET['output'];
+else
+    $get['output']='';
+if(!empty($_GET['pleinecran']))
+{
+    $get['pleinecran']='&pleinecran='.$_GET['pleinecran'];
+    echo '<script type="text/javascript">pleinecran()</script>';
+}
+else
+    $get['pleinecran']='';
+if(isset($_GET['limite_descendance']) and (int)$_GET['limite_descendance']>=0)
+    $get['limite_descendance']='&limite_descendance='.(int)$_GET['limite_descendance'];
+else
+{
+    $get['limite_descendance']='';
+    $_GET['limite_descendance']=1;
+}
+if(isset($_GET['limite_ascendance']) and (int)$_GET['limite_ascendance']>=0)
+    $get['limite_ascendance']='&limite_ascendance='.(int)$_GET['limite_ascendance'];
+else
+{
+    $get['limite_ascendance']='';
+    $_GET['limite_ascendance']=2;
+}
+if(!empty($_GET['fulldesc']))
+{
+    $get['fulldesc']='&fulldesc=1';
+}
+else
+    $get['fulldesc']='';
 
-echo '<div id="arbre_div" style="overflow:auto;width:auto;max-height:650px">';
-echo '<object type="image/svg+xml" id="arbre" name="arbre" data="arbre_svg.php?id_pers='.$_GET['id_pers'].'" width="100%" ></object>';
+function return_get($except='')
+{
+    global $get;
+    $tmp=$get;
+    if(is_array($except))
+        foreach($except as $a_except)  
+            unset($tmp[$a_except]);
+    elseif(!empty($except))
+        unset($tmp[$except]);
+    return implode('',$tmp);
+}
+
+echo '<a href="#" onClick="Resizep(\'arbre\')">Zoom +</a> 
+| <a href="#" onClick="Resizem(\'arbre\')">Zoom -</a> 
+| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('limite_descendance').'&limite_descendance='.($_GET['limite_descendance']+1).'" >Descendance + 1</a>  
+| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('limite_descendance').'&limite_descendance='.($_GET['limite_descendance']-1).'" > - 1 </a>  
+| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('limite_ascendance').'&limite_ascendance='.($_GET['limite_ascendance']+1).'" >Ascendance + 1</a>  
+| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('limite_ascendance').'&limite_ascendance='.($_GET['limite_ascendance']-1).'" > - 1 </a>  ';
+if(empty($get['fulldesc']))
+    echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('fulldesc').'&fulldesc=1" >Desc. des ascendants</a>  ';
+else
+    echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('fulldesc').'" >Asc. uniquement</a>  ';
+echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('output').'" >svg</a>  
+| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=png" >png</a>  
+| <a href="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=pdf" >pdf</a>';
+if(empty($_GET['pleinecran']))
+    echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('pleinecran').'&pleinecran=1" >Plein écran</a>';
+else
+    echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('pleinecran').'" >Retour au site</a>';
+
+echo '<div id="arbre_div" >';
+if(!empty($_GET['output']) and $_GET['output']=='png')
+    echo '<a href="arbre_svg.php?id_pers='.$_GET['id_pers'].'&output=png"><img id="arbre" id="arbre" name="arbre" src="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=png" width="100%" style="border:0;margin:0" /></a>';
+else
+    echo '<object type="image/svg+xml" id="arbre" name="arbre" data="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'" width="100%" >
+    Votre navigateur ne supporte pas le format svg. Utilisez en un autre (firefox, opera...) ou utilisez le format png.
+    </object>';
 echo '</div>';
 //echo '<iframe src="arbre_svg.php?id_pers='.$_GET['id_pers'].'" width="100%" height="700px" ></iframe>';
 /*

@@ -50,7 +50,7 @@ if(isset($_GET['limite_ascendance']) and $_GET['limite_ascendance']<10)
     $limite_ascendance=$_GET['limite_ascendance'];
 else
     $limite_ascendance=2;
-if(isset($_GET['limite_descendance']) and $_GET['limite_descendance']<10)
+if(isset($_GET['limite_descendance']) and $_GET['limite_descendance']<10 and $_GET['limite_descendance']>=0)
     $limite_descendance=$_GET['limite_descendance'];
 else
     $limite_descendance=1;
@@ -70,8 +70,8 @@ $dot_filename=uniqid();
 $dot=fopen('/tmp/'.$dot_filename, 'w');
 fwrite($dot, 'digraph family {
     ranksep="0.6";
-    bgcolor=transparent;
-    node [shape = record];'."\n");
+    bgcolor="transparent";
+    node [shape = record, fontname="SVGDejaVu.svg"];'."\n");
 /*
     dpi="72";
     size="8,100";
@@ -80,6 +80,13 @@ fwrite($dot, 'digraph family {
 function g4p_print_label($indi, $option=' [style="filled", fillcolor="#ffffff"] ')
 {
     global $liste_nodes;
+    
+    $tmp=array();
+    foreach($_GET as $key=>$val)
+    {
+        if($key!='id_pers')
+            $tmp[]='&'.$key.'='.$val;
+    }
     if(empty($liste_nodes['i'.$indi->indi_id]))
     {
         $liste_nodes['i'.$indi->indi_id]=true;
@@ -88,7 +95,7 @@ function g4p_print_label($indi, $option=' [style="filled", fillcolor="#ffffff"] 
         if(!empty($date))
            return 'i'.$indi->indi_id.' '.$option.' [label=<
                 <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" 
-                    HREF="'.g4p_make_url('','arbre.php','id_pers='.$indi->indi_id,0).'"
+                    HREF="'.g4p_make_url('','arbre.php','id_pers='.$indi->indi_id.implode('',$tmp),0).'"
                     TARGET="_top" ALIGN="CENTER" TITLE="">
                 <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="12.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
                 <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="9.0">'.$date.'</FONT></TD></TR>
@@ -97,7 +104,7 @@ function g4p_print_label($indi, $option=' [style="filled", fillcolor="#ffffff"] 
         else
             return 'i'.$indi->indi_id.' '.$option.' [label=<
                 <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" 
-                    HREF="'.g4p_make_url('','arbre.php','id_pers='.$indi->indi_id,0).'"
+                    HREF="'.g4p_make_url('','arbre.php','id_pers='.$indi->indi_id.implode('',$tmp),0).'"
                     TARGET="_top" ALIGN="CENTER"  TITLE="">
                 <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="12.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
                 </TABLE>
@@ -125,7 +132,7 @@ function g4p_print_family($famille, $option=' [style="filled", fillcolor="#fffff
                 }
             }   
         }
-        return 'f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="10.0">'.$date.' </FONT> >];'."\n";
+        return 'f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="10.0pt">'.$date.' </FONT> >];'."\n";
     }
     else
         return '';
@@ -273,8 +280,7 @@ function g4p_load_enfants($g4p_indi, $generation)
     
     if(!empty($conjoint) and $generation<$limite_ascendance)
         foreach($conjoint as $a_conjoint)
-            if($conjoint_parent=g4p_load_parent($a_conjoint, $generation+1, _fulldesc_))
-                fwrite($dot, g4p_print_link(array('f'.$conjoint_parent, 'i'.$a_famille->wife->indi_id)));                
+            $conjoint_parent=g4p_load_parent($a_conjoint, $generation+1, _fulldesc_);
 
     if($generation<$limite_ascendance)
         if($famille_id=g4p_load_parent($g4p_indi, $generation+1, _fulldesc_))
@@ -290,8 +296,11 @@ fclose($dot);
 
 shell_exec('dot -T'.$output.' /tmp/'.$dot_filename.' -o /tmp/'.$dot_filename.'.'.$output);
 if($output=='svg')
+{
     shell_exec('sed -i \'s/font-size:\([0-9.]*\);/font-size:\1px;/g\' /tmp/'.$dot_filename.'.'.$output);
-
+    //shell_exec('sed -i \'s/viewBox="\([0-9 .]*\)"//g\' /tmp/'.$dot_filename.'.'.$output);
+    //echo '/tmp/'.$dot_filename.'.'.$output;
+ }
 readfile('/tmp/'.$dot_filename.'.'.$output);
 
 //print_r($liste_nodes);

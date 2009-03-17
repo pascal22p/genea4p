@@ -126,14 +126,11 @@ function confirme(objet, message)
 </script>
 
 <?php
-
-echo '<script type="text/javascript" src="',$g4p_chemin,'bulle/bulle'.(($accept_xml)?'_xhtml':'').'.js"></script>';
     
 if(!empty($g4p_javascript))
     echo $g4p_javascript;
     
-echo '</head><body
-    style="behavior:url(\''.$g4p_chemin.'styles/csshover.htc\');">'."\n";
+echo '</head><body '.@$body.' >'."\n";
 
 if (!isset($_SESSION['genea_db_nom']))
     $_SESSION['genea_db_nom']='';
