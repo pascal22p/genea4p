@@ -69,7 +69,7 @@ header($output_headers[$output]);
 $dot_filename=uniqid();
 $dot=fopen('/tmp/'.$dot_filename, 'w');
 fwrite($dot, 'digraph family {
-    ranksep="0.6";
+    ranksep="1";
     bgcolor="transparent";
     node [shape = record, fontname="SVGDejaVu.svg"];'."\n");
 /*
@@ -280,8 +280,9 @@ function g4p_load_enfants($g4p_indi, $generation)
     
     if(!empty($conjoint) and $generation<$limite_ascendance)
         foreach($conjoint as $a_conjoint)
-            $conjoint_parent=g4p_load_parent($a_conjoint, $generation+1, _fulldesc_);
-
+            if($conjoint_parent=g4p_load_parent($a_conjoint, $generation+1, _fulldesc_))
+                fwrite($dot, g4p_print_link(array('f'.$conjoint_parent, 'i'.$a_famille->wife->indi_id)));
+                
     if($generation<$limite_ascendance)
         if($famille_id=g4p_load_parent($g4p_indi, $generation+1, _fulldesc_))
             fwrite($dot, g4p_print_link(array('f'.$famille_id, 'i'.$g4p_indi->indi_id)));   
