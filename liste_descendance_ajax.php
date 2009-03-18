@@ -7,16 +7,8 @@ require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 
-if (empty($_REQUEST['root']) or $_REQUEST['root'] == "source")
-{
-
-    $g4p_indi=g4p_load_indi_infos(74);
-
-}
-else
-{
         $tmp_indi=g4p_load_indi_infos($_REQUEST['root']);
-}
+
 
         if(!empty($tmp_indi->familles))
         {
@@ -46,16 +38,16 @@ else
                         if($exist_desc)
                         {
                             $leaf[]='{'.
-				"'text':'".addslashes(g4p_link_nom($a_enfant['indi']))."',".
-				"'id': '".$a_enfant['indi']->indi_id."',".
-				"'hasChildren': true".
-				"}";
+                                "'text':'".addslashes(g4p_link_nom($a_enfant['indi']))."',".
+                                "'id': '".$a_enfant['indi']->indi_id."',".
+                                "'hasChildren': true".
+                                "}";
                         }
                         else
                         {
                             $leaf[]='{'.
-				"'text':'".addslashes(g4p_link_nom($a_enfant['indi']))."'".
-				"}";
+                                "'text':'".addslashes(g4p_link_nom($a_enfant['indi']))."'".
+                                "}";
                         }
                     }
                 }

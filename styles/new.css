@@ -28,6 +28,12 @@ dl
 	margin-left:1em;
 }
 
+li
+{
+	line-height:100%;
+	margin-bottom:0.3em;
+}
+
 div#header h1
 {
 	height:60px;
@@ -177,7 +183,7 @@ li.ssmenu, li.ssmenu a
 {
 	display:block;
 	font-size:0.8em;
-	margin:none;
+	margin:0;
 	padding:1px;
 	border:0;
 	z-index:10;
@@ -185,6 +191,7 @@ li.ssmenu, li.ssmenu a
 	width:auto;
 	text-indent:0;
 	font-style:normal;
+	line-height:100%;
 }
 
 
@@ -225,15 +232,15 @@ li.menu {
 	background-color:#F1EBDF;
 	color:#6A3D21;
 	font-weight:bold;
-	font-size:large;
+	font-size:large;	
 }
 
 /* hovers with specificity */
 li.ssmenu:hover, li.ssmenu:hover a
 {
-  background-color: #B9CAFF;
-  text-decoration:none;
-  color:black;
+	background-color: #B9CAFF;
+	text-decoration:none;
+	color:black;
 }
 	
 li.menu:hover 
@@ -249,6 +256,7 @@ ul.menu ul.ssmenu
 li.menu:hover ul.ssmenu
 {
 	display:block;
+	margin-bottom:0;
 }		
 
 /* fin style menu */
@@ -266,7 +274,6 @@ DIV.box_title
 	width:auto;
 	font-weight:bold;
 	font-size:large;
-	margin:0;
 	padding:0.5em;
 	text-indent:5em;
 	margin-bottom:2em;

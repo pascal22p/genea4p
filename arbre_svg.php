@@ -46,7 +46,7 @@ $output_list=array('svg'=>'svg', 'png'=>'png', 'pdf'=>'pdf');
 $output_headers=array('svg'=>'Content-Type: image/svg+xml', 'png'=>'Content-Type: image/png', 
     'pdf'=>"Content-type: application/pdf");
         
-if(isset($_GET['limite_ascendance']) and $_GET['limite_ascendance']<10)
+if(isset($_GET['limite_ascendance']) and $_GET['limite_ascendance']<15)
     $limite_ascendance=$_GET['limite_ascendance'];
 else
     $limite_ascendance=2;
@@ -201,10 +201,16 @@ function g4p_load_parent($g4p_indi, $generation, $descendance=false)
                 else
                 {
                     //descendance des parents
-                    $pere=g4p_load_indi_infos($a_parent->pere->indi_id);
-                    g4p_load_enfants($pere, $generation);
-                    $mere=g4p_load_indi_infos($a_parent->mere->indi_id);
-                    g4p_load_enfants($mere, $generation);
+                    if(!empty($a_parent->pere))
+                    {
+                        $pere=g4p_load_indi_infos($a_parent->pere->indi_id);
+                        g4p_load_enfants($pere, $generation);
+                    }
+                    if(!empty($a_parent->mere))
+                    {
+                        $mere=g4p_load_indi_infos($a_parent->mere->indi_id);
+                        g4p_load_enfants($mere, $generation);
+                    }
                 }
                 return $a_parent->famille_id;                
             }

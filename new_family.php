@@ -67,8 +67,7 @@ if(empty($_POST))
         echo '<select name="mari2" style="width:auto"><option value=""></option>';
         foreach($_SESSION['historic']['indi'] as $tmp)
         {
-            $tmp=explode('||',$tmp);
-            echo '<option value="'.$tmp[0].'">'.htmlentities($tmp[1],ENT_NOQUOTES,'UTF-8').'</option>';
+            echo '<option value="'.$tmp['id'].'">'.htmlentities($tmp['text'],ENT_NOQUOTES,'UTF-8').'</option>';
         }
         echo '</select>',$g4p_langue['a_index_ajout_alias_ou'];
     }    
@@ -81,8 +80,7 @@ if(empty($_POST))
         echo '<select name="femme2" style="width:auto"><option value=""></option>';
         foreach($_SESSION['historic']['indi'] as $tmp)
         {
-            $tmp=explode('||',$tmp);
-            echo '<option value="'.$tmp[0].'">'.htmlentities($tmp[1],ENT_NOQUOTES,'UTF-8').'</option>';
+            echo '<option value="'.$tmp['id'].'">'.htmlentities($tmp['text'],ENT_NOQUOTES,'UTF-8').'</option>';
         }
         echo '</select>',$g4p_langue['a_index_ajout_alias_ou'];
     }    

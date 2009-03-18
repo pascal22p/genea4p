@@ -35,7 +35,7 @@ if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
         <li class="ssmenu"><a href="',g4p_make_url('','new_indi.php','',0),'">',$g4p_langue['menu_creer_indi'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','new_family.php','',0),'">',$g4p_langue['menu_creer_famille'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','new_repo.php','',0),'">',$g4p_langue['menu_creer_depot'],'</a></li>
-        <li class="ssmenu"><a href="',g4p_make_url('admin','creer.php','g4p_opt=ajout_place',0),'">',$g4p_langue['menu_creer_lieu'],'</a></li>
+        <li class="ssmenu"><a href="',g4p_make_url('','new_place.php','', 0),'">',$g4p_langue['menu_creer_lieu'],'</a></li>
     </ul>
     </li>';
 }
@@ -47,15 +47,12 @@ echo '
 if (isset($g4p_indi->indi_id))
 {
   echo '  
-        <li class="ssmenu"><a href="',g4p_make_url('','arbre_ascendant.php','genea_db_id='.$_SESSION['genea_db_id'].'&amp;g4p_id='.$g4p_indi->indi_id,'arbre_ascendant-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_arbre_asc'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','liste_descendance.php','id_pers='.$g4p_indi->indi_id,'liste_descendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_liste_desc'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','liste_ascendance.php','id_pers='.$g4p_indi->indi_id,'liste_ascendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_liste_asc'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','arbre.php','id_pers='.$g4p_indi->indi_id,0),'">Arbre</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','index.php','g4p_action=fiche_indi',0),'">',$g4p_langue['menu_fiche'],'</a></li>';
 }
 
-echo '    
-        <li class="ssmenu"><a href="',g4p_make_url('modules','cartographie.php','',0),'">',$g4p_langue['menu_voir_cartographie'],'</a></li>';
 echo '  
     </ul>
     </li>';

@@ -49,10 +49,10 @@ $g4p_javascript='
 		
 		$("#mixed").treeview({
 			control: "#treecontrol",
-			url: "liste_ascendance_ajax.php",
+			url: "liste_descendance_ajax.php",
 			// add some additional, dynamic data and request with POST
 			ajax: {
-				type: "post"
+				type: "get"
 			}
 		});
 	}
@@ -117,10 +117,10 @@ function recursive_descendance($g4p_id, $generation=1, $couleur=0)
                     if($generation>$_GET['g4p_generation'] or $generation>_NBRE_MAX_GENERATION_)
                     {
                         echo '<li id="'.$g4p_un_enfant['indi']->indi_id.'" class="hasChildren">';
-			echo '<span>'.g4p_link_nom($g4p_un_enfant['indi']).'</span>
-				<ul>
-					<li><span class="placeholder">&nbsp;</span></li>
-				</ul>';
+                        echo '<span>'.g4p_link_nom($g4p_un_enfant['indi']).'</span>
+                            <ul>
+                            <li><span class="placeholder">&nbsp;</span></li>
+                            </ul>';
                         break;
                     }
                     recursive_descendance($g4p_un_enfant['indi']->indi_id, $generation+1, $couleur+1);

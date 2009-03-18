@@ -85,7 +85,7 @@ function recursive_ascendance($g4p_id, $generation=1, $sosa=1)
     $g4p_liste_personnes[$generation][$g4p_indi_info->indi_id]['base']=$g4p_indi_info->base;
     $g4p_liste_personnes[$generation][$g4p_indi_info->indi_id]['nom']=$g4p_indi_info->nom;
     $g4p_liste_personnes[$generation][$g4p_indi_info->indi_id]['prenom']=$g4p_indi_info->prenom;
-    $g4p_liste_personnes[$generation][$g4p_indi_info->indi_id]['date']=g4p_date($g4p_indi_info->date_rapide(),'date2');
+    $g4p_liste_personnes[$generation][$g4p_indi_info->indi_id]['date']=$g4p_indi_info->date_rapide();
   }
   else
   {
@@ -131,24 +131,24 @@ echo '<div class="box_title"><h2>',sprintf($g4p_langue['liste_asc_titre'],$g4p_i
 
 
 $lien='';
-echo '<div style="margin-bottom:1.5em;">';
+echo '<ul><li>';
 echo $g4p_langue['liste_asc_nb_gen'];
 for($i=1;$i<=$g4p_max_gen;$i+=2)
-    $lien.='<a href="'.g4p_make_url('','liste_ascendance.php','genea_db_id='.$_SESSION['genea_db_id'].'&g4p_id='.$g4p_indi->indi_id.'&g4p_generation='.$i.'&implexe='.$_GET['implexe'],'liste_ascendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id.'-'.$i).'">'.$i.'</a> - ';
+    $lien.='<a href="'.g4p_make_url('','liste_ascendance.php','id_pers='.$g4p_indi->indi_id.'&g4p_generation='.$i.'&implexe='.$_GET['implexe'],'').'">'.$i.'</a> - ';
 echo substr($lien,0,-2);
-echo '<br />',$g4p_langue['liste_asc_recherche_implexe'];
+echo '</li><li>',$g4p_langue['liste_asc_recherche_implexe'];
 if($_GET['implexe']==0)
     echo '<a href="'.g4p_make_url('','liste_ascendance.php','id_pers='.$g4p_indi->indi_id.'&g4p_generation='.$_GET['g4p_generation'].'&implexe=1','liste_ascendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id.'-'.$_GET['g4p_generation'].'-implexe').'">Activer</a>';
 else
     echo '<a href="'.g4p_make_url('','liste_ascendance.php','id_pers='.$g4p_indi->indi_id.'&g4p_generation='.$_GET['g4p_generation'].'&implexe=0','liste_ascendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id.'-'.$_GET['g4p_generation']).'">Désactiver</a>';
-echo '<br />',$g4p_langue['liste_asc_info_sosa'];
+echo '</li><li>',$g4p_langue['liste_asc_info_sosa'];
 $a=0;
-echo '</div>';
+echo '</li></ul>';
 
 echo '<dl>';
 foreach($g4p_liste_personnes as $g4p_generation=>$g4p_liste_generation)
 {
-    echo '<dt>';
+    echo '<dt style="margin-bottom:0.3em;">';
     if($_GET['implexe']==1)
         echo sprintf($g4p_langue['liste_asc_nb_pers_implexe'],($g4p_generation-1),$g4p_liste_personnes2[$g4p_generation],count($g4p_liste_generation)),'<br />';
     else
@@ -158,7 +158,7 @@ foreach($g4p_liste_personnes as $g4p_generation=>$g4p_liste_generation)
     foreach($g4p_liste_generation as $g4p_a_personne)
     {
         $tmp_indi=g4p_load_indi_infos($g4p_a_personne['indi_id']);
-        echo '<li><em>',number_format($g4p_a_personne['sosa'],0,',',' '),'</em>',g4p_link_nom($tmp_indi);
+        echo '<li><strong>',number_format($g4p_a_personne['sosa'],0,',',' '),'</strong> - ',g4p_link_nom($tmp_indi);
         if($_GET['implexe']==1 and count($g4p_sosa[$g4p_a_personne['indi_id']])>1)
         {
             echo ' <span style="font-size:smaller; color:blue;">',$g4p_langue['liste_asc_implexe'];

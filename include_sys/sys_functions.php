@@ -105,76 +105,6 @@ function g4p_date($g4p_date, $date='date1', $cache=0)
   return(trim($g4p_date));
 }
 
-/*
-function g4p_liste_patro($g4p_order='indi_nom')
-{
-  global $g4p_chemin, $g4p_langue;
-  if ($g4p_order!='')
-    $g4p_order=' ORDER BY '.$g4p_order;
-
-  $sql="SELECT CONCAT('<option value=\"',indi_nom,'\">',indi_nom,'</option>') as lien FROM genea_individuals WHERE base=".$_SESSION['genea_db_id']." GROUP BY indi_nom ".$g4p_order;
-  $g4p_result=$g4p_mysqli->g4p_query($sql);
-  $g4p_result=$g4p_mysqli->g4p_result($g4p_result);
-  $g4p_liste='';
-  foreach($g4p_result as $g4p_a_result)
-    $g4p_liste.=$g4p_a_result['lien'];
-
-  return $g4p_liste;
-}
-
-function g4p_liste_prenom($g4p_nom, $g4p_order='indi_prenom')
-{
-  global $g4p_chemin, $g4p_langue;
-  if ($g4p_order!='')
-    $g4p_order=' ORDER BY '.$g4p_order;
-
-  $sql="SELECT CONCAT('<option value=\"',indi_id,'\">',indi_nom,' ',indi_prenom) as lien, indi_id FROM genea_individuals WHERE base=".$_SESSION['genea_db_id']." AND indi_nom='".$g4p_nom."' ".$g4p_order;
-  $g4p_result=$g4p_mysqli->g4p_query($sql);
-  $g4p_result=$g4p_mysqli->g4p_result($g4p_result);
-
-  $g4p_liste_indi='';
-  foreach($g4p_result as $a_g4p_result)
-    $g4p_liste_indi.=$a_g4p_result['indi_id'].',';
-  $g4p_liste_indi=substr($g4p_liste_indi,0,-1);
-
-  $sql="SELECT rel_indi_event.indi_id, type, date_event FROM events LEFT JOIN rel_indi_event ON indi_id WHERE rel_indi_event.indi_id IN (".$g4p_liste_indi.") AND type IN ('BIRT', 'DEAT', 'BURI', 'BAPM')";
-  $g4p_result_req=$g4p_mysqli->g4p_query($sql);
-  $g4p_result2=$g4p_mysqli->g4p_result($g4p_result_req);
-
-  $liste='';
-  foreach($g4p_result as $a_g4p_result)
-  {
-    $g4p_chaine='';
-    foreach($g4p_result2 as $g4p_event)
-    {
-      if($g4p_event['indi_id']==$a_g4p_result['id_lien'])
-      {
-        if (isset($g4p_event['type']))
-        {
-          switch($g4p_event['type'])
-          {
-            case 'BIRT':
-            case 'BAPM':
-              $g4p_chaine.=' (°'.g4p_date($g4p_event['date_event']);
-            break;
-
-            case 'BURI':
-            case 'DEAT':
-              $g4p_chaine.=($g4p_chaine)?(''):(' (');
-              $g4p_chaine.=' +'.g4p_date($g4p_event['date_event']);
-            break;
-        }
-        }
-      }
-    }
-    $g4p_chaine.=(!$g4p_chaine)?(''):(')');
-    $liste.=$a_g4p_result['lien'].$g4p_chaine."</option>\n";
-  }
-  return $liste;
-}
-
-*/
-
 function g4p_affiche_notes($notes,$lien,$type)
 {
     global $g4p_chemin, $g4p_langue;
@@ -758,15 +688,6 @@ function g4p_update_agregat_noms($nom)
   }
 }
 
-function retour()
-{
-  return '<script language="javascript" type="text/javascript">
-    <!--
-    document.location.href="javascript:history.back()"
-    //-->
-    </script>';
-}
-
 function g4p_affiche_multimedia($multimedia, $lien, $type)
 {
     global $g4p_chemin, $g4p_langue;
@@ -983,43 +904,37 @@ function g4p_jd_calendrier($g4p_mois)
  */
 function array_column_sort()
 {
-  global $g4p_tag_def;
+    global $g4p_tag_def;
 
-  $args = func_get_args();
-  $array = array_shift($args);
-  // make a temporary copy of array for which will fix the
-  // keys to be strings, so that array_multisort() doesn't
-  // destroy them
-  $array_mod = array();
-  foreach ($array as $key => $value)
-    $array_mod['_' . $key] = $value;
+    $args = func_get_args();
+    $array = array_shift($args);
+    // make a temporary copy of array for which will fix the
+    // keys to be strings, so that array_multisort() doesn't
+    // destroy them
+    $array_mod = array();
+    foreach ($array as $key => $value)
+        $array_mod['_' . $key] = $value;
 
-  $i = 0;
-  $multi_sort_line = "return array_multisort( ";
-  foreach ($args as $arg)
-  {
-    $i++;
-    if ( is_string($arg) )
+    $i = 0;
+    $multi_sort_line = "return array_multisort( ";
+    foreach ($args as $arg)
     {
-      foreach ($array_mod as $row_key => $row)
-      {
-        $sort_array[$i][] = $row->$arg;
-      }
+        $i++;
+        if ( is_string($arg) )
+            foreach ($array_mod as $row_key => $row)
+                $sort_array[$i][] = $row->$arg;
+        else
+            $sort_array[$i] = $arg;
+        $multi_sort_line .= "\$sort_array[" . $i . "], ";
     }
-    else
-    {
-      $sort_array[$i] = $arg;
-    }
-    $multi_sort_line .= "\$sort_array[" . $i . "], ";
-  }
-  $multi_sort_line .= "\$array_mod );";
-  eval($multi_sort_line);
-  // now copy $array_mod back into $array, stripping off the "_"
-  // that we added earlier.
-  $array = array();
-  foreach ($array_mod as $key => $value)
-    $array[ substr($key, 1) ] = $value;
-  return $array;
+    $multi_sort_line .= "\$array_mod );";
+    eval($multi_sort_line);
+    // now copy $array_mod back into $array, stripping off the "_"
+    // that we added earlier.
+    $array = array();
+    foreach ($array_mod as $key => $value)
+        $array[ substr($key, 1) ] = $value;
+    return $array;
 }
 
 // recherches les dependances pour gerer les fichiers de cache
@@ -1856,34 +1771,12 @@ function g4p_link_nom($indi)
     
     if(!is_object($indi))
 	$indi=g4p_load_indi_infos($indi);
-
-    //recherche naissance et deces
-    if(isset($indi->events))
-    {
-        foreach($indi->events as $aevent)
-        {
-            if($aevent->tag=='BIRT' or $aevent->tag=='BAPM')
-                $naissance=g4p_date($aevent->date->gedcom_date);
-            elseif($aevent->tag=='DEAT' or $aevent->tag=='BURI')
-                $deces=g4p_date($aevent->date->gedcom_date);
-        }
-        
-        if(!empty($naissance) and !empty($deces))
-            $tmp='(° '.$naissance.' - † '.$deces.')';
-        elseif(empty($naissance) and empty($deces))
-            $tmp='';
-        elseif(!empty($naissance))
-            $tmp='(° '.$naissance.')';
-        elseif(!empty($naissance))
-            $tmp='(† '.$deces.')';
-    }
-    else
-        $tmp='';
-        
+       
     $return='<a class="link_nom" href="'.g4p_make_url('','fiche_individuelle.php','id_pers='.$indi->indi_id,'fiche-'.$indi->base.'-'.g4p_prepare_varurl($indi->nom).'-'
         .g4p_prepare_varurl($indi->prenom).'-'.$indi->indi_id).'">'
         .$indi->nom.' '
         .$indi->prenom.'</a>';
+    $tmp=$indi->date_rapide();
     if(!empty($tmp)) $return.=' <span class="petit">'.$tmp.'</span>';
     return $return;
 }
