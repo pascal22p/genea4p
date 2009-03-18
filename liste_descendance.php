@@ -87,14 +87,15 @@ include($g4p_chemin.'entete.php');
 function recursive_descendance($g4p_id, $generation=1, $couleur=0)
 {
     global $g4p_couleur, $g4p_chemin, $g4p_limite_pers, $cache_count, $g4p_langue;
-    if($_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi->resn=='privacy')
-        return;
 
     $g4p_limite_pers++;
 
     if($couleur>=count($g4p_couleur))
         $couleur=0;
     $g4p_indi_info=g4p_load_indi_infos($g4p_id);
+
+    if($_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi_info->resn=='privacy')
+        return;
 
     if(isset($g4p_indi_info->familles))
     {
@@ -147,8 +148,8 @@ echo substr($lien,0,-2);
 echo '</span>';
 
 echo '<div id="treecontrol">
-		<a title="Collapse the entire tree below" href="#"><img src="treeview/images/minus.gif" /> Collapse All</a>
-		<a title="Expand the entire tree below" href="#"><img src="treeview/images/plus.gif" /> Expand All</a>
+		<a title="Collapse the entire tree below" href="#"><img style="border:none;" src="treeview/images/minus.gif" /> Collapse All</a>
+		<a title="Expand the entire tree below" href="#"><img style="border:none;" src="treeview/images/plus.gif" /> Expand All</a>
 		<a title="Toggle the tree below, opening closed branches, closing open branches" href="#">Toggle All</a>
 	</div>';
 
