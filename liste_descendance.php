@@ -84,14 +84,12 @@ include($g4p_chemin.'entete.php');
 	</ul>
 ';*/
 
-function recursive_descendance($g4p_id, $generation=1, $couleur=0)
+function recursive_descendance($g4p_id, $generation=1)
 {
     global $g4p_couleur, $g4p_chemin, $g4p_limite_pers, $cache_count, $g4p_langue;
 
     $g4p_limite_pers++;
 
-    if($couleur>=count($g4p_couleur))
-        $couleur=0;
     $g4p_indi_info=g4p_load_indi_infos($g4p_id);
 
     if($_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi_info->resn=='privacy')
@@ -101,37 +99,54 @@ function recursive_descendance($g4p_id, $generation=1, $couleur=0)
     {
         foreach($g4p_indi_info->familles as $g4p_une_famille)
         {
-		    echo '<li class="open"><span>'.g4p_link_nom($g4p_indi_info->indi_id);
-            if(isset($g4p_une_famille->husb->indi_id)  and $g4p_une_famille->husb->indi_id!=$g4p_indi_info->indi_id)
-                echo ' & '.g4p_link_nom($g4p_une_famille->husb).'</span>';
-            elseif(isset($g4p_une_famille->wife->indi_id)  and $g4p_une_famille->wife->indi_id!=$g4p_indi_info->indi_id)
-                echo ' & '.g4p_link_nom($g4p_une_famille->wife).'</span>';
-	    else
-		echo '</span>';
+            //else
+               // echo '</span>';
 	    
 
-            echo '<ul>';
+            //echo '<ul>';
             if(isset($g4p_une_famille->enfants))
             {
-                foreach($g4p_une_famille->enfants as $g4p_un_enfant)
+                if($generation<$_GET['g4p_generation'] and $generation<_NBRE_MAX_GENERATION_)
                 {
-                    if($generation>$_GET['g4p_generation'] or $generation>_NBRE_MAX_GENERATION_)
-                    {
-                        echo '<li id="'.$g4p_un_enfant['indi']->indi_id.'" class="hasChildren">';
-                        echo '<span>'.g4p_link_nom($g4p_un_enfant['indi']).'</span>
-                            <ul>
-                            <li><span class="placeholder">&nbsp;</span></li>
-                            </ul>';
-                        break;
-                    }
-                    recursive_descendance($g4p_un_enfant['indi']->indi_id, $generation+1, $couleur+1);
+                    echo '<li class="open"><img src="'.$g4p_chemin.'images/'.$g4p_indi_info->sexe.'.png" alt="'.
+                        $g4p_indi_info->sexe.'" class="icone_sexe" /> '.g4p_link_nom($g4p_indi_info->indi_id);
+                    if(isset($g4p_une_famille->husb->indi_id)  and $g4p_une_famille->husb->indi_id!=$g4p_indi_info->indi_id)
+                        echo ' <img src="'.$g4p_chemin.'images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($g4p_une_famille->husb);
+                    elseif(isset($g4p_une_famille->wife->indi_id)  and $g4p_une_famille->wife->indi_id!=$g4p_indi_info->indi_id)
+                        echo ' <img src="'.$g4p_chemin.'images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($g4p_une_famille->wife);
+                    echo '<ul>';
+                    foreach($g4p_une_famille->enfants as $a_enfant)
+                        recursive_descendance($a_enfant['indi']->indi_id, $generation+1);
+                    echo '</ul>';
+                }
+                else
+                {
+                    echo '<li id="'.$g4p_indi_info->indi_id.'" class="hasChildren"><img src="'.$g4p_chemin.'images/'.$g4p_indi_info->sexe.'.png" alt="'.
+                    $g4p_indi_info->sexe.'" class="icone_sexe" /> '.g4p_link_nom($g4p_indi_info->indi_id);
+                    if(isset($g4p_une_famille->husb->indi_id)  and $g4p_une_famille->husb->indi_id!=$g4p_indi_info->indi_id)
+                        echo ' <img src="'.$g4p_chemin.'images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($g4p_une_famille->husb);
+                    elseif(isset($g4p_une_famille->wife->indi_id)  and $g4p_une_famille->wife->indi_id!=$g4p_indi_info->indi_id)
+                        echo ' <img src="'.$g4p_chemin.'images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($g4p_une_famille->wife);
+                    echo '<ul>
+                        <li><span class="placeholder">&nbsp;</span></li>
+                        </ul>';
                 }
             }
-            echo '</ul>';
+            else
+            {
+                echo '<li><img src="'.$g4p_chemin.'images/'.$g4p_indi_info->sexe.'.png" alt="'.
+                $g4p_indi_info->sexe.'" class="icone_sexe" /> '.g4p_link_nom($g4p_indi_info->indi_id);
+                if(isset($g4p_une_famille->husb->indi_id)  and $g4p_une_famille->husb->indi_id!=$g4p_indi_info->indi_id)
+                    echo ' <img src="'.$g4p_chemin.'images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($g4p_une_famille->husb);
+                elseif(isset($g4p_une_famille->wife->indi_id)  and $g4p_une_famille->wife->indi_id!=$g4p_indi_info->indi_id)
+                    echo ' <img src="'.$g4p_chemin.'images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($g4p_une_famille->wife);            
+            }
+            //echo '</ul>';
         }
     }
     else
-	echo '<li><span>'.g4p_link_nom($g4p_indi_info).'</span>';
+        echo '<li><img src="'.$g4p_chemin.'images/'.$g4p_indi_info->sexe.'.png" alt="'.
+            $g4p_indi_info->sexe.'" class="icone_sexe" /> '.g4p_link_nom($g4p_indi_info);
     echo '</li>';
 }
 
@@ -141,17 +156,16 @@ $lien='';
 
 echo '<div class="box_title"><h2>',sprintf($g4p_langue['liste_desc_titre'],$g4p_indi->nom,$g4p_indi->prenom),'</h2></div>'."\n";
 
-echo '<span class="noprint">',$g4p_langue['liste_desc_nb_gen'],'<br />';
+echo '<ul><li>',$g4p_langue['liste_desc_nb_gen'],'</li><li>';
 for($i=1;$i<=_NBRE_MAX_GENERATION_;$i+=2)
     $lien.='<a href="'.g4p_make_url('','liste_descendance.php','id_pers='.$g4p_indi->indi_id.'&g4p_generation='.$i,'').'">'.$i.'</a> - ';
 echo substr($lien,0,-2);
-echo '</span>';
-
-echo '<div id="treecontrol">
-		<a title="Collapse the entire tree below" href="#"><img style="border:none;" src="treeview/images/minus.gif" /> Collapse All</a>
-		<a title="Expand the entire tree below" href="#"><img style="border:none;" src="treeview/images/plus.gif" /> Expand All</a>
-		<a title="Toggle the tree below, opening closed branches, closing open branches" href="#">Toggle All</a>
-	</div>';
+echo '</li>';
+echo '<li id="treecontrol">
+		<a title="Collapse the entire tree below" href="#"><img style="border:none;" src="treeview/images/minus.gif" /> Tout réduire </a>
+		<a title="Expand the entire tree below" href="#"><img style="border:none;" src="treeview/images/plus.gif" /> Tout développer </a>
+		<a title="Toggle the tree below, opening closed branches, closing open branches" href="#"> Inverser </a></li>
+	</li></ul>';
 
 
 echo '<ul id="mixed">';
