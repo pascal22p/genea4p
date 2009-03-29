@@ -32,7 +32,18 @@ $g4p_chemin='';
 require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
-	
+
+$g4p_javascript='<script src="javascript/jquery/jquery-1.3.1.min.js"></script>
+  <script type="text/javascript" src="javascript/jquery/lib/jquery.bgiframe.min.js"></script>
+  <script type="text/javascript" src="javascript/jquery/lib/jquery.dimensions.js"></script>
+  <script type="text/javascript" src="javascript/jquery/jquery.autocomplete.min.js"></script>
+  <script>
+  $(document).ready(function(){
+    $("#g4p_nom").autocomplete(\'ajax/autocomplete_surname.php\', {max:40});
+  });
+  </script>
+';
+
 If(!$_SESSION['permission']->permission[_PERM_EDIT_FILES_])
 	g4p_error($g4p_langue['acces_non_autorise']);
 
@@ -62,7 +73,7 @@ if(empty($_POST))
     }
     echo '</select></li>';
     
-    echo '<li>',$g4p_langue['index_nom'],' <input type="text" name="g4p_nom" size="20" /></li>';
+    echo '<li>',$g4p_langue['index_nom'],' <input type="text" id="g4p_nom" name="g4p_nom" size="20" /></li>';
     echo '<li>',$g4p_langue['index_prenom'],' <input type="text" name="g4p_prenom" size="20" /></li>';
     echo '<li>',$g4p_langue['index_sexe'],' <input type="text" name="g4p_sexe" size="1" maxlength="1" /></li>';
     echo '<li>',$g4p_langue['index_npfx'],' <input type="text" name="npfx" size="20" value="" /></li>';

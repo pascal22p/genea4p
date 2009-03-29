@@ -93,26 +93,6 @@ if(empty($_POST))
 
     //  echo '</div>';
     
-/*    
-    echo '<a href="',g4p_make_url('','recherche.php','type=indi_0&amp;g4p_referer='.rawurlencode('admin|creer.php|'.$_SERVER['QUERY_STRING']).'&amp;g4p_champ=mari',0).'">',$g4p_langue['creer_fam_rechercher_conjoint'],'</a><br />
-    <em>',$g4p_langue['creer_fam_conjoint2'],'</em><br />';
-    echo $g4p_langue['creer_fam_id_conjoint'];
-    if(!empty($_SESSION['historic']['indi']))
-    {
-      echo '<select name="femme2" style="width:auto"><option value=""></option>';
-      foreach($_SESSION['historic']['indi'] as $tmp)
-      {
-        $tmp=explode('||',$tmp);
-        echo '<option value="'.$tmp[0].'">'.htmlentities($tmp[1],ENT_NOQUOTES,'UTF-8').'</option>';
-      }
-      echo '</select>',$g4p_langue['a_index_ajout_alias_ou'];
-    }    
-    echo '<input type="text" value="',$_GET['femme'],'" id="femme" name="femme" />
-    <a href="',g4p_make_url('','recherche.php','type=indi_0&amp;g4p_referer='.rawurlencode('admin|creer.php|'.$_SERVER['QUERY_STRING']).'&amp;g4p_champ=femme',0),'">',$g4p_langue['creer_fam_rechercher_conjoint'],'</a><br />';
-    //<input name="g4p_id" type="hidden" value="',$_GET['g4p_id'],'" />
-    echo '<input type="submit" value="',$g4p_langue['submit_enregistrer'],'" /></form></div>';
-    */
-    
     require_once($g4p_chemin.'pied_de_page.php');    
 }
 else

@@ -565,9 +565,9 @@ class g4p_individu
 	{
 		$this->g4p_etat_civil($g4p_sql_datas);
 		//var_dump($g4p_sql_datas->g4p_infos_indi[$this->indi_id]);
-		
+
 		//les alias
-		if(!empty($this->g4p_alias))
+		if(!empty($g4p_sql_datas->g4p_alias))
 		{
 			foreach($g4p_sql_datas->g4p_alias as $g4p_a_info)
 			{

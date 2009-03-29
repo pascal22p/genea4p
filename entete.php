@@ -141,7 +141,7 @@ if (!isset($_SESSION['genea_db_nom']))
 
 echo '<div id="container">';
 echo '<div id="header">';
-
+echo @$_SESSION['message'];
 if(isset($g4p_titre_h1))
     echo '<h1>'.$g4p_titre_h1.'</h1>';
 else

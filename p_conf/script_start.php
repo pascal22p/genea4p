@@ -33,6 +33,8 @@ error_reporting(E_ALL);//& (~E_NOTICE)
 setlocale(LC_CTYPE,'UTF8');
 ini_set('xdebug.var_display_max_data',100) ;
 ini_set('xdebug.var_display_max_depth',20);
+//ini_set('xdebug.profiler_enable',1);
+//ini_set('xdebug.profiler_output_dir','/home/lighttpd/html/genea4p/trunk/xdebug');
 
 //mb_internal_encoding("UTF-8");
 

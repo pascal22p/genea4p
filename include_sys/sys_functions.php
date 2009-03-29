@@ -1435,30 +1435,24 @@ function g4p_add_intohistoric($id,$type='indi')
 
 function g4p_show_alias($alias,$admin=0)
 {
-  global $g4p_langue;
+    global $g4p_langue;
 
-  if(!empty($alias))
-  {
-    echo '<div class="evenements">';
-    echo '<em>Alias :</em>';
-    foreach($alias as $a_alias)
+    if(!empty($alias))
     {
-      $g4p_texte='';
-      $a_alias=g4p_load_indi_infos($a_alias);
-      if($a_alias->base!=$g4p_indi->base)
-      {
-        $sql="SELECT nom FROM genea_infos WHERE id=".$a_alias->base;
-        $g4p_infos_req=$g4p_mysqli->g4p_query($sql);
-        if($g4p_infos=$g4p_mysqli->g4p_result($g4p_infos_req))
-          $g4p_texte='Base : '.$g4p_infos[0]['nom'].' - ';
-      }
+        echo '<div class="box">';
+        echo '<div class="box_title">Alias</div>';  
+        echo '<ul>';
+        foreach($alias as $a_alias)
+        {
+            $g4p_texte='';
 
-      echo '<br />',$g4p_texte,'<a href="',g4p_make_url('','index.php','g4p_action=fiche_indi&amp;g4p_base='.$a_alias->base.'&amp;id_pers='.$a_alias->indi_id,'fiche-'.$a_alias->base.'-'.g4p_prepare_varurl($a_alias->nom).'-'.g4p_prepare_varurl($a_alias->prenom).'-'.$a_alias->indi_id),'">',   $a_alias->nom,' ',$a_alias->prenom,'</a>',g4p_date($a_alias->date_rapide());
-      if($admin and $_SESSION['permission']->permission[_PERM_EDIT_FILES_])
-      echo ' <a href="',g4p_make_url('admin','exec.php','g4p_opt=suppr_alia&amp;g4p_id1='.$g4p_indi->indi_id.'&amp;g4p_id2='.$a_alias->indi_id,0),'" class="admin" onclick=" return confirme(this, \'',$g4p_langue['a_index_modfams_confirme_suppr_js'],'\')">',$g4p_langue['Supprimer'],'</a>';
+            echo '<li>',g4p_link_nom($a_alias);
+            if($admin and $_SESSION['permission']->permission[_PERM_EDIT_FILES_])
+                echo ' <a href="',g4p_make_url('admin','exec.php','g4p_opt=suppr_alia&amp;g4p_id1='.$g4p_indi->indi_id.'&amp;g4p_id2='.$a_alias->indi_id,0),'" class="admin" onclick=" return confirme(this, \'',$g4p_langue['a_index_modfams_confirme_suppr_js'],'\')">',$g4p_langue['Supprimer'],'</a>';
+            echo '</li>';
+        }
+        echo '</div>';
     }
-    echo '</div>';
-  }
 }
 
 function g4p_anniversaire()

@@ -56,12 +56,12 @@ if($_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi->resn=='p
 
 //historique des fiches visitées
 g4p_add_intohistoric($g4p_indi->indi_id,'indi');
-$g4p_titre_page=$g4p_indi->nom.' '.$g4p_indi->prenom;
+$g4p_titre_page=$g4p_indi->prenom.' '.$g4p_indi->nom;
 
 g4p_http_header();
 
 require_once($g4p_chemin.'entete.php');
-echo '<div class="box_title"><h2>Fiche individuelle</h2></div>'."\n";
+echo '<div class="box_title"><h2>'.$g4p_indi->prenom,' ',$g4p_indi->nom.'</h2></div>'."\n";
 
 //echo '<div class="cadre">';
 if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
@@ -76,7 +76,7 @@ if($_SESSION['permission']->permission[_PERM_SUPPR_FILES_])
     echo '<a href="',g4p_make_url('admin','exec.php','g4p_opt=suppr_fiche',0),'" class="admin" onclick=" return confirme(this, \'',$g4p_langue['menu_sppr_confirme'],'\')">',$g4p_langue['menu_sppr_indi'],'</a> - ';
 if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
 {
-    echo '<a href="',g4p_make_url('admin','index.php','g4p_opt=mod_fich&amp;id_pers='.$g4p_indi->indi_id,0),'" class="admin">',$g4p_langue['menu_modif_fiche'],'</a> -';
+    echo '<a href="',g4p_make_url('','modification_fiche.php','id_pers='.$g4p_indi->indi_id,0),'" class="admin">',$g4p_langue['menu_modif_fiche'],'</a> -';
     if($g4p_indi->resn!='privacy')
         echo ' <a href="',g4p_make_url('admin','exec.php','g4p_opt=mask_fich&amp;g4p_id='.$g4p_indi->indi_id,0),'" class="admin">',$g4p_langue['menu_masque_fiche'],'</a> -';
     else
@@ -228,19 +228,19 @@ if(!empty($g4p_indi->parents))
     }
 }
 
-  if($g4p_config['show_ext_rela'])
+if($g4p_config['show_ext_rela'])
     g4p_relations_avancees($g4p_indi->indi_id);
 
-  g4p_affiche_asso(@$g4p_indi->asso, $g4p_indi->indi_id,'indi');
-  g4p_affiche_event_temoins(@$g4p_indi->temoins['events']);
-  
-  if ($_SESSION['permission']->permission[_PERM_NOTE_])
+g4p_affiche_asso(@$g4p_indi->asso, $g4p_indi->indi_id,'indi');
+g4p_affiche_event_temoins(@$g4p_indi->temoins['events']);
+
+if ($_SESSION['permission']->permission[_PERM_NOTE_])
     g4p_affiche_notes(@$g4p_indi->notes, $g4p_indi->indi_id,'indi');
 
-  if ($_SESSION['permission']->permission[_PERM_SOURCE_])
+if ($_SESSION['permission']->permission[_PERM_SOURCE_])
     g4p_affiche_sources(@$g4p_indi->sources, $g4p_indi->indi_id,'indi');
 
-  if ($_SESSION['permission']->permission[_PERM_MULTIMEDIA_])
+if ($_SESSION['permission']->permission[_PERM_MULTIMEDIA_])
     g4p_affiche_multimedia(@$g4p_indi->multimedia, $g4p_indi->indi_id,'indi');
 
 //  echo '</div>';
