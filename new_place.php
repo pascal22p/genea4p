@@ -26,37 +26,6 @@ $g4p_javascript='<script src="javascript/jquery/jquery-1.3.1.min.js"></script>
   </script>
 ';
 
-/*
-$g4p_javascript='<script src="javascript/jquery/jquery-1.3.1.min.js"></script>
-  <script type="text/javascript" src="javascript/jquery/lib/jquery.bgiframe.min.js"></script>
-  <script type="text/javascript" src="javascript/jquery/lib/jquery.dimensions.js"></script>
-  <script type="text/javascript" src="javascript/jquery/jquery.autocomplete.min.js"></script>
-<script type="text/javascript" charset="utf-8">
-
-  $(document).ready(function(){
-    alert(\'jjjjjj\');
-    $("#place_ville").autocomplete(\'ajax/autocomplete_place.php\', {max:40});
-  });
-  
-  function callback(event, data, formatted)
-  {
-        if (data) {
-            $("#place_ville").attr("value", data[1]);
-            $("#place_cp").attr("value", data[2]);
-        }
-    }
-
-  
-  }
-
-</script>
-';*/
-
-/*
-      var options = \'\';
-      for (var i = 0; i < j.length; i++) {
-        options += \'<option value="\' + j[i].optionValue + \'">\' + j[i].optionDisplay + \'</option>\';
-*/
 require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
