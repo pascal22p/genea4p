@@ -36,9 +36,11 @@ if(!empty($_GET['q']))
         LIMIT 40   ");
     if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
     {
+        $mask   = array("\r\n", "\n", "\r");
+        $replace = '<br />';
         foreach($g4p_result as $g4p_a_result)
         {
-            echo $g4p_a_result['notes_id']."<br />".$g4p_a_result['notes_text']."\n";
+            echo str_replace($mask, $replace, $g4p_a_result['notes_text']).'|'.$g4p_a_result['notes_id']."\n";
         }
     }
 }

@@ -1627,8 +1627,13 @@ class g4p_mysqli extends mysqli
         
         if(mysqli_error($this))
         {
-            echo $g4p_db_request;
-            throw new exception(mysqli_error($this), mysqli_errno($this));
+            if(mysqli_errno($this)==1062)
+                return 'Error:1062';
+            else
+            {
+                echo $g4p_db_request;
+                throw new exception(mysqli_error($this), mysqli_errno($this));
+            }
         }
         return $result; 
     }

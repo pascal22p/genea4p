@@ -67,7 +67,7 @@ echo '<div class="box_title"><h2>'.$g4p_indi->prenom,' ',$g4p_indi->nom.'</h2></
 if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
 {
     echo '<div class="menu_interne">
-        <a href="',g4p_make_url('admin','ajout_note.php','parent=INDI&amp;id_parent='.$g4p_indi->indi_id,0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> -
+        <a href="',g4p_make_url('','new_note.php','parent=INDI&amp;id_parent='.$g4p_indi->indi_id,0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> -
         <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_source&amp;g4p_id='.$g4p_indi->indi_id.'&amp;g4p_type=indi',0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> -
         <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_media&amp;g4p_id='.$g4p_indi->indi_id.'&amp;g4p_type=indi',0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> -
         <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_asso&amp;g4p_lien='.$g4p_indi->indi_id.'&amp;g4p_type=indi',0),'" class="admin">',$g4p_langue['menu_ajout_relation'],'</a> - ';
