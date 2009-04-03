@@ -175,6 +175,50 @@ ul
 	list-style-type: none;
 }
 
+dl.horizontal
+{
+	margin-bottom: 1em;
+}
+
+dl.horizontal dt
+{
+	font-style:italic;
+	float: left;
+	width: auto;
+	margin: 0;
+	margin-bottom:0.5ex;
+	padding: 0;
+}
+
+dl.horizontal dd
+{
+	float: none;
+	margin: 0;
+	margin-bottom:0.5ex;
+	padding: 0;
+}
+
+table
+{
+	margin-top:1em;
+	margin-bottom:1em;
+	border-collapse: collapse;
+	border-bottom: 1px solid black;
+}
+
+td
+{
+	padding-left:0.5em;
+	padding-right:0.5em;
+}
+
+thead td
+{
+	border-top:1px solid black;
+	border-bottom:1px solid black;
+	font-style: italic ;
+}
+
 /* fin layout global */
 
 /* style pous le menu */
@@ -401,18 +445,16 @@ dl.etat_civil dt
 	float: left;
 	width: auto;
 	margin: 0;
+	margin-bottom:0.5ex;
 	padding: 0;
-	height:1.3em;
-	vertical-align:baseline;
 }
 
 dl.etat_civil dd
 {
 	float: none;
 	margin: 0;
+	margin-bottom:0.5ex;
 	padding: 0;
-	height:1.3em;
-	vertical-align:baseline;
 }
 
 /* styles pour les ��ements */

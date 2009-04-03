@@ -39,7 +39,7 @@ $g4p_langue[_PERM_ADMIN_]='Permission d\'administrateur';
 $g4p_langue[_PERM_SUPER_ADMIN_]='Permission de super-administrateur'; // ajouté le 27/02/2005
 $g4p_langue[_PERM_AFF_DATE_]='Afficher les dates de moins de 100 ans';
 $g4p_langue[_PERM_MASK_DATABASE_]='Masquer la base de donnée';
-$g4p_langue[_PERM_MASK_INDI_]='Masquer la personne';
+$g4p_langue[_PERM_MASK_INDI_]='Afficher les fiches privées';
 $g4p_langue[_PERM_MULTIMEDIA_]='Voir les documents et références externes';
 
 $g4p_langue['acces_non_autorise']='Vous n\'êtes pas autorisé à visualiser ces informations';
@@ -643,7 +643,7 @@ $g4p_langue['a_index_gerer_perm_email']='Email&nbsp;: ';
 $g4p_langue['a_index_gerer_perm_pass']='mot de passe&nbsp;: ';
 $g4p_langue['a_index_gerer_perm_gest_perm']='Gestion des permissions&nbsp;: ';
 $g4p_langue['a_index_gerer_perm_edit_perm']='Editer les permissions de&nbsp;: ';
-$g4p_langue['a_index_gerer_perm_type_perm']='Type de permission&nbsp;: ';
+$g4p_langue['a_index_gerer_perm_type_perm']='Type de permission';
 $g4p_langue['a_index_gerer_perm_valeur']='Valeur';
 $g4p_langue['a_index_gerer_perm_ajout_perm']='Nouvelle permission&nbsp;: ';
 $g4p_langue['a_index_gerer_perm_nom_base']='Nom de la base&nbsp;: ';
