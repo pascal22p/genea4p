@@ -28,10 +28,10 @@
 
 //end of content
 echo '</div>';
-echo '</div>';
 
 //Left side
 include($g4p_chemin.'menu/menu.php');
+//echo '</div>';
 
 $time_end = g4p_getmicrotime();
 $time = $time_end - $time_start;
@@ -39,18 +39,19 @@ $time = $time_end - $time_start;
 
 
 echo '<div id="footer">
-    <a href="mailto:genealogie@parois.net">Ma généalogie - ver : '.$g4p_config['g4p_version'].'</a>
-    - crée par : PAROIS Pascal - mars 2006<br />'.$g4p_mysqli->nb_requetes.' requète(s) SQL - chargée en : '.intval($time*1000).'ms';
+    <a href="mailto:genealogie@parois.net">Genea4p.net &mdash; ver : '.$g4p_config['g4p_version'].'.99 </a>
+    par Pascal Parois &mdash; en dev 2009<br />'.$g4p_mysqli->nb_requetes.' requète(s) SQL - chargée en : '.intval($time*1000).'ms';
 if(isset($_SESSION['g4p_email_membre']))
     echo '<br />'.$g4p_langue['membre_connecte'],$_SESSION['g4p_email_membre']." / ".$_SESSION['langue'];
 echo '</div>';
+/*
 if (isset($_SESSION['message']))
 {
     echo '<div id="message">',$_SESSION['message'],'</div>';
     unset($_SESSION['message']);
-}
+}*/
 
-echo '<div id="bulle_div" style="position: absolute; visibility: hidden; z-index: 8; left: 2px; top: 2px;"></div>';
+//echo '<div id="bulle_div" style="position: absolute; visibility: hidden; z-index: 8; left: 2px; top: 2px;"></div>';
 
 if($g4p_langue['entete_charset']!='UTF-8')
 {
@@ -68,6 +69,5 @@ foreach($g4p_mysqli->requetes as $arequete)
 }
 echo '</div>';*/
 
-echo '</div>';
 echo '</body></html>';
 ?>

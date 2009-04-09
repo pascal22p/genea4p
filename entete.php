@@ -139,9 +139,9 @@ if (!isset($_SESSION['genea_db_nom']))
 //opacity: 0.1;
 //-moz-opacity:0.1;z-index:0;"><img src="'.$g4p_chemin.'styles/branche.png"></div>';
 
-echo '<div id="container">';
+//echo '<div id="container">';
 echo '<div id="header">';
-echo @$_SESSION['message'];
+//echo @$_SESSION['message'];
 if(isset($g4p_titre_h1))
     echo '<h1>'.$g4p_titre_h1.'</h1>';
 else
@@ -154,6 +154,6 @@ else
 
 echo '</div>';
 
-echo '<div id="wrapper">';
+//echo '<div id="wrapper">';
 echo '<div id="content">';
 ?>

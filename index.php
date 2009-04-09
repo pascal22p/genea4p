@@ -48,7 +48,7 @@ if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
     foreach($g4p_result as $g4p_a_result)
     {
         echo '<dt><a href="'.g4p_make_url('','liste_patronymes.php','genea_db_id='.$g4p_a_result['id'],'patronymes-'.$g4p_a_result['id']).'">'.$g4p_a_result['nom'].'</a></dt>';
-        echo '<dd>'.$g4p_a_result['descriptif'].'<dd>';
+        echo '<dd>'.$g4p_a_result['descriptif'].'</dd>';
     }
 }
 echo '</dl>';
@@ -90,14 +90,14 @@ if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
             echo '<dt>'.g4p_link_nom($indi_tmp).'</dt>';
             echo '<dd>'.$g4p_tag_def[$indi_tmp->events[$g4p_a_result['events_details_id']]->tag].' '.
                 '<span class="date">',g4p_date($indi_tmp->events[$g4p_a_result['events_details_id']]->gedcom_date),
-                '</span> '.g4p_birth_death($indi_tmp->events[$g4p_a_result['events_details_id']]->timestamp);
+                '</span> '.g4p_birth_death($indi_tmp->events[$g4p_a_result['events_details_id']]->timestamp).'</dd>';
         }
         else
         {
             echo '<dt>'.g4p_link_nom($indi_tmp).'</dt>';
             echo '<dd>'.$g4p_tag_def[$indi_tmp->attributes[$g4p_a_result['events_details_id']]->tag].' '.
                 '<span class="date">',g4p_date($indi_tmp->attributes[$g4p_a_result['events_details_id']]->gedcom_date),
-                '</span> '.g4p_birth_death($indi_tmp->attributes[$g4p_a_result['events_details_id']]->timestamp);
+                '</span> '.g4p_birth_death($indi_tmp->attributes[$g4p_a_result['events_details_id']]->timestamp).'</dd>';
         }        
     }
 }
@@ -122,32 +122,28 @@ if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
             
         echo '<dd>'.$g4p_tag_def[$indi_tmp->familles[$g4p_a_result['familles_id']]->events[$g4p_a_result['events_details_id']]->tag].' '.
             '<span class="date">',g4p_date($indi_tmp->familles[$g4p_a_result['familles_id']]->events[$g4p_a_result['events_details_id']]->gedcom_date),
-            '</span> '.g4p_birth_death($indi_tmp->familles[$g4p_a_result['familles_id']]->events[$g4p_a_result['events_details_id']]->timestamp);
+            '</span> '.g4p_birth_death($indi_tmp->familles[$g4p_a_result['familles_id']]->events[$g4p_a_result['events_details_id']]->timestamp).'</dd>';
     }
 }
 echo '</dl>';
 
-echo '<h3>Notes</h3>';
-echo '<dl>';
 $g4p_query=$g4p_mysqli->g4p_query("SELECT notes_id, notes_text, notes_timestamp FROM genea_notes 
     ORDER BY notes_timestamp DESC LIMIT 3");
 if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
 {
+    echo '<h3>Notes</h3>';
+    echo '<dl>';
     foreach($g4p_result as $g4p_a_result)
     {
         echo '<dt>Note '.$g4p_a_result['notes_id'].g4p_birth_death($g4p_a_result['notes_timestamp']).' [détail]</dt>';
         echo '<dd>'.word_limiter($g4p_a_result['notes_text'],100).'</dd>';
     }
+    echo '</dl>';
 }
-echo '</dl>';
 
 echo '<h3>Sources</h3>';
 
 echo '<h3>Médias</h3>';
-
-
-
-echo '</div>';
 
 require_once($g4p_chemin.'pied_de_page.php');
 

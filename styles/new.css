@@ -16,6 +16,8 @@ body
 {
 		font-size:0.9em;
 		padding-right:10px;
+		margin:0;
+		padding:0;
 }
 
 p
@@ -34,6 +36,16 @@ li
 	margin-bottom:0.3em;
 }
 
+div#content
+{
+	margin:10px;
+	margin-left:12em;
+	background: #e3d2af;
+	border:1px solid #65381B;
+	border-top: none;
+	padding:0;
+}
+
 div#header h1
 {
 	height:60px;
@@ -46,24 +58,12 @@ div#header h1
     margin-bottom:40px;
     margin-top:10px;
 	background: #F1EBDF;
-	font-size:1.8em;
+	font-size:180%;
     font-weight: 700;
     color: #65381B;
     letter-spacing : 2px;
     border:2px ridge #65381B;
     text-align: center;
-}
-
-div#content 
-{
-	margin:10px;
-	padding:0px;
-}
-
-div#navigation
-{
-	background:transparent;
-	margin-top:3px;
 }
 
 div#footer
@@ -87,38 +87,9 @@ div#footer p
 	padding:5px 10px
 }
 
-div#container
-{
-
-}
-
-div#wrapper
-{
-	float:right;
-	width:100%;
-	margin-left:-190px;
-}
-
-div#content
-{
-	margin-left:190px;
-	background: #e3d2af;
-	border:1px solid #65381B;
-	border-top: none;
-	padding:0;
-}
-
-div#navigation
-{
-	float:left;
-	width:188px;
-	z-index:1;
-}
-
-
 h2
 {
-  font-size:1.3em;
+  font-size:130%;
   font-weight:800;
   color:inherit;
   text-align:center;
@@ -130,15 +101,19 @@ h2
 
 h3
 {
-  font-size:1em;
-  font-weight:900;
-  color:#B99074;
-  text-align:left;
-  text-indent:1em;
-  margin-top:1em;
-  margin-bottom:0.2em;
-  padding:2px;
-  background-color:transparent;
+	color:#65381B;
+	font-weight:normal;
+	font-size:120%;
+	margin:0;
+	padding:0;
+}
+
+h4
+{
+	font-weight:normal;
+	font-size:110%;	
+	color:black;
+	margin:0;
 }
 
 /* liens */
@@ -200,7 +175,7 @@ dl.horizontal dd
 
 table
 {
-	margin-top:1em;
+	margin-top:0.5em;
 	margin-bottom:1em;
 	border-collapse: collapse;
 	border-bottom: 1px solid black;
@@ -212,7 +187,7 @@ td
 	padding-right:0.5em;
 }
 
-thead td
+thead 
 {
 	border-top:1px solid black;
 	border-bottom:1px solid black;
@@ -226,7 +201,7 @@ thead td
 li.ssmenu, li.ssmenu a
 {
 	display:block;
-	font-size:0.8em;
+	font-size:85%;
 	margin:0;
 	padding:1px;
 	border:0;
@@ -240,19 +215,21 @@ li.ssmenu, li.ssmenu a
 
 
 ul.menu {
-	float:left;
+	position:absolute;
+	top:140px;
+	left:0;
 	margin:5px;
-	-margin:2px;
 	list-style-type:none;
-	padding:0px;
-	width:180px;
-	-width:170px;
+	padding:0px;	
+	width:11em;
+	z-index:1;
+	background:transparent;
+	margin-top:3px;	
 }
 
 ul.ssmenu {
 	margin:0px;
 	padding:0px;
-	lborder:1px solid #65381B;
 	border-top:2px groove #65381B;
 	width:auto;
 	list-style-type:none;
@@ -267,6 +244,7 @@ li.menu {
 	list-style-type:none;
 	margin:2px;
 	padding:0;
+	padding-top:3px;
 	margin-bottom:10px;
 	text-align:left;
 	text-indent:20px;
@@ -276,7 +254,7 @@ li.menu {
 	background-color:#F1EBDF;
 	color:#6A3D21;
 	font-weight:bold;
-	font-size:large;	
+	font-size:130%;	
 }
 
 /* hovers with specificity */
@@ -317,7 +295,6 @@ DIV.box_title
 	color:#65381B;
 	width:auto;
 	font-weight:bold;
-	font-size:large;
 	padding:0.5em;
 	text-indent:5em;
 	margin-bottom:2em;
@@ -331,7 +308,6 @@ DIV.box DIV.box_title
 	color:#65381B;
 	width:auto;
 	font-weight:normal;
-	font-size:normal;
 	margin:0;
 	padding:0.1em;
 	text-indent:5em;
@@ -382,7 +358,7 @@ a.admin:link
   background-color:#FFC6C3;
   padding:1px;
   border:#65381B 1px solid;
-  font-size:xx-small;
+  font-size:70%;
   vertical-align:middle;
 }
 a.admin:visited
@@ -392,7 +368,7 @@ a.admin:visited
   background-color:#FFC6C3;
   padding:1px;
   border:#65381B 1px solid;
-    font-size:xx-small;
+  font-size:70%;
   vertical-align:middle;
 }
 a.admin:hover
@@ -402,7 +378,7 @@ a.admin:hover
   background-color:#d2eacc;
   padding:1px;
   border:#65381B 1px solid;
-    font-size:xx-small;
+    font-size:70%;
   vertical-align:middle;
 }
 /* fin menu interne */
@@ -549,7 +525,7 @@ div.a_note, div.a_source, div.a_multimedia
     margin-left:5%;
     margin-right:5%;
     text-indent : 15px;
-    font-size : small;
+    font-size : 90%;
     background-color:#CABB9C;
 }
 
@@ -580,7 +556,7 @@ dl.source
 /* affichage de la date entre-parenth�e*/
 span.petit
 {
-    font-size: x-small;
+    font-size: 90%;
     font-style : italic;
 	margin-left:0.5em;
 }
@@ -616,7 +592,7 @@ ul.lettre
 {
   text-align:center;
   border-bottom:2px groove #65381B;
-  font-size:small;
+  font-size:90%;
   padding:5px;
   letter-spacing:1px;
 }
@@ -658,6 +634,29 @@ form
 		margin:1em;
 }
 
+DIV.error
+{
+	color:black;;
+	margin-left:auto;
+	margin-right:auto;
+	width:50%;
+	margin-bottom:1em;
+	border:1px solid red;
+	padding: 10px;
+	background-color:pink;
+}
+
+DIV.success
+{
+	color:black;
+	margin-left:auto;
+	margin-right:auto;
+	width:50%;
+	margin-bottom:1em;
+	border:1px solid green;
+	padding: 10px;
+	background-color:palegreen;
+}
 
 /* jquery autocomplete css */
 .ac_results {

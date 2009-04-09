@@ -1,5 +1,5 @@
 <?php
-echo '<div id="navigation">';
+//echo '<div id="navigation">';
 
 echo '
 <ul class="menu">
@@ -39,25 +39,24 @@ if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     </ul>
     </li>';
 }
-
-echo '  
-    <li class="menu">',$g4p_langue['menu_voir'],'
-    <ul class="ssmenu">';
-		
+	
 if (isset($g4p_indi->indi_id))
 {
-  echo '  
+    echo '  
+        <li class="menu">',$g4p_langue['menu_voir'],'
+        <ul class="ssmenu">';
+    echo '  
         <li class="ssmenu"><a href="',g4p_make_url('','liste_descendance.php','id_pers='.$g4p_indi->indi_id,'liste_descendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_liste_desc'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','liste_ascendance.php','id_pers='.$g4p_indi->indi_id,'liste_ascendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_liste_asc'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','arbre.php','id_pers='.$g4p_indi->indi_id,0),'">Arbre</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','fiche_individuelle.php','id_pers='.$g4p_indi->indi_id,0),'">',$g4p_langue['menu_fiche'],'</a></li>';
+    echo '  
+        </ul>
+        </li>';
 }
 
-echo '  
-    </ul>
-    </li>';
   
-if (isset($_SESSION['historic']))
+if (!empty($_SESSION['historic']))
 {
 	echo '
 		<li class="menu">',$g4p_langue['menu_historic'],'
@@ -148,7 +147,7 @@ echo '
 echo '
 </ul>';
 
-echo '</div>';
+//echo '</div>';
 
 echo '<!-- Fin menu-->';
 ?>
