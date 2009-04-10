@@ -42,7 +42,7 @@ require_once($g4p_chemin.'entete.php');
 echo '<div class="box_title"><h2>'.$g4p_langue['accueil_titre'].'</h2></div>';
 
 echo '<dl>';
-$g4p_query=$g4p_mysqli->g4p_query("SELECT id, nom, descriptif FROM genea_infos ORDER BY nom");
+$g4p_query=$g4p_mysqli->g4p_query("SELECT id, nom, descriptif FROM genea_infos WHERE id<>0 ORDER BY nom");
 if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
 {
     foreach($g4p_result as $g4p_a_result)
@@ -58,7 +58,8 @@ echo '</dl>';
 //echo '<div class="box">';
 echo '<div class="box_title"><h2>Dernières modifications</h2></div>';
 
-echo '<h3>Individus</h3>';
+echo '<div class="box">';
+echo '<div class="box_title"><h3>Individus</h3></div>';
 echo '<ul>';
 $g4p_query=$g4p_mysqli->g4p_query("SELECT indi_id FROM genea_individuals ORDER BY indi_timestamp DESC LIMIT 5");
 if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
@@ -70,8 +71,10 @@ if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
     }
 }
 echo '</ul>';
+echo '</div>';
 
-echo '<h3>évènements et attributs individuels</h3>';
+echo '<div class="box">';
+echo '<div class="box_title"><h3>évènements et attributs individuels</h3></div>';
 echo '<dl>';
 $g4p_query=$g4p_mysqli->g4p_query("SELECT IF(events.indi_id IS NULL,attributes.indi_id,events.indi_id) AS indi_id,
     IF(events.indi_id IS NULL,'attributes','events') AS type, 
@@ -102,8 +105,10 @@ if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
     }
 }
 echo '</dl>';
+echo '</div>';
 
-echo '<h3>évènements familiaux</h3>';
+echo '<div class="box">';
+echo '<div class="box_title"><h3>évènements familiaux</h3></div>';
 echo '<dl>';
 $g4p_query=$g4p_mysqli->g4p_query("SELECT familles_id, events_details_id, familles_husb, familles_wife FROM genea_events_details 
     LEFT JOIN rel_familles_events USING (events_details_id)
@@ -126,12 +131,14 @@ if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
     }
 }
 echo '</dl>';
+echo '</div>';
 
 $g4p_query=$g4p_mysqli->g4p_query("SELECT notes_id, notes_text, notes_timestamp FROM genea_notes 
     ORDER BY notes_timestamp DESC LIMIT 3");
 if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
 {
-    echo '<h3>Notes</h3>';
+    echo '<div class="box">';
+    echo '<div class="box_title"><h3>Notes</h3></div>';
     echo '<dl>';
     foreach($g4p_result as $g4p_a_result)
     {
@@ -139,6 +146,7 @@ if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
         echo '<dd>'.word_limiter($g4p_a_result['notes_text'],100).'</dd>';
     }
     echo '</dl>';
+    echo '</div>';
 }
 
 echo '<h3>Sources</h3>';

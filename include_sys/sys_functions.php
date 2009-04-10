@@ -27,7 +27,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 function g4p_permission()
-{
+{   
   if(!isset($_SESSION['g4p_permission']))
   {
     unset($_SESSION);
@@ -74,35 +74,40 @@ function g4p_db_numrows($g4p_result)//OK
 
 function g4p_date($g4p_date, $date='date1', $cache=0)
 {
-  global $g4p_date_modif,$g4p_langue, $date1;
-  //date1 affichage long (12 janvier 2005...)
-  //date2 conversion jj/mm/aaaa
-  //date3 conversion 12 JAN 2005
-  //date4 comme date2 plus suppression du texte
-  $date4=$date2=array('` JAN `'=>'/01/', '` FEB `'=>'/02/', '` MAR `'=>'/03/', '` APR `'=>'/04/', '` MAY `'=>'/05/', '` JUN `'=>'/06/', '` JUL `'=>'/07/', '` AUG `'=>'/08/', '` SEP `'=>'/09/', '` OCT `'=>'/10/', '` NOV `'=>'/11/', '` DEC `'=>'/12/');
-  $date3=array('`/01/`'=>' JAN ', '`/02/`'=>' FEB ', '`/03/`'=>' MAR ', '`/04/`'=>' APR ', '`/05/`'=>' MAY ', '`/06/`'=>' JUN ', '`/07/`'=>' JUL ', '`/08/`'=>' AUG ',
-      '`/09/`'=>' SEP ', '`/10/`'=>' OCT ', '`/11/`'=>' NOV ', '`/12/`'=>' DEC ');
+    global $g4p_date_modif,$g4p_langue, $date1;
+    static $date1keys, $date1values;
+    //date1 affichage long (12 janvier 2005...)
+    //date2 conversion jj/mm/aaaa
+    //date3 conversion 12 JAN 2005
+    //date4 comme date2 plus suppression du texte
+    $date4=$date2=array('` JAN `'=>'/01/', '` FEB `'=>'/02/', '` MAR `'=>'/03/', '` APR `'=>'/04/', '` MAY `'=>'/05/', '` JUN `'=>'/06/', '` JUL `'=>'/07/', '` AUG `'=>'/08/', '` SEP `'=>'/09/', '` OCT `'=>'/10/', '` NOV `'=>'/11/', '` DEC `'=>'/12/');
+    $date3=array('`/01/`'=>' JAN ', '`/02/`'=>' FEB ', '`/03/`'=>' MAR ', '`/04/`'=>' APR ', '`/05/`'=>' MAY ', '`/06/`'=>' JUN ', '`/07/`'=>' JUL ', '`/08/`'=>' AUG ',
+        '`/09/`'=>' SEP ', '`/10/`'=>' OCT ', '`/11/`'=>' NOV ', '`/12/`'=>' DEC ');
 
-  $g4p_date=preg_replace ('/(@#DHEBREW@|@#DROMAN@|@#DFRENCH R@|@#DGREGORIAN@|@#DJULIAN@|@#DUNKNOWN@)/','',$g4p_date);
+    $g4p_date=preg_replace ('/(@#DHEBREW@|@#DROMAN@|@#DFRENCH R@|@#DGREGORIAN@|@#DJULIAN@|@#DUNKNOWN@)/','',$g4p_date);
 
-  $g4p_date=preg_replace (array_keys($$date),array_values($$date),$g4p_date);
-  if($date=='date4')
-    $g4p_date=preg_replace(array_keys($g4p_date_modif),'',$g4p_date);
-  elseif($date!='date3')
-    $g4p_date=preg_replace(array_keys($g4p_date_modif),array_values($g4p_date_modif), $g4p_date);
+    if(empty($date1keys))
+        $date1keys=array_keys($$date);
+    if(empty($date1values))
+        $date1values=array_values($$date);
+    $g4p_date=preg_replace ($date1keys,$date1values,$g4p_date);
+    if($date=='date4')
+        $g4p_date=preg_replace(array_keys($g4p_date_modif),'',$g4p_date);
+    elseif($date!='date3')
+        $g4p_date=preg_replace(array_keys($g4p_date_modif),array_values($g4p_date_modif), $g4p_date);
 
-  //$g4p_date=mb_ereg_replace (' ','&nbsp;',$g4p_date);
-  $g4p_date=''.$g4p_date.'';
-  //supression des données récentes
-  if($_SESSION['permission']->permission[_PERM_AFF_DATE_]==0 and $cache==0 and preg_match_all("/[0-9]{4}/",$g4p_date, $match))
-  {
-    foreach($match[0] as $g4p_a_year)
+    //$g4p_date=mb_ereg_replace (' ','&nbsp;',$g4p_date);
+    $g4p_date=''.$g4p_date.'';
+    //supression des données récentes
+    if($_SESSION['permission']->permission[_PERM_AFF_DATE_]==0 and $cache==0 and preg_match_all("/[0-9]{4}/",$g4p_date, $match))
     {
-      if(intval($g4p_a_year)>date('Y')-100)
-        $g4p_date=$g4p_langue['date_cache'];
+        foreach($match[0] as $g4p_a_year)
+        {
+            if(intval($g4p_a_year)>date('Y')-100)
+                $g4p_date=$g4p_langue['date_cache'];
+        }
     }
-  }
-  return(trim($g4p_date));
+    return(trim($g4p_date));
 }
 
 function g4p_affiche_notes($notes,$lien,$type)
@@ -305,7 +310,7 @@ function g4p_affiche_mariage()
             else
                 $tmp='Famille';
             
-            echo '<div class="box_title">'.$tmp.'</div>';
+            echo '<div class="box_title"><h3>'.$tmp.'</h3></div>';
             if(!empty($g4p_a_famille->timestamp))
                 echo '<span class="petit">'.sprintf($g4p_langue['sys_function_mariage_chan'],g4p_strftime($g4p_langue['date_complete'], strtotime($g4p_a_famille->timestamp))),'</span><br />';
                 
@@ -330,7 +335,7 @@ function g4p_affiche_mariage()
             {
                 //echo '<pre>'; print_r($g4p_a_famille->events);
                 echo '<div class="box">';
-                echo '<div class="box_title">Évènements</div>';
+                echo '<div class="box_title"><h3>Évènements</h3></div>';
                 foreach($g4p_a_famille->events as $g4p_a_event)
                 {
                     echo '<dl class="evenements">';
@@ -354,7 +359,7 @@ function g4p_affiche_mariage()
             if(isset($g4p_a_famille->enfants))
             {
                 echo '<div class="box">';
-                echo '<div class="box_title">Enfants issus de l\'union</div>';
+                echo '<div class="box_title"><h3>Enfants issus de l\'union</h3></div>';
                 echo '<ul style="list-style-type:none;padding:0;">';
                 foreach($g4p_a_famille->enfants as $g4p_a_enfant)
                 {
@@ -429,44 +434,13 @@ function g4p_load_indi_infos($id, $debug=false)
 	global $g4p_chemin;
 	static $cache_count;
 	$g4p_mon_indi=new g4p_individu($id);
-	$g4p_mon_indi->ignore_cache(true);
+	//$g4p_mon_indi->ignore_cache(true);
 	$g4p_mon_indi->g4p_load();
 	
-	
-	//var_dump($g4p_mon_indi);
-	//exit;
-	/*
-	if($g4p_mon_indi->g4p_load_from_cache()===false)
-	{
-		$g4p_mon_indi->g4p_load_from_db();
-		$g4p_mon_indi->g4p_write_object($g4p_mon_indi->g4p_sql_datas);
-		$g4p_mon_indi->g4p_write_cache();
-	}
-	*/
-	
-	//if($g4p_mon_indi->indi_id===-1)
-	//	return false;
-    /*
-	if(file_exists($g4p_chemin.'cache/indis/indi_'.$id.'.txt'))
-	{
-		if(!$g4p_mon_indi=unserialize(file_get_contents($g4p_chemin.'cache/indis/indi_'.$id.'.txt')))
-		{
-			die('Erreur lors du chargement du cache');
-		}
-	}
-	else
-	{
-		if(isset($cache_count))
-			$cache_count++;
-		else
-			$cache_count=1;
-
-		$g4p_mon_indi=new g4p_individu($id, true, $debug);
-		$g4p_mon_indi->g4p_load_from_db();
-		//ecriture du cache sur le disque
-		file_put_contents($g4p_chemin.'cache/indis/indi_'.$id.'.txt',serialize($g4p_mon_indi),LOCK_EX);
-*/
-		return $g4p_mon_indi;
+    if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_mon_indi->resn=='privacy')
+        g4p_error($g4p_langue['acces_non_autorise']);
+    
+    return $g4p_mon_indi;
 	
 }
 
@@ -1719,7 +1693,7 @@ function g4p_show_events($events)
 	echo '</div>';
 }
 
-function g4p_http_header()
+function g4p_http_not_modifed()
 {
     global $g4p_chemin;
     

@@ -430,6 +430,7 @@ class g4p_sql_datas
 			indi_sexe, indi_timestamp, indi_npfx, indi_givn, indi_nick, indi_spfx, indi_nsfx, indi_resn
 			FROM genea_individuals WHERE indi_id IN (".implode(',',$liste_indi).")");
 		$this->g4p_infos_indi=$g4p_mysqli->g4p_result($g4p_infos_req, 'indi_id');
+        $this->liste_indi=$liste_indi;
 	}
 
 }
@@ -496,10 +497,35 @@ class g4p_individu
 		}
 	}
 	
-	function g4p_write_cache()
+	function g4p_write_cache(&$g4p_sql_datas)
 	{
-		global $g4p_chemin;
-		file_put_contents($g4p_chemin.'cache/indis/indi_'.$this->indi_id.'.txt',serialize($this),LOCK_EX);
+		global $g4p_chemin, $g4p_mysqli;
+        
+        //dépendances
+        $deps=array();
+        foreach($g4p_sql_datas->liste_indi as $a_indi)
+            if($this->indi_id!=$a_indi)
+                $deps[]='('.$this->indi_id.','.$a_indi.')';
+        
+        $g4p_mysqli->autocommit(false);
+        $sql="DELETE FROM genea_cache_deps WHERE indi_id=".$this->indi_id;
+        $g4p_mysqli->query($sql);
+        $sql="INSERT INTO genea_cache_deps (indi_id, indi_dep) VALUES ".implode(',',$deps);
+        if($g4p_mysqli->query($sql))
+        {
+            if(file_put_contents($g4p_chemin.'cache/indis/indi_'.$this->indi_id.'.txt',serialize($this),LOCK_EX))
+                $g4p_mysqli->commit();
+            else
+            {
+                die('impossible d\'écrire le fichier de cache');
+                $g4p_mysqli->rollback();        
+            }
+        }
+        else
+        {
+            die('impossible d\'insérer les deps de cache en base');
+            $g4p_mysqli->rollback();        
+        }
 	}
 	
 	function __SLEEP()	
@@ -517,7 +543,7 @@ class g4p_individu
 		{
 			$this->g4p_load_from_db();
 			$this->g4p_write_object($this->g4p_sql_datas);
-			$this->g4p_write_cache();
+			$this->g4p_write_cache($this->g4p_sql_datas);
 			return ;
 		}
 		else
@@ -532,7 +558,7 @@ class g4p_individu
 			{
 				$this->g4p_load_from_db();
 				$this->g4p_write_object($this->g4p_sql_datas);
-				$this->g4p_write_cache();
+				$this->g4p_write_cache($this->g4p_sql_datas);
 				return ;
 			}
 		}
@@ -1562,7 +1588,7 @@ class g4p_permission
         global $g4p_mysqli;
         
 		// Permissions générales
-		$sql="SELECT permission_type, permission_value FROM genea_permissions WHERE membre_id=$g4p_id_membre AND base IS NULL";
+		$sql="SELECT permission_type, permission_value FROM genea_permissions WHERE membre_id=$g4p_id_membre AND base=0";
 		if($g4p_result_req=$g4p_mysqli->g4p_query($sql))
 			if($g4p_permission=$g4p_mysqli->g4p_result($g4p_result_req))
 				foreach($g4p_permission as $g4p_a_permission)

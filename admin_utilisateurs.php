@@ -107,13 +107,11 @@ elseif(!empty($_POST['new_perm_membre_id']))
             isset($_POST['new_perm_name'][$i]) and 
             isset($_POST['new_perm_value'][$i]))
         {
-            if($_POST['new_perm_base'][$i]=='*')
-                $base='NULL';
-            else
-                $base=(int)$_POST['new_perm_base'][$i];
             //base, membre, name est utilisé comme clé. Permet d'éviter les doublons
-            $permissions[$base.(int)$_POST['new_perm_membre_id'].(int)$_POST['new_perm_name'][$i]]=array('base'=>$base, 'membre'=>(int)$_POST['new_perm_membre_id'], 'name'=>(int)$_POST['new_perm_name'][$i], 'value'=>(int)$_POST['new_perm_value'][$i]);
-            $deps=checkdeps((int)$_POST['new_perm_name'][$i], $base, (int)$_POST['new_perm_membre_id']);            
+            $permissions[(int)$_POST['new_perm_base'][$i].(int)$_POST['new_perm_membre_id'].(int)$_POST['new_perm_name'][$i]]=array(
+                'base'=>(int)$_POST['new_perm_base'][$i], 'membre'=>(int)$_POST['new_perm_membre_id'], 
+                'name'=>(int)$_POST['new_perm_name'][$i], 'value'=>(int)$_POST['new_perm_value'][$i]);
+            $deps=checkdeps((int)$_POST['new_perm_name'][$i], (int)$_POST['new_perm_base'][$i], (int)$_POST['new_perm_membre_id']);            
         }
     }
     
@@ -133,6 +131,8 @@ elseif(!empty($_POST['new_perm_membre_id']))
         {
             if($g4p_mysqli->affected_rows>0)
                 $message='<div class="success">'.$g4p_mysqli->affected_rows.' Permission(s) ajoutée(s) avec succès</div>';
+            elseif($result=='Error:1062')
+                $message='<div class="error">Impossible d\'ahouter cette permission, elle est déjà présente</div>';
             else
                 $message='<div class="error">Zéro permission ajoutée, bug ?</div>';
         }
@@ -161,8 +161,6 @@ if($g4p_result=$g4p_mysqli->g4p_result($g4p_infos_req,'membre_id', false))
         $g4p_javascript.="listeperms[".$key."] = new Array(); \n";
         foreach($g4p_a_result as $key=>$a_perm)
         {
-            if(empty($a_perm['nom_base']))
-                $a_perm['nom_base']='Toutes';
             $ouinon='<select name="valeur['.$a_perm['permission_id'].']" style="width:auto">';
             if($a_perm['permission_value']==1)
             {
@@ -290,7 +288,6 @@ if($_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
     echo '</thead>';
     echo '<tbody><tr><td><select name="new_perm_base[]">';
     echo '<option value=""></option>';
-    echo '<option value="*">Toutes</option>';
     foreach($g4p_liste_base as $a_base)
         echo '<option value="'.$a_base['id'].'">'.$a_base['nom'].'</option>';
     echo '</select>';

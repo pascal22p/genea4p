@@ -32,38 +32,19 @@ $g4p_chemin='';
 require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
-	
-if($_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi->resn=='privacy')
-	g4p_error($g4p_langue['acces_non_autorise']);
 
-if(empty($g4p_indi))
-{
-  require_once($g4p_chemin.'entete.php');
-  echo '<div class="cadre">',$g4p_langue['index_person_inconnu'],'</div>';
-  require_once($g4p_chemin.'pied_de_page.php');
-  exit;
-}
-
-if($_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi->resn=='privacy')
-{
-    require_once($g4p_chemin.'entete.php');
-    echo '<div class="cadre">',$g4p_langue['acces_non_autorise'],'</div>';
-    require_once($g4p_chemin.'pied_de_page.php');
-    exit;
-}
-
+//Chargement des données de la personne
+$g4p_indi=g4p_load_indi_infos((int)$_REQUEST['id_pers']);
 //var_dump($g4p_indi);
 
 //historique des fiches visitées
 g4p_add_intohistoric($g4p_indi->indi_id,'indi');
 $g4p_titre_page=$g4p_indi->prenom.' '.$g4p_indi->nom;
 
-g4p_http_header();
-
 require_once($g4p_chemin.'entete.php');
 echo '<div class="box_title"><h2>'.$g4p_indi->prenom,' ',$g4p_indi->nom.'</h2></div>'."\n";
 
-//echo '<div class="cadre">';
+//menu edition
 if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
 {
     echo '<div class="menu_interne">
@@ -86,7 +67,7 @@ if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
 
         
 echo '<div class="box">';
-echo '<div class="box_title">État civil</div>';        
+echo '<div class="box_title"><h3>État civil</h3></div>';        
 if($g4p_indi->timestamp!='0000-00-00 00:00:00')
     echo '<span class="petit">',sprintf($g4p_langue['index_chan'],g4p_strftime($g4p_langue['date_complete'], strtotime($g4p_indi->timestamp))),'</span><br />';
 if($g4p_indi->resn=='privacy')
@@ -132,7 +113,7 @@ n <<MULTIMEDIA_LINK>> {0:M} p.37, 26
 if(!empty($g4p_indi->events))
 {
     echo '<div class="box">';
-    echo '<div class="box_title">Évènements</div>';
+    echo '<div class="box_title"><h3>Évènements</h3></div>';
                 
     echo '<dl class="evenements">';
     //$g4p_indi->events=array_column_sort($g4p_indi->events,'jd_count');
@@ -170,7 +151,7 @@ if(!empty($g4p_indi->events))
 if(!empty($g4p_indi->attributes))
 {
     echo '<div class="box">';
-    echo '<div class="box_title">Attributs</div>';
+    echo '<div class="box_title"><h3>Attributs</h3></div>';
 
     echo '<dl class="evenements">';
     //$g4p_indi->events=array_column_sort($g4p_indi->events,'jd_count');
@@ -211,7 +192,7 @@ if(!empty($g4p_indi->parents))
         echo '<div class="box">';
         if(empty($g4p_a_parent->rela_type))
             $g4p_a_parent->rela_type='BIRTH';
-        echo '<div class="box_title">Parents '.str_replace(array_keys($g4p_lien_def),array_values($g4p_lien_def),$g4p_a_parent->rela_type). '</div>';
+        echo '<div class="box_title"><h3>Parents '.str_replace(array_keys($g4p_lien_def),array_values($g4p_lien_def),$g4p_a_parent->rela_type). '</h3></div>';
         //echo '<em>',$g4p_langue['index_ype_parent'],'</em>',str_replace(array_keys($g4p_lien_def),array_values($g4p_lien_def),$g4p_a_parent->rela_type);
         echo '<ul style="list-style-type:none;padding:0;">';
         if(isset($g4p_a_parent->pere))

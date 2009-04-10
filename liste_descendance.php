@@ -1,32 +1,5 @@
 <?php
- /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                          *
- *  Copyright (C) 2004  PAROIS Pascal                                       *
- *                                                                          *
- *  This program is free software; you can redistribute it and/or modify    *
- *  it under the terms of the GNU General Public License as published by    *
- *  the Free Software Foundation; either version 2 of the License, or       *
- *  (at your option) any later version.                                     *
- *                                                                          *
- *  This program is distributed in the hope that it will be useful,         *
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- *  GNU General Public License for more details.                            *
- *                                                                          *
- *  You should have received a copy of the GNU General Public License       *
- *  along with this program; if not, write to the Free Software             *
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA *
- *                                                                          *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                         Liste de descendance                            *
- *                                                                         *
- * dernière mise à jour : 11/07/2004                                       *
- * En cas de problème : http://www.parois.net                              *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-/*limites imposées pour éviter d'exploser le serveur:
+/*limites imposées pour éviter d'exploser le serveur, cf p_conf/g4p_config:
 _NBRE_MAX_PERS_DESCENDANCE_ générations au maximum sont affichées ($generation)
 _NBRE_MAX_PERS_DESCENDANCE_ personnes sont affichées au maximum
 */
@@ -69,6 +42,9 @@ $g4p_javascript='
 include($g4p_chemin.'p_conf/g4p_config.php');
 include($g4p_chemin.'p_conf/script_start.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
+
+//Chargement des données de la personne
+$g4p_indi=g4p_load_indi_infos((int)$_REQUEST['id_pers']);
 
 $g4p_titre_page='Liste de descendance : '.$g4p_indi->nom.' '.$g4p_indi->prenom;
 include($g4p_chemin.'entete.php');

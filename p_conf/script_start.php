@@ -1,31 +1,4 @@
 <?php
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                          *
- *  Copyright (C) 2002  PAROIS Pascal                                       *
- *                                                                          *
- *  This program is free software; you can redistribute it and/or modify    *
- *  it under the terms of the GNU General Public License as published by    *
- *  the Free Software Foundation; either version 2 of the License, or       *
- *  (at your option) any later version.                                     *
- *                                                                          *
- *  This program is distributed in the hope that it will be useful,         *
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- *  GNU General Public License for more details.                            *
- *                                                                          *
- *  You should have received a copy of the GNU General Public License       *
- *  along with this program; if not, write to the Free Software             *
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA *
- *                                                                          *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                  fichier de préparation                                 *
- *                                                                         *
- * dernière mise à jour : 11/07/2004                                       *
- * En cas de problème : http://www.parois.net                              *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 ################################################################
 #       Ce script est éxecuté a chaque début de script         #
 ################################################################
@@ -33,23 +6,17 @@ error_reporting(E_ALL);//& (~E_NOTICE)
 setlocale(LC_CTYPE,'UTF8');
 ini_set('xdebug.var_display_max_data',100) ;
 ini_set('xdebug.var_display_max_depth',20);
-//ini_set('xdebug.profiler_enable',1);
-//ini_set('xdebug.profiler_output_dir','/home/lighttpd/html/genea4p/trunk/xdebug');
-
-//mb_internal_encoding("UTF-8");
-
-if(file_exists('install.php'))
-{
-	echo 'Pour raison de sécurité, le fichier install.php doit être supprimé';
-	exit;
-}
 
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 require_once($g4p_chemin.'include_sys/g4p_class.php');
 
+//démarrage de la session
 session_start();
+
+//lancement de la connexion sql
 $g4p_mysqli=new g4p_mysqli();
 
+//id de la base de donnée
 if(!empty($_GET['genea_db_id']))
 {
     unset($_SESSION['indi_id']);
@@ -58,11 +25,14 @@ if(!empty($_GET['genea_db_id']))
 if(empty($_SESSION['genea_db_id']))
     $_SESSION['genea_db_id']=1;
 
+/*
 if(!empty($_REQUEST['id_pers']))
 	$_SESSION['indi_id']=$_REQUEST['id_pers'];
 if(!empty($_SESSION['indi_id']))
     $g4p_indi=g4p_load_indi_infos($_SESSION['indi_id']);
-    
+   */
+
+
 // selection du fichier de langue
 if(!isset($_SESSION['langue']))
 {
