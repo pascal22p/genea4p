@@ -2,20 +2,19 @@
 /* colour from http://www.colourlovers.com/palette/163356/Genealogy */
 
 
-html,body
+html
 {
 	margin:0;
 	padding:0;
 	background: #6E6B40;
 	background-image:url(branche.png);
 	background-repeat:no-repeat;
-	background-position: -30px 10px;
+	#background-position: 30px 10px;
 }
 
 body
 {
 		font-size:0.9em;
-		padding-right:10px;
 		margin:0;
 		padding:0;
 }
@@ -38,30 +37,24 @@ li
 
 div#content
 {
-	margin:10px;
-	margin-left:12em;
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-left:24ex;
+	margin-right:10px;
 	background: #e3d2af;
 	border:1px solid #65381B;
-	border-top: none;
-	padding:0;
+	padding:0;	
 }
 
-div#header h1
+div#header
 {
-	height:60px;
-	line-height:60px;
+	height:91px;
 	padding:0;
-    padding-top:15px;
-    padding-bottom:15px;
     margin-left:10px;
     margin-right:10px;
     margin-bottom:40px;
     margin-top:10px;
 	background: #F1EBDF;
-	font-size:180%;
-    font-weight: 700;
-    color: #65381B;
-    letter-spacing : 2px;
     border:2px ridge #65381B;
     text-align: center;
 }
@@ -85,6 +78,18 @@ div#footer p
 {
 	margin:0;
 	padding:5px 10px
+}
+
+h1
+{
+	font-size:200%;
+    font-weight: 700;
+    color: #65381B;
+    letter-spacing : 2px;
+	line-height:90px;
+	vertical-align:middle;
+	padding:0;
+	margin:0;
 }
 
 h2
@@ -205,7 +210,7 @@ li.ssmenu, li.ssmenu a
 	display:block;
 	font-size:85%;
 	margin:0;
-	padding:1px;
+	padding:2px;
 	border:0;
 	z-index:10;
 	background-color:#e3d2af;  
@@ -223,7 +228,6 @@ ul.menu {
 	margin:5px;
 	list-style-type:none;
 	padding:0px;	
-	width:11em;
 	z-index:1;
 	background:transparent;
 	margin-top:3px;	
@@ -238,6 +242,7 @@ ul.ssmenu {
 	background-color:transparent;
 	font-weight:normal;
 	z-index:10;
+	text-align:left;
 }
 
 li.menu {
@@ -248,15 +253,14 @@ li.menu {
 	padding:0;
 	padding-top:3px;
 	margin-bottom:10px;
-	text-align:left;
-	text-indent:20px;
-	width:auto;
+	text-align:center;
+	width:16ex;
 
-	border:none;
 	background-color:#F1EBDF;
 	color:#6A3D21;
 	font-weight:bold;
 	font-size:130%;	
+	border:1px solid #65381B;
 }
 
 /* hovers with specificity */

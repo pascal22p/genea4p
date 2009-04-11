@@ -38,7 +38,7 @@ if(!isset($_POST['g4p_entete_lieux']) and !isset($_POST['savesql']) and !isset($
     echo '</select><br />';
 
     echo '<select name="g4p_base">';
-    $sql="SELECT id, nom FROM genea_infos";
+    $sql="SELECT id, nom FROM genea_infos WHERE id<>0";
     $g4p_query=$g4p_mysqli->g4p_query($sql);
     if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
         foreach($g4p_result as $g4p_a_result)
