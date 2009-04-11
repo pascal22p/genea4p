@@ -7,9 +7,9 @@ html
 	margin:0;
 	padding:0;
 	background: #6E6B40;
-	background-image:url(branche.png);
+	/*background-image:url(branche.png);
 	background-repeat:no-repeat;
-	#background-position: 30px 10px;
+	background-position: 30px 10px;*/
 }
 
 body
