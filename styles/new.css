@@ -82,13 +82,14 @@ div#footer p
 h1
 {
 	font-size:200%;
-    font-weight: 700;
+    font-weight: bold;
     color: #65381B;
     letter-spacing : 2px;
-	line-height:90px;
-	vertical-align:middle;
+	display:block;
 	padding:0;
 	margin:0;
+	margin-top:20px;
+	font-family:serif;
 }
 
 h2
