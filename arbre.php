@@ -156,6 +156,7 @@ else
     echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('fulldesc').'" >Asc. uniquement</a>  ';
 echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('output').'" >svg</a>  
 | <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=png" >png</a>  
+| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=java" >java</a>  
 | <a href="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=pdf" >pdf</a>';
 if(empty($_GET['pleinecran']))
     echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('pleinecran').'&pleinecran=1" >Plein écran</a>';
@@ -165,11 +166,29 @@ else
 echo '<div id="arbre_div" >';
 if(!empty($_GET['output']) and $_GET['output']=='png')
     echo '<a href="arbre_svg.php?id_pers='.$_GET['id_pers'].'&output=png"><img id="arbre" id="arbre" name="arbre" src="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=png" width="100%" style="border:0;margin:0" /></a>';
+elseif(!empty($_GET['output']) and $_GET['output']=='java')
+    echo '<Applet id="arbre" code="net.claribole.zgrviewer.ZGRApplet.class" 
+        archive="zvtm-0.9.8.jar,zgrviewer-0.8.2.jar,timingframework-1.0.jar" 
+        width="100%" height="100%">  
+        <param name="type" value="application/x-java-Applet;version=1.5" />  
+        <param name="scriptable" value="false" />  
+        <param name="width" value="100%" />  
+        <param name="height" value="100%" />  
+        <param name="svgURL" value="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'" />  
+        <param name="title" value="zgrviewer - Applet" />  
+        <param name="appletBackgroundColor" value="#F1EBDF" />  
+        <param name="graphBackgroundColor" value="#F1EBDF" />  
+        <param name="highlightColor" value="red" />  
+        <param name="displayOverview" value="true" />  
+        <param name="focusNodeMagFactor" value="1.0" />  </Applet> ';
+        //<param name="svgURL" value="arbre_svg.svg" />
+        //<param name="svgURL" value="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'" />  
 else
     echo '<object type="image/svg+xml" id="arbre" name="arbre" data="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'" width="100%" >
     Votre navigateur ne supporte pas le format svg. Utilisez en un autre (firefox, opera...) ou utilisez le format png.
     </object>';
 echo '</div>';
+//archive="zvtm-0.10.0-SNAPSHOT.jar,zgrviewer-0.9.0-SNAPSHOT.jar,timingframework-1.0.jar" 
 //echo '<iframe src="arbre_svg.php?id_pers='.$_GET['id_pers'].'" width="100%" height="700px" ></iframe>';
 /*
 echo '

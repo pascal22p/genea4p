@@ -45,7 +45,7 @@ $dot=fopen('/tmp/'.$dot_filename, 'w');
 fwrite($dot, 'digraph family {
     ranksep="1";
     bgcolor="transparent";
-    node [shape = record, fontname="SVGDejaVu.svg"];'."\n");
+    node [shape = record, pad="0.25,0.25"];'."\n");
 /*
     dpi="72";
     size="8,100";
@@ -106,7 +106,7 @@ function g4p_print_family($famille, $option=' [style="filled", fillcolor="#fffff
                 }
             }   
         }
-        return 'f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="10.0pt">'.$date.' </FONT> >];'."\n";
+        return 'f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="10.0">'.$date.' </FONT> >];'."\n";
     }
     else
         return '';
@@ -279,6 +279,7 @@ shell_exec('dot -T'.$output.' /tmp/'.$dot_filename.' -o /tmp/'.$dot_filename.'.'
 if($output=='svg')
 {
     shell_exec('sed -i \'s/font-size:\([0-9.]*\);/font-size:\1px;/g\' /tmp/'.$dot_filename.'.'.$output);
+    shell_exec('sed -i \'s/point-size=\([0-9.]*\);/point-size=\1px;/g\' /tmp/'.$dot_filename.'.'.$output);
     //shell_exec('sed -i \'s/viewBox="\([0-9 .]*\)"//g\' /tmp/'.$dot_filename.'.'.$output);
     //echo '/tmp/'.$dot_filename.'.'.$output;
  }

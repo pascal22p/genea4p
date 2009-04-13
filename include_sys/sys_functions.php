@@ -437,7 +437,7 @@ function g4p_load_indi_infos($id, $debug=false)
 	//$g4p_mon_indi->ignore_cache(true);
 	$g4p_mon_indi->g4p_load();
 	
-    if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_mon_indi->resn=='privacy')
+    if(!isset($_SESSION['permission']->permission[_PERM_MASK_INDI_]) or (!$_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_mon_indi->resn=='privacy'))
         g4p_error($g4p_langue['acces_non_autorise']);
     
     return $g4p_mon_indi;
