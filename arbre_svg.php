@@ -42,9 +42,9 @@ header($output_headers[$output]);
 
 $dot_filename=uniqid();
 $dot=fopen('/tmp/'.$dot_filename, 'w');
-fwrite($dot, 'digraph family {
-    ranksep="1";
+fwrite($dot, 'digraph arbre {
     bgcolor="transparent";
+    ranksep="2";
     node [shape = record, pad="0.25,0.25"];'."\n");
 /*
     dpi="72";
@@ -118,7 +118,7 @@ function g4p_print_link($link, $option='')
     if(empty($liste_links[$link[0].'->'.$link[1]]))
     {
         $liste_links[$link[0].'->'.$link[1]]=true;
-        return $link[0].' -> '.$link[1].";\n";
+        return '{ '.$option.' '.$link[0].' -> '.$link[1]."};\n";
     }
     else
         return '';
@@ -144,7 +144,8 @@ function g4p_load_parent($g4p_indi, $generation, $descendance=false)
                     if(empty($liste_nodes['f'.$a_parent->famille_id]))
                     {
                         fwrite($dot, 'subgraph cluster_famille'.$famille_index++.'{'."\n");
-                        fwrite($dot, 'style="invisible";'."\n");
+                        fwrite($dot, 'style="invisible"; 
+                            ranksep="1";'."\n");
                         if(!empty($a_parent->pere->indi_id))
                         {
                             $pere=g4p_load_indi_infos($a_parent->pere->indi_id);
@@ -209,7 +210,9 @@ function g4p_load_enfants($g4p_indi, $generation)
     else 
     {
         fwrite($dot, 'subgraph cluster_familleb'.$famille_index++.'{'."\n");
-        fwrite($dot, 'style="invisible";'."\n");
+        fwrite($dot, 'style="invisible"; 
+            clusterrank="none";
+            ranksep="1"; '."\n");
         fwrite($dot,$tmp);
         
         if($generation>-$limite_descendance and !empty($g4p_indi->familles))
@@ -220,16 +223,16 @@ function g4p_load_enfants($g4p_indi, $generation)
                 {
                     fwrite($dot, g4p_print_label($a_famille->husb));
                     fwrite($dot, g4p_print_family($a_famille));
-                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key)));
-                    fwrite($dot, g4p_print_link(array('i'.$a_famille->husb->indi_id, 'f'.$key)));                        
+                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key),' ranksep="1"; '));
+                    fwrite($dot, g4p_print_link(array('i'.$a_famille->husb->indi_id, 'f'.$key),' ranksep="1"; '));                        
                     $conjoint[]=g4p_load_indi_infos($a_famille->husb->indi_id);
                 }
                 elseif(!empty($a_famille->wife->indi_id) and $a_famille->wife->indi_id!=$g4p_indi->indi_id)
                 {
                     fwrite($dot, g4p_print_label($a_famille->wife));
                     fwrite($dot, g4p_print_family($a_famille));
-                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key)));
-                    fwrite($dot, g4p_print_link(array('i'.$a_famille->wife->indi_id, 'f'.$key)));                                                
+                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key), ' ranksep="1"; '));
+                    fwrite($dot, g4p_print_link(array('i'.$a_famille->wife->indi_id, 'f'.$key), ' ranksep="1"; '));                                                
                     $conjoint[]=g4p_load_indi_infos($a_famille->wife->indi_id);
                 }
                 
