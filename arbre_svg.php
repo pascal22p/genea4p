@@ -44,7 +44,7 @@ $dot_filename=uniqid();
 $dot=fopen('/tmp/'.$dot_filename, 'w');
 fwrite($dot, 'digraph arbre {
     bgcolor="transparent";
-    ranksep="2";
+    ranksep="1.5";
     node [shape = record, pad="0.25,0.25"];'."\n");
 /*
     dpi="72";

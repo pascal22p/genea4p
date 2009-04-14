@@ -180,7 +180,7 @@ elseif(!empty($_GET['output']) and $_GET['output']=='java')
         <param name="graphBackgroundColor" value="#F1EBDF" />  
         <param name="highlightColor" value="red" />  
         <param name="displayOverview" value="true" />  
-        <param name="focusNodeMagFactor" value="1.0" />  </Applet> ';
+        <param name="focusNodeMagFactor" value="1.5" />  </Applet> ';
         //<param name="svgURL" value="arbre_svg.svg" />
         //<param name="svgURL" value="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'" />  
 else
