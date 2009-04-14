@@ -223,17 +223,23 @@ function g4p_load_enfants($g4p_indi, $generation)
                 {
                     fwrite($dot, g4p_print_label($a_famille->husb));
                     fwrite($dot, g4p_print_family($a_famille));
-                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key),' ranksep="1"; '));
-                    fwrite($dot, g4p_print_link(array('i'.$a_famille->husb->indi_id, 'f'.$key),' ranksep="1"; '));                        
+                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key)));
+                    fwrite($dot, g4p_print_link(array('i'.$a_famille->husb->indi_id, 'f'.$key)));                        
                     $conjoint[]=g4p_load_indi_infos($a_famille->husb->indi_id);
                 }
                 elseif(!empty($a_famille->wife->indi_id) and $a_famille->wife->indi_id!=$g4p_indi->indi_id)
                 {
                     fwrite($dot, g4p_print_label($a_famille->wife));
                     fwrite($dot, g4p_print_family($a_famille));
-                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key), ' ranksep="1"; '));
-                    fwrite($dot, g4p_print_link(array('i'.$a_famille->wife->indi_id, 'f'.$key), ' ranksep="1"; '));                                                
+                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key),));
+                    fwrite($dot, g4p_print_link(array('i'.$a_famille->wife->indi_id, 'f'.$key)));                                                
                     $conjoint[]=g4p_load_indi_infos($a_famille->wife->indi_id);
+                }
+                //pas de conjoint mais des enfants --> famille monoparentale. Il faut créer une famille
+                elseif(!empty($a_famille->enfants))
+                {
+                    fwrite($dot, g4p_print_family($a_famille));
+                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key)));
                 }
                 
                 if(!empty($a_famille->enfants))
@@ -261,11 +267,13 @@ function g4p_load_enfants($g4p_indi, $generation)
         }
     }
     
+    //on remonte l'ascendance du conjoint
     if(!empty($conjoint) and $generation<$limite_ascendance)
         foreach($conjoint as $a_conjoint)
-            if($conjoint_parent=g4p_load_parent($a_conjoint, $generation+1, _fulldesc_))
-                fwrite($dot, g4p_print_link(array('f'.$conjoint_parent, 'i'.$a_famille->wife->indi_id)));
-                
+            if($famille_id=g4p_load_parent($a_conjoint, $generation+1, _fulldesc_))
+                fwrite($dot, g4p_print_link(array('f'.$famille_id, 'i'.$a_conjoint->indi_id)));
+        
+    //On remonte l'ascendance la personne en cours
     if($generation<$limite_ascendance)
         if($famille_id=g4p_load_parent($g4p_indi, $generation+1, _fulldesc_))
             fwrite($dot, g4p_print_link(array('f'.$famille_id, 'i'.$g4p_indi->indi_id)));   
