@@ -168,7 +168,7 @@ if(!empty($_GET['output']) and $_GET['output']=='png')
     echo '<a href="arbre_svg.php?id_pers='.$_GET['id_pers'].'&output=png"><img id="arbre" id="arbre" name="arbre" src="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=png" width="100%" style="border:0;margin:0" /></a>';
 elseif(!empty($_GET['output']) and $_GET['output']=='java')
     echo '<Applet id="arbre" code="net.claribole.zgrviewer.ZGRApplet.class" 
-        archive="zvtm-0.9.8.jar,zgrviewer-0.8.2.jar,timingframework-1.0.jar" 
+        archive="zvtm-0.10.0-SNAPSHOT.jar,zgrviewer-0.9.0-SNAPSHOT.jar,timingframework-1.0.jar" 
         width="100%" height="100%">  
         <param name="type" value="application/x-java-Applet;version=1.5" />  
         <param name="scriptable" value="false" />  
@@ -189,6 +189,7 @@ else
     </object>';
 echo '</div>';
 //archive="zvtm-0.10.0-SNAPSHOT.jar,zgrviewer-0.9.0-SNAPSHOT.jar,timingframework-1.0.jar" 
+//archive="zvtm-0.9.8.jar,zgrviewer-0.8.2.jar,timingframework-1.0.jar" 
 //echo '<iframe src="arbre_svg.php?id_pers='.$_GET['id_pers'].'" width="100%" height="700px" ></iframe>';
 /*
 echo '
