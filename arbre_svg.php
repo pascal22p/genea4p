@@ -231,7 +231,7 @@ function g4p_load_enfants($g4p_indi, $generation)
                 {
                     fwrite($dot, g4p_print_label($a_famille->wife));
                     fwrite($dot, g4p_print_family($a_famille));
-                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key),));
+                    fwrite($dot, g4p_print_link(array('i'.$g4p_indi->indi_id, 'f'.$key)));
                     fwrite($dot, g4p_print_link(array('i'.$a_famille->wife->indi_id, 'f'.$key)));                                                
                     $conjoint[]=g4p_load_indi_infos($a_famille->wife->indi_id);
                 }
