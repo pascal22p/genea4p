@@ -16,7 +16,7 @@ if (!isset($g4p_indi))
 
 $liste_nodes=array();
 $liste_links=array();
-$output_list=array('svg'=>'svg', 'png'=>'png', 'pdf'=>'pdf');
+$output_list=array('svg'=>'svg', 'png'=>'png', 'pdf'=>'pdf', 'java'=>'svg');
 $output_headers=array('svg'=>'Content-Type: image/svg+xml', 'png'=>'Content-Type: image/png', 
     'pdf'=>"Content-type: application/pdf");
         
@@ -45,7 +45,8 @@ $dot=fopen('/tmp/'.$dot_filename, 'w');
 fwrite($dot, 'digraph arbre {
     bgcolor="transparent";
     ranksep="1.5";
-    node [shape = record, pad="0.25,0.25"];'."\n");
+    fontname="LiberationSans";
+    node [shape = record, margin="0.45,0.05"];'."\n");
 /*
     dpi="72";
     size="8,100";
@@ -72,7 +73,7 @@ function g4p_print_label($indi, $option=' [style="filled", fillcolor="#ffffff"] 
                     HREF="'.g4p_make_url('','arbre.php','id_pers='.$indi->indi_id.implode('',$tmp),0).'"
                     TARGET="_top" ALIGN="CENTER" TITLE="">
                 <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="12.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
-                <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="9.0">'.$date.'</FONT></TD></TR>
+                <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="9.0" FACE="LiberationSans">'.$date.'</FONT></TD></TR>
                 </TABLE>
                 >]'."\n";        
         else
@@ -106,7 +107,7 @@ function g4p_print_family($famille, $option=' [style="filled", fillcolor="#fffff
                 }
             }   
         }
-        return 'f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="10.0">'.$date.' </FONT> >];'."\n";
+        return 'f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="10.0" FACE="LiberationSans">'.$date.' </FONT> >];'."\n";
     }
     else
         return '';
@@ -289,12 +290,15 @@ fclose($dot);
 shell_exec('dot -T'.$output.' /tmp/'.$dot_filename.' -o /tmp/'.$dot_filename.'.'.$output);
 if($output=='svg')
 {
-    shell_exec('sed -i \'s/font-size:\([0-9.]*\);/font-size:\1px;/g\' /tmp/'.$dot_filename.'.'.$output);
-    shell_exec('sed -i \'s/point-size=\([0-9.]*\);/point-size=\1px;/g\' /tmp/'.$dot_filename.'.'.$output);
+    //shell_exec('sed -i \'s/font-size:\([0-9.]*\);/font-size:\1px;/g\' /tmp/'.$dot_filename.'.'.$output);
+    //shell_exec('sed -i \'s/point-size=\([0-9.]*\);/point-size=\1px;/g\' /tmp/'.$dot_filename.'.'.$output);
     //shell_exec('sed -i \'s/viewBox="\([0-9 .]*\)"//g\' /tmp/'.$dot_filename.'.'.$output);
     //echo '/tmp/'.$dot_filename.'.'.$output;
  }
 readfile('/tmp/'.$dot_filename.'.'.$output);
+
+    
+
 
 //print_r($liste_nodes);
 ?>

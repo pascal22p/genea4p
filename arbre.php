@@ -67,6 +67,7 @@ echo '
     else
         $offset=0;
     echo 'document.getElementById(\'arbre_div\').style.height=(window.innerHeight-'.(210-$offset).')+\'px\';';
+    //echo 'document.getElementById(\'arbre\').style.height=(window.innerHeight-'.(210-$offset).')+\'px\';';
 echo '}
 
 var arbre_width;
@@ -163,7 +164,7 @@ if(empty($_GET['pleinecran']))
 else
     echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('pleinecran').'" >Retour au site</a>';
 
-echo '<div id="arbre_div" >';
+echo '<div id="arbre_div">';
 if(!empty($_GET['output']) and $_GET['output']=='png')
     echo '<a href="arbre_svg.php?id_pers='.$_GET['id_pers'].'&output=png"><img id="arbre" id="arbre" name="arbre" src="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=png" width="100%" style="border:0;margin:0" /></a>';
 elseif(!empty($_GET['output']) and $_GET['output']=='java')
@@ -172,15 +173,13 @@ elseif(!empty($_GET['output']) and $_GET['output']=='java')
         width="100%" height="100%">  
         <param name="type" value="application/x-java-Applet;version=1.5" />  
         <param name="scriptable" value="false" />  
-        <param name="width" value="100%" />  
-        <param name="height" value="100%" />  
         <param name="svgURL" value="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'" />  
         <param name="title" value="zgrviewer - Applet" />  
         <param name="appletBackgroundColor" value="#F1EBDF" />  
         <param name="graphBackgroundColor" value="#F1EBDF" />  
         <param name="highlightColor" value="red" />  
         <param name="displayOverview" value="true" />  
-        <param name="focusNodeMagFactor" value="1.5" />  </Applet> ';
+        <param name="focusNodeMagFactor" value="0.1" />  </Applet> ';
         //<param name="svgURL" value="arbre_svg.svg" />
         //<param name="svgURL" value="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'" />  
 else

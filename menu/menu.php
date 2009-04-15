@@ -2,7 +2,7 @@
 //echo '<div id="navigation">';
 
 echo '
-<ul class="menu">
+<ul class="menu" id="menu">
     <li class="menu">',$g4p_langue['menu_sommaire'],'
     <ul class="ssmenu">
         <li class="ssmenu"><a href="',g4p_make_url('','index.php','base',0),'">',$g4p_langue['menu_liste_base'],'</a></li>

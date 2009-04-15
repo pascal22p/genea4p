@@ -39,7 +39,7 @@ div#content
 {
 	margin-top:10px;
 	margin-bottom:10px;
-	margin-left:24ex;
+	margin-left:30ex;
 	margin-right:10px;
 	background: #e3d2af;
 	border:1px solid #65381B;
@@ -254,7 +254,7 @@ li.menu {
 	padding-top:3px;
 	margin-bottom:10px;
 	text-align:center;
-	width:16ex;
+	width:20ex;
 
 	background-color:#F1EBDF;
 	color:#6A3D21;
