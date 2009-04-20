@@ -432,7 +432,15 @@ function g4p_destroy_cache($fichier='session')
 function g4p_load_indi_infos($id, $debug=false)
 {
 	global $g4p_chemin;
-	static $cache_count;
+	static $cache_count=0;
+    $cache_count++;
+    if($cache_count>_MAX_LOAD_INDI_)
+    {
+        $indi=new g4p_individu(0);
+        $indi->nom='limit exceeded';
+        $indi->prenom='';
+        return $indi;
+    }
 	$g4p_mon_indi=new g4p_individu($id);
 	//$g4p_mon_indi->ignore_cache(true);
 	$g4p_mon_indi->g4p_load();

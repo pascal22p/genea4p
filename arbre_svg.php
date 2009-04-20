@@ -16,9 +16,9 @@ if (!isset($g4p_indi))
 
 $liste_nodes=array();
 $liste_links=array();
-$output_list=array('svg'=>'svg', 'png'=>'png', 'pdf'=>'pdf', 'java'=>'svg');
+$output_list=array('svg'=>'svg', 'png'=>'png', 'pdf'=>'pdf', 'java'=>'svg', 'dot'=>'dot');
 $output_headers=array('svg'=>'Content-Type: image/svg+xml', 'png'=>'Content-Type: image/png', 
-    'pdf'=>"Content-type: application/pdf");
+    'pdf'=>"Content-type: application/pdf", 'dot'=>'Content-Type: text/plain');
         
 if(isset($_GET['limite_ascendance']) and $_GET['limite_ascendance']<25)
     $limite_ascendance=$_GET['limite_ascendance'];
@@ -72,8 +72,8 @@ function g4p_print_label($indi, $option=' [style="filled", fillcolor="#ffffff"] 
                 <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" 
                     HREF="'.g4p_make_url('','arbre.php','id_pers='.$indi->indi_id.implode('',$tmp),0).'"
                     TARGET="_top" ALIGN="CENTER" TITLE="">
-                <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="12.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
-                <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="9.0" FACE="LiberationSans">'.$date.'</FONT></TD></TR>
+                <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="15.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
+                <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="11.0" FACE="LiberationSans">'.$date.'</FONT></TD></TR>
                 </TABLE>
                 >]'."\n";        
         else
@@ -81,7 +81,7 @@ function g4p_print_label($indi, $option=' [style="filled", fillcolor="#ffffff"] 
                 <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" 
                     HREF="'.g4p_make_url('','arbre.php','id_pers='.$indi->indi_id.implode('',$tmp),0).'"
                     TARGET="_top" ALIGN="CENTER"  TITLE="">
-                <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="12.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
+                <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="15.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
                 </TABLE>
                 >]'."\n";                
     }
@@ -107,7 +107,7 @@ function g4p_print_family($famille, $option=' [style="filled", fillcolor="#fffff
                 }
             }   
         }
-        return 'f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="10.0" FACE="LiberationSans">'.$date.' </FONT> >];'."\n";
+        return 'f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="13.0" FACE="LiberationSans">'.$date.' </FONT> >];'."\n";
     }
     else
         return '';
@@ -287,7 +287,10 @@ g4p_load_enfants($g4p_indi,0);
 fwrite($dot, "}\n");
 fclose($dot);
 
-shell_exec('dot -T'.$output.' /tmp/'.$dot_filename.' -o /tmp/'.$dot_filename.'.'.$output);
+if($output!='dot')
+    shell_exec('dot -T'.$output.' /tmp/'.$dot_filename.' -o /tmp/'.$dot_filename.'.'.$output);
+else
+    shell_exec('cp /tmp/'.$dot_filename.' /tmp/'.$dot_filename.'.'.$output);
 if($output=='svg')
 {
     //shell_exec('sed -i \'s/font-size:\([0-9.]*\);/font-size:\1px;/g\' /tmp/'.$dot_filename.'.'.$output);

@@ -97,6 +97,8 @@ define('_NBRE_MAX_PERS_ASCENDANCE_IMPLEXE_',3000);
 define('_NBRE_MAX_GNS_VILLE_',500);
 //Nbres d'enregistrements dans les insertions group�s, les insertions group�es des notes et sources sont divis� par 10
 define('_NBRE_MYSQL_ENR_',500);
+//nombre maxi de personnes chargés en mémoire
+define('_MAX_LOAD_INDI_',5000);
 
 //couleurs utilis�es pour la liste de descendance
 $g4p_couleur[]='#000000';

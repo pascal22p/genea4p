@@ -63,6 +63,7 @@ function recursive_ascendance($g4p_id, $generation=1, $sosa=1)
     $g4p_liste_personnes[$generation][$g4p_indi_info->indi_id]['nom']=$g4p_indi_info->nom;
     $g4p_liste_personnes[$generation][$g4p_indi_info->indi_id]['prenom']=$g4p_indi_info->prenom;
     $g4p_liste_personnes[$generation][$g4p_indi_info->indi_id]['date']=$g4p_indi_info->date_rapide();
+    $g4p_liste_personnes[$generation][$g4p_indi_info->indi_id]['link_nom']=g4p_link_nom($g4p_indi_info);
   }
   else
   {
@@ -134,8 +135,7 @@ foreach($g4p_liste_personnes as $g4p_generation=>$g4p_liste_generation)
     echo '<ul>';
     foreach($g4p_liste_generation as $g4p_a_personne)
     {
-        $tmp_indi=g4p_load_indi_infos($g4p_a_personne['indi_id']);
-        echo '<li><strong>',number_format($g4p_a_personne['sosa'],0,',',' '),'</strong> - ',g4p_link_nom($tmp_indi);
+        echo '<li><strong>',number_format($g4p_a_personne['sosa'],0,',',' '),'</strong> - ',$g4p_a_personne['link_nom'];
         if($_GET['implexe']==1 and count($g4p_sosa[$g4p_a_personne['indi_id']])>1)
         {
             echo ' <span style="font-size:smaller; color:blue;">',$g4p_langue['liste_asc_implexe'];

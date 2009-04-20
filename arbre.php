@@ -158,7 +158,8 @@ else
 echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('output').'" >svg</a>  
 | <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=png" >png</a>  
 | <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=java" >java</a>  
-| <a href="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=pdf" >pdf</a>';
+| <a href="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=pdf" >pdf</a>
+| <a href="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=dot" >dot</a>';
 if(empty($_GET['pleinecran']))
     echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('pleinecran').'&pleinecran=1" >Plein écran</a>';
 else
@@ -166,7 +167,7 @@ else
 
 echo '<div id="arbre_div">';
 if(!empty($_GET['output']) and $_GET['output']=='png')
-    echo '<a href="arbre_svg.php?id_pers='.$_GET['id_pers'].'&output=png"><img id="arbre" id="arbre" name="arbre" src="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=png" width="100%" style="border:0;margin:0" /></a>';
+    echo '<a href="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('id_pers').'"><img id="arbre" id="arbre" name="arbre" src="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=png" width="100%" style="border:0;margin:0" /></a>';
 elseif(!empty($_GET['output']) and $_GET['output']=='java')
     echo '<Applet id="arbre" code="net.claribole.zgrviewer.ZGRApplet.class" 
         archive="zvtm-0.10.0-SNAPSHOT.jar,zgrviewer-0.9.0-SNAPSHOT.jar,timingframework-1.0.jar" 
