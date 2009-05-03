@@ -48,7 +48,7 @@ $file=uniqid();
 $latex=fopen('/tmp/'.$file.'.tex','w');
 fwrite($latex,'\documentclass[a4paper,12pt]{article}
 %\usepackage[onlymath,mathlf]{MinionPro}
-\usepackage{mathrsfs}
+%\usepackage{mathrsfs}
 \usepackage{fontspec}
 %\setmainfont{Minion Pro}
 %\setsansfont[BoldFont={%
