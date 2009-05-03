@@ -510,22 +510,27 @@ class g4p_individu
         $g4p_mysqli->autocommit(false);
         $sql="DELETE FROM genea_cache_deps WHERE indi_id=".$this->indi_id;
         $g4p_mysqli->query($sql);
-        $sql="INSERT INTO genea_cache_deps (indi_id, indi_dep) VALUES ".implode(',',$deps);
-        if($g4p_mysqli->query($sql))
+        if(!empty($deps))
         {
-            if(file_put_contents($g4p_chemin.'cache/indis/indi_'.$this->indi_id.'.txt',serialize($this),LOCK_EX))
-                $g4p_mysqli->commit();
+            $sql="INSERT INTO genea_cache_deps (indi_id, indi_dep) VALUES ".implode(',',$deps);
+            if($g4p_mysqli->query($sql))
+            {
+                if(file_put_contents($g4p_chemin.'cache/indis/indi_'.$this->indi_id.'.txt',serialize($this),LOCK_EX))
+                    $g4p_mysqli->commit();
+                else
+                {
+                    die('impossible d\'écrire le fichier de cache');
+                    $g4p_mysqli->rollback();        
+                }
+            }
             else
             {
-                die('impossible d\'écrire le fichier de cache');
+                die('impossible d\'insérer les deps de cache en base '.$g4p_mysqli->error.' <br> '.$sql);
                 $g4p_mysqli->rollback();        
             }
         }
         else
-        {
-            die('impossible d\'insérer les deps de cache en base');
-            $g4p_mysqli->rollback();        
-        }
+            $g4p_mysqli->commit();
 	}
 	
 	function __SLEEP()	

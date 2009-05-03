@@ -6,7 +6,8 @@
 
 .treeview ul {
 	background-color: transparent;
-	margin-top: 4px;
+	margin-top: 2px;
+	margin-bottom:0.3em;
 }
 
 .treeview .hitarea {
@@ -25,21 +26,16 @@
 
 .treeview li { 
 	margin: 0;
-	padding: 3px 0pt 3px 16px;
+	padding: 3px 0pt 0px 16px;
 }
 
 .treeview a.selected {
 	background-color: #eee;
 }
 
-.treeview * a
-{
-	font-size:small;
-}
-
 #treecontrol { margin: 1em 0; display: none; }
 
-.treeview .hover { color: red; cursor: pointer; }
+.treeview .hover { cursor: pointer; }
 
 .treeview li { background: url(images/treeview-default-line.gif) 0 0 no-repeat; }
 .treeview li.collapsable, .treeview li.expandable { background-position: 0 -176px; }

@@ -1,6 +1,6 @@
 <?php
 
-$g4p_chemin='';
+$g4p_chemin='../';
 // $g4p_chemin='modules/genea4p/';
 
 require_once($g4p_chemin.'p_conf/g4p_config.php');
@@ -35,13 +35,13 @@ echo '[';
                 }
                 if($exist_desc)
                 {
-                    $tmp='<img src="'.$g4p_chemin.'images/'.$tmp_indi2->sexe.'.png" alt="'.
+                    $tmp='<img src="images/'.$tmp_indi2->sexe.'.png" alt="'.
                         $tmp_indi2->sexe.'" class="icone_sexe" /> '.g4p_link_nom($a_enfant['indi']);
                             
                     if(isset($a_famille->husb->indi_id)  and $a_famille->husb->indi_id!=$tmp_indi2->indi_id)
-                        $tmp.=' <img src="'.$g4p_chemin.'images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($a_famille->husb);
+                        $tmp.=' <img src="images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($a_famille->husb);
                     elseif(isset($a_famille->wife->indi_id)  and $a_famille->wife->indi_id!=$tmp_indi2->indi_id)
-                        $tmp.=' <img src="'.$g4p_chemin.'images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($a_famille->wife);
+                        $tmp.=' <img src="images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($a_famille->wife);
                     $leaf[]='{'.
                     "'text':'".addslashes($tmp)."',".
                     "'id': '".$a_enfant['indi']->indi_id."',".
@@ -50,7 +50,7 @@ echo '[';
                 }
                 else
                 {
-                    $tmp='<img src="'.$g4p_chemin.'images/'.$tmp_indi2->sexe.'.png" alt="'.
+                    $tmp='<img src="images/'.$tmp_indi2->sexe.'.png" alt="'.
                         $tmp_indi2->sexe.'" class="icone_sexe" /> '.g4p_link_nom($a_enfant['indi']);
                     $leaf[]='{'.
                         "'text':'".addslashes($tmp)."'".

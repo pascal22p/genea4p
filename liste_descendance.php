@@ -22,7 +22,7 @@ $g4p_javascript='
 		
 		$("#mixed").treeview({
 			control: "#treecontrol",
-			url: "liste_descendance_ajax.php",
+			url: "ajax/liste_descendance_ajax.php",
 			// add some additional, dynamic data and request with POST
 			ajax: {
 				type: "get"
@@ -84,7 +84,7 @@ function recursive_descendance($g4p_id, $generation=1)
             {
                 if($generation<$_GET['g4p_generation'] and $generation<_NBRE_MAX_GENERATION_)
                 {
-                    echo '<li class="open"><img src="'.$g4p_chemin.'images/'.$g4p_indi_info->sexe.'.png" alt="'.
+                    echo '<li class="open" class="liste_descendance"><img src="'.$g4p_chemin.'images/'.$g4p_indi_info->sexe.'.png" alt="'.
                         $g4p_indi_info->sexe.'" class="icone_sexe" /> '.g4p_link_nom($g4p_indi_info->indi_id);
                     if(isset($g4p_une_famille->husb->indi_id)  and $g4p_une_famille->husb->indi_id!=$g4p_indi_info->indi_id)
                         echo ' <img src="'.$g4p_chemin.'images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($g4p_une_famille->husb);
@@ -97,7 +97,7 @@ function recursive_descendance($g4p_id, $generation=1)
                 }
                 else
                 {
-                    echo '<li id="'.$g4p_indi_info->indi_id.'" class="hasChildren"><img src="'.$g4p_chemin.'images/'.$g4p_indi_info->sexe.'.png" alt="'.
+                    echo '<li id="'.$g4p_indi_info->indi_id.'" class="hasChildren" class="liste_descendance"><img src="'.$g4p_chemin.'images/'.$g4p_indi_info->sexe.'.png" alt="'.
                     $g4p_indi_info->sexe.'" class="icone_sexe" /> '.g4p_link_nom($g4p_indi_info->indi_id);
                     if(isset($g4p_une_famille->husb->indi_id)  and $g4p_une_famille->husb->indi_id!=$g4p_indi_info->indi_id)
                         echo ' <img src="'.$g4p_chemin.'images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($g4p_une_famille->husb);
@@ -110,7 +110,7 @@ function recursive_descendance($g4p_id, $generation=1)
             }
             else
             {
-                echo '<li><img src="'.$g4p_chemin.'images/'.$g4p_indi_info->sexe.'.png" alt="'.
+                echo '<li class="liste_descendance"><img src="'.$g4p_chemin.'images/'.$g4p_indi_info->sexe.'.png" alt="'.
                 $g4p_indi_info->sexe.'" class="icone_sexe" /> '.g4p_link_nom($g4p_indi_info->indi_id);
                 if(isset($g4p_une_famille->husb->indi_id)  and $g4p_une_famille->husb->indi_id!=$g4p_indi_info->indi_id)
                     echo ' <img src="'.$g4p_chemin.'images/mariage.png" alt="mariage" class="icone_mar" /> '.g4p_link_nom($g4p_une_famille->husb);
@@ -144,7 +144,7 @@ echo '<li id="treecontrol">
 	</li></ul>';
 
 
-echo '<ul id="mixed">';
+echo '<ul id="mixed" class="liste_descendance">';
 $g4p_limite_pers=0;
 recursive_descendance($g4p_indi->indi_id);
 echo '</ul>';

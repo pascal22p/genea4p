@@ -49,7 +49,8 @@ if (isset($g4p_indi->indi_id))
         <li class="ssmenu"><a href="',g4p_make_url('','liste_descendance.php','id_pers='.$g4p_indi->indi_id,'liste_descendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_liste_desc'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','liste_ascendance.php','id_pers='.$g4p_indi->indi_id,'liste_ascendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_liste_asc'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','arbre.php','id_pers='.$g4p_indi->indi_id,0),'">Arbre</a></li>
-        <li class="ssmenu"><a href="',g4p_make_url('','fiche_individuelle.php','id_pers='.$g4p_indi->indi_id,0),'">',$g4p_langue['menu_fiche'],'</a></li>';
+        <li class="ssmenu"><a href="',g4p_make_url('','fiche_individuelle.php','id_pers='.$g4p_indi->indi_id,0),'">',$g4p_langue['menu_fiche'],'</a></li>
+        <li class="ssmenu"><a href="',g4p_make_url('','fiche_individuelle_pdf.php','id_pers='.$g4p_indi->indi_id,0),'">Fiche indi. (PDF)</a></li>';
     echo '  
         </ul>
         </li>';
