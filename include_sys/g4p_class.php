@@ -723,9 +723,14 @@ class g4p_individu
 				return NULL;
 			
 			if(!empty($deces) and !empty($naissance))
-				$naissance.=' - ';
+				$sep=' - ';
+            else
+                $sep='';
 			
-			return '('.$naissance.$deces.')';
+            if($format=='array')
+                return array('naissance'=>$naissance,'deces'=>$deces);
+            else
+                return '('.$naissance.$sep.$deces.')';
 		}
 		else
 			return NULL;

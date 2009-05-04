@@ -49,8 +49,7 @@ if (isset($g4p_indi->indi_id))
         <li class="ssmenu"><a href="',g4p_make_url('','liste_descendance.php','id_pers='.$g4p_indi->indi_id,'liste_descendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_liste_desc'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','liste_ascendance.php','id_pers='.$g4p_indi->indi_id,'liste_ascendance-'.$_SESSION['genea_db_id'].'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id),'">',$g4p_langue['menu_voir_liste_asc'],'</a></li>
         <li class="ssmenu"><a href="',g4p_make_url('','arbre.php','id_pers='.$g4p_indi->indi_id,0),'">Arbre</a></li>
-        <li class="ssmenu"><a href="',g4p_make_url('','fiche_individuelle.php','id_pers='.$g4p_indi->indi_id,0),'">',$g4p_langue['menu_fiche'],'</a></li>
-        <li class="ssmenu"><a href="',g4p_make_url('','fiche_individuelle_pdf.php','id_pers='.$g4p_indi->indi_id,0),'">Fiche indi. (PDF)</a></li>';
+        <li class="ssmenu"><a href="',g4p_make_url('','fiche_individuelle.php','id_pers='.$g4p_indi->indi_id,0),'">',$g4p_langue['menu_fiche'],'</a></li>';
     echo '  
         </ul>
         </li>';
@@ -81,15 +80,12 @@ echo '
     <li class="menu">',$g4p_langue['menu_telecharger'],'
     <ul class="ssmenu">
         <li class="ssmenu"><a href="',g4p_make_url('','download.php','',0),'">',$g4p_langue['menu_telecharger_rapports'],'</a></li>';
-
-if (isset($g4p_indi->indi_id) and $_SESSION['permission']->permission[_PERM_PDF_])
-    echo '   
-        <li class="ssmenu"><a href="',g4p_make_url('tcpdf','fiche_individuelle.php','g4p_id='.$g4p_indi->indi_id,0),'">',$g4p_langue['menu_telecharger_pdfi'],'</a></li>';
-if (isset($g4p_indi->indi_id) and $_SESSION['permission']->permission[_PERM_PDF_])
-    echo '   
-        <li class="ssmenu"><a href="',g4p_make_url('','arbre_ascendant_pdf.php','g4p_id='.$g4p_indi->indi_id,0),'">',$g4p_langue['menu_telecharger_arbre_asc_pdf'],'</a></li>';
-/*if ($_SESSION['permission']->permission[_PERM_DOT_])
-  echo '<li class="ssmenu"><a href="',g4p_make_url('','export_dot.php','',0),'">',$g4p_langue['menu_telecharger_dot'],'</a></li>';*/
+        if (isset($g4p_indi->indi_id))
+        {
+            echo '<li class="ssmenu"><a href="',g4p_make_url('','fiche_individuelle_pdf.php','id_pers='.$g4p_indi->indi_id,0),'">Fiche individuelle (PDF)</a></li>
+            <li class="ssmenu"><a href="',g4p_make_url('','arbre_ascendant_pdf.php','id_pers='.$g4p_indi->indi_id,0),'">Arbre ascendant (PDF)</a></li>
+            ';
+        }
 
 echo '  
     </ul>

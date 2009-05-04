@@ -5,10 +5,15 @@ function g4p_link_nom_latex($indi)
     if(!is_object($indi))
         $indi=g4p_load_indi_infos($indi);
        
-    $return='\hyperlink{I'.$indi->indi_id.'}{'.$indi->nom.' '.$indi->prenom.'}';
+    $return=g4p_link('I'.$indi->indi_id,$indi->nom.' '.$indi->prenom);
     $tmp=$indi->date_rapide();
     if(!empty($tmp)) $return.=' \begin{footnotesize}\textit{'.$tmp.'}\end{footnotesize}';
     return $return;
+}
+
+function g4p_link($target, $text)
+{
+    return '\hyperlink{'.$target.'}{'.$text.'}';
 }
 
 function g4p_write_event($event)
@@ -104,7 +109,7 @@ function g4p_write_source($a_source)
     global $latex, $g4p_tag_def;
     //var_dump($a_source);
     
-    fwrite($latex, '\begin{boite}{LightBlue}%'."\n");
+    fwrite($latex, '\begin{boite}[LightBlue]%'."\n");
     fwrite($latex, '\begin{footnotesize}'."\n");
     fwrite($latex, '\noindent\textit{Source citation} '."\n");
     fwrite($latex, '\begin{description}'."\n");
@@ -188,7 +193,7 @@ function g4p_write_source($a_source)
 function g4p_write_note($a_note)
 {
     global $latex, $g4p_tag_def;
-    fwrite($latex, '\begin{boite}{LightBlue}%'."\n");
+    fwrite($latex, '\begin{boite}[LightBlue]%'."\n");
     fwrite($latex, '\begin{footnotesize}'."\n");
     fwrite($latex, '\noindent\textit{Note}'."\n");
     fwrite($latex, $a_note->text."\n");
@@ -206,12 +211,12 @@ function g4p_write_media($a_media)
     global $latex, $g4p_config;
 
     fwrite($latex, "\n");
-    fwrite($latex, '\begin{boite}{LightGreen}'."\n");
+    fwrite($latex, '\begin{boite}[LightGreen]'."\n");
     fwrite($latex, '\begin{footnotesize}'."\n");
     fwrite($latex, '\noindent\textit{Média} ');
     fwrite($latex, $a_media->title."\\newline\n");
     if(!empty($a_media->file) and file_exists($g4p_config['g4p_path'].'/cache/'.$_SESSION['genea_db_nom'].'/objets/'.$a_media->file))
-        fwrite($latex, '\begin{center}\includegraphics[width=0.95\linewidth]{'.$g4p_config['g4p_path'].'/cache/'.$_SESSION['genea_db_nom'].'/objets/'.$a_media->file.'}\end{center}'."\n");
+        fwrite($latex, '\begin{center}\limitbox{0.95\textwidth}{0.75\textheight}{\includegraphics{'.$g4p_config['g4p_path'].'/cache/'.$_SESSION['genea_db_nom'].'/objets/'.$a_media->file.'}}\end{center}'."\n");
     else
         fwrite($latex, '\begin{center}Fichier introuvable : <<\,'.$g4p_config['g4p_path'].'/cache/'.$_SESSION['genea_db_nom'].'/objets/'.$a_media->file.'\,>>\end{center}'."\n");
     fwrite($latex, '\end{footnotesize}'."\n");

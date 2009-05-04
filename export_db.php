@@ -62,35 +62,25 @@ $genea_db_nom=$g4p_base_select[0]['nom'];
 
 // Les requètes SQL
 $sql="SELECT indi_id
-         FROM genea_individuals WHERE base=".(int)$_REQUEST['base']." AND indi_resn IS NULL ORDER BY indi_nom, indi_prenom";
+         FROM genea_individuals WHERE base=".(int)$_REQUEST['base']." AND indi_resn IS NULL 
+         ORDER BY indi_nom, indi_prenom";
 $g4p_infos_req=$g4p_mysqli->g4p_query($sql);
 $g4p_liste_indis=$g4p_mysqli->g4p_result($g4p_infos_req);
 
 // le serveur va souffrir... Si le cache est vide, des miliers de requètes vont être exécutés.
 
-//$file=uniqid();
-$file='test';
+$file=uniqid();
+//$file='test';
 $latex=fopen('/tmp/'.$file.'.tex','w');
 fwrite($latex,'\documentclass[a4paper,12pt]{article}
-\usepackage[onlymath,mathlf]{MinionPro}
-\usepackage{mathrsfs}
-\usepackage[no-math]{fontspec}
-\defaultfontfeatures{Scale=MatchLowercase, Mapping=tex-text}
-\setmainfont{Minion Pro}
-\setsansfont[BoldFont={%
-  Myriad Pro Semibold}, BoldItalicFont={%
-  Myriad Pro Semibold Italic}]{Myriad Pro}
-\setmonofont{Luxi Mono}
+\usepackage{fontspec}
 \usepackage{xltxtra} % charge aussi fontspec et xunicode, nécessaires... 
 \usepackage{hyperref}
 \usepackage{framed}
 \usepackage{color}
-%\definecolor{shadecolor}{rgb}{0.94,0.94,0.99} 
 \usepackage{titlesec}
 \usepackage{underscore}
 \usepackage{graphicx}
-\usepackage{boites}
-\usepackage{pstricks}
 \usepackage{geometry}
 \geometry{hmargin=2.5cm, vmargin=3cm}
 
@@ -116,31 +106,27 @@ fwrite($latex,'\documentclass[a4paper,12pt]{article}
 \makeatletter
 \newcommand{\\affichedate}[1]{#1}
 
-\makeatletter
-\newrgbcolor{LightBlue}{0.94 0.94 1}
-\newrgbcolor{LightGreen}{0.94 1 0.94}
-%% Seconde modification
-\def\boite#1{%
-  %\fboxrule=0.4pt
-  \def\bkvz@before@breakbox{\ifhmode\par\fi\vskip\breakboxskip\relax}%
-  \def\bkvz@set@linewidth{\advance\linewidth -2\fboxrule 
-    \advance\linewidth -2\fboxsep
-    \advance\linewidth -1cm}%
-  \def\bkvz@left{\hspace{0.5cm}}%
-\def\bk@line{\hbox to \linewidth{%
-      \ifbkcount\smash{\llap{\the\bk@lcnt\ }}\fi
-      \hspace{0.5cm}\psframebox*[framesep=0pt,fillcolor=#1,linewidth=0]{%
-        \hskip\fboxsep
-        \box\bk@bxa
-        \hskip\fboxsep 
-        }%
-      }}%
-  \def\bkvz@right{}%
-  \def\bkvz@top{}%
-  \def\bkvz@bottom{}%
-  \breakbox
+\newcommand*{\limitbox}[3]{%
+  \begingroup
+    \setlength{\@tempdima}{#1}%
+    \setlength{\@tempdimb}{#2}%
+    \resizebox{%
+      \ifdim\width>\@tempdima\@tempdima\else\width\fi
+    }{!}{%
+      \resizebox{!}{%
+        \ifdim\height>\@tempdimb\@tempdimb\else\height\fi
+      }{#3}%
+    }%
+  \endgroup
 }
-\def\endboite{\endbreakbox}
+
+\definecolor{LightBlue}{rgb}{0.94,0.94,1}
+\definecolor{LightGreen}{rgb}{0.9,1,0.9}
+
+\newenvironment{boite}[1][LightGreen]{%
+  \def\FrameCommand{\fboxsep=\FrameSep \colorbox{#1}}%
+  \MakeFramed {\hsize0.9\textwidth\FrameRestore}}%
+{\endMakeFramed}
 
 \makeatother
 
@@ -175,15 +161,24 @@ foreach($g4p_liste_indis as $indi_id)
 fwrite($latex,'\end{document}');
 fclose($latex);
 
-header('Content-Type: text/plain');
 shell_exec('sed -i \'s/\$//\' /tmp/'.$file.'.tex');
 shell_exec('sed -i \'s/\&//\' /tmp/'.$file.'.tex');
-//shell_exec('sed -i \'s/\#//\' /tmp/'.$file.'.tex');
-readfile('/tmp/'.$file.'.tex');
 
-//header('Content-Type: text/plain');
-//readfile($file.'.pdf');
-//shell_exec('xelatex -interaction=nonstopmode -output-directory=/tmp '.$file.'.tex');
+header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+
+$output=shell_exec('xelatex -interaction=nonstopmode -output-directory=/tmp /tmp/'.$file.'.tex');
+if(file_exists('/tmp/'.$file.'.pdf'))
+{
+    header('Content-type: application/pdf');
+    readfile('/tmp/'.$file.'.pdf');
+}
+else
+{
+    header('Content-Type: text/plain');
+    echo $output;
+}
+
 
 ?>
 
