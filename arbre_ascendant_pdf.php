@@ -41,6 +41,7 @@ function g4p_write_parents($mon_indi,$generation=0)
     {
         foreach($mon_indi->parents as $parents)
         {
+            $pere_arbre=$mere_arbre='';
             if(empty($parents->rela_type) or $parents->rela_type=='birth')
             {
                 //pere
