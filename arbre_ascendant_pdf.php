@@ -112,9 +112,9 @@ function g4p_ascendance($mon_indi)
     $date=$mon_indi->date_rapide('array');
     
     if($mon_indi->sexe=='M')
-        fwrite($latex,'\node[bag, fill=blue!5] {'.$g4p_nom_aff.' \\\\ '.$date['naissance'].' \\\\ '.$date['deces'].'}');
+        fwrite($latex,'\node[bag, fill=blue!5] {'.g4p_link('I'.$mon_indi->indi_id,$g4p_nom_aff).' \\\\ '.$date['naissance'].' \\\\ '.$date['deces'].'}');
     else
-        fwrite($latex,'\node[bag, fill=red!5] {'.$g4p_nom_aff.' \\\\ '.$date['naissance'].' \\\\ '.$date['deces'].'}');
+        fwrite($latex,'\node[bag, fill=red!5] {'.g4p_link('I'.$mon_indi->indi_id,$g4p_nom_aff).' \\\\ '.$date['naissance'].' \\\\ '.$date['deces'].'}');
         
 
     $ascd=g4p_write_parents($mon_indi);
