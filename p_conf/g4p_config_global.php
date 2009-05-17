@@ -71,6 +71,8 @@ $g4p_config['g4p_type_install']='seule';
 
 /*----------------------------------*/
 
+date_default_timezone_set('Europe/Paris');
+
 //constantes
 
 // nombre de nom afficher par page
