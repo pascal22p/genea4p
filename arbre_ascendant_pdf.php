@@ -61,9 +61,9 @@ function g4p_write_parents($mon_indi,$generation=0)
                         
                     $pere_arbre="\n".'child {';
                     if($generation!=4)
-                        $pere_arbre.="\n".'node[bag, fill=blue!5] {\limitbox{3.9cm}{2cm}{'.g4p_link('I'.$pere->indi_id,$g4p_nom_aff).'}'.$date['naissance'].$date['deces'].'}';
+                        $pere_arbre.="\n".'node[leaf, fill=blue!5] {\limitbox{3.9cm}{2cm}{'.g4p_latex_link('I'.$pere->indi_id,$g4p_nom_aff).'}'.$date['naissance'].$date['deces'].'}';
                     else
-                        $pere_arbre.="\n".'node[bag, fill=blue!5] {\limitbox{3.9cm}{2cm}{'.g4p_link('I'.$pere->indi_id,$g4p_nom_aff).'}}';
+                        $pere_arbre.="\n".'node[leaf, fill=blue!5] {\limitbox{3.9cm}{2cm}{'.g4p_latex_link('I'.$pere->indi_id,$g4p_nom_aff).'}}';
                     if($generation<4)
                         $pere_arbre.=g4p_write_parents($pere,$generation+1);
                     $pere_arbre.="\nedge from parent\n}";
@@ -85,9 +85,9 @@ function g4p_write_parents($mon_indi,$generation=0)
                     
                     $mere_arbre="\n".'child {';
                     if($generation!=4)
-                        $mere_arbre.="\n".'node[bag, fill=red!5] {\limitbox{3.9cm}{2cm}{'.g4p_link('I'.$mere->indi_id,$g4p_nom_aff).'}'.$date['naissance'].$date['deces'].'}';
+                        $mere_arbre.="\n".'node[leaf, fill=red!5] {\limitbox{3.9cm}{2cm}{'.g4p_latex_link('I'.$mere->indi_id,$g4p_nom_aff).'}'.$date['naissance'].$date['deces'].'}';
                     else
-                        $mere_arbre.="\n".'node[bag, fill=red!5] {\limitbox{3.9cm}{2cm}{'.g4p_link('I'.$mere->indi_id,$g4p_nom_aff).'}}';
+                        $mere_arbre.="\n".'node[leaf, fill=red!5] {\limitbox{3.9cm}{2cm}{'.g4p_latex_link('I'.$mere->indi_id,$g4p_nom_aff).'}}';
                     if($generation<4)
                         $mere_arbre.=g4p_write_parents($mere,$generation+1);
                     $mere_arbre.="\nedge from parent\n}";
@@ -112,9 +112,9 @@ function g4p_ascendance($mon_indi)
     $date=$mon_indi->date_rapide('array');
     
     if($mon_indi->sexe=='M')
-        fwrite($latex,'\node[bag, fill=blue!5] {\limitbox{3.9cm}{2cm}{'.g4p_link('I'.$mon_indi->indi_id,$g4p_nom_aff).'} \\\\ '.$date['naissance'].' \\\\ '.$date['deces'].'}');
+        fwrite($latex,'\node[leaf, fill=blue!5] {\limitbox{3.9cm}{2cm}{'.g4p_latex_link('I'.$mon_indi->indi_id,$g4p_nom_aff).'} \\\\ '.$date['naissance'].' \\\\ '.$date['deces'].'}');
     else
-        fwrite($latex,'\node[bag, fill=red!5] {\limitbox{3.9cm}{2cm}{'.g4p_link('I'.$mon_indi->indi_id,$g4p_nom_aff).'} \\\\ '.$date['naissance'].' \\\\ '.$date['deces'].'}');
+        fwrite($latex,'\node[leaf, fill=red!5] {\limitbox{3.9cm}{2cm}{'.g4p_latex_link('I'.$mon_indi->indi_id,$g4p_nom_aff).'} \\\\ '.$date['naissance'].' \\\\ '.$date['deces'].'}');
         
 
     $ascd=g4p_write_parents($mon_indi);
@@ -140,85 +140,9 @@ if($_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi->resn=='p
 $file=uniqid();
 //$file='test';
 $latex=fopen('/tmp/'.$file.'.tex','w');
-fwrite($latex,'\documentclass[a4paper,10pt]{article}
-\usepackage{fontspec}
-\usepackage{xltxtra} % charge aussi fontspec et xunicode, nécessaires... 
-\usepackage{hyperref}
-\usepackage{framed}
-\usepackage{color}
-\usepackage{titlesec}
-\usepackage{underscore}
-\usepackage{graphicx}
-\usepackage{geometry}
-\geometry{hmargin=2.5cm, top=2cm, bottom=2cm}
-\usepackage{tikz}
-\usetikzlibrary{trees}
-\hypersetup{ % Modifiez la valeur des champs suivants
-    pdfauthor   = {Pascal Parois},%
-    pdftitle    = {},%
-    pdfsubject  = {},%
-    pdfkeywords = {},%
-    pdfcreator  = {XeLaTeX},%
-    pdfproducer = {XeLaTeX},
-    bookmarks         = false,%     % Signets
-    bookmarksnumbered = false,%     % Signets numerote
-    pdfpagemode       = UseOutlines,%     % Signets/vignettes ferme a l\'ouverture
-    bookmarksopen	= false,
-    pdfstartview      = FitH,%     % La page prend toute la largeur
-    pdfpagelayout     = SinglePage,% Vue par page
-    colorlinks        = true,%     % Liens en couleur
-    linkcolor         = blue,
-    pdfborder         = {0 0 0}%   % Style de bordure : ici, pas de bordure
-} 
-\usepackage[francais]{babel}
+fwrite($latex,g4p_latex_write_header());
 
-
-\makeatletter
-\newcommand{\\affichedate}[1]{#1}
-
-\newcommand*{\limitbox}[3]{%
-  \begingroup
-    \setlength{\@tempdima}{#1}%
-    \setlength{\@tempdimb}{#2}%
-    \resizebox{%
-      \ifdim\width>\@tempdima\@tempdima\else\width\fi
-    }{!}{%
-      \resizebox{!}{%
-        \ifdim\height>\@tempdimb\@tempdimb\else\height\fi
-      }{#3}%
-    }%
-  \endgroup
-}
-\definecolor{LightBlue}{rgb}{0.94,0.94,1}
-\definecolor{LightGreen}{rgb}{0.9,1,0.9}
-
-\newenvironment{boite}[1][LightGreen]{%
-  \def\FrameCommand{\fboxsep=\FrameSep \colorbox{#1}}%
-  \MakeFramed {\hsize0.9\textwidth\FrameRestore}}%
-{\endMakeFramed}
-
-\makeatother
-
-\titleformat{\section}
-{\vspace{3cm}\titlerule[2pt]
-\vspace{.8ex}%
-\Huge\bfseries\filleft}
-{\thesection.}{1em}{}
-
-\titleformat{\subsection}
-{\vspace{0.5cm}%
-\LARGE\itshape}
-{\thesection.}{1em}{}
-
-\titleformat{\subsubsection}
-{%
-\Large\itshape}
-{\thesection.}{0.5em}{}
-
-\setlength{\parindent}{0pt}
-
-\begin{document}
-\section*{Ascendance '.$g4p_indi->prenom.' '.$g4p_indi->nom.'}
+fwrite($latex,'\section*{Ascendance '.$g4p_indi->prenom.' '.$g4p_indi->nom.'}
 % Set the overall layout of the tree
 \tikzstyle{level 1}=[level distance=0.5cm, sibling distance=12cm, anchor=center]
 \tikzstyle{level 2}=[level distance=1cm, sibling distance=6cm]
@@ -226,8 +150,8 @@ fwrite($latex,'\documentclass[a4paper,10pt]{article}
 \tikzstyle{level 4}=[level distance=4.7cm, sibling distance=1.5cm]
 \tikzstyle{level 5}=[level distance=4.4cm, sibling distance=0.6cm]
 
-% Define styles for bags and leafs
-\tikzstyle{bag} = [fill=white, text centered, inner sep=1mm, outer sep=0mm, draw]
+% Define styles for leafs
+\tikzstyle{leaf} = [fill=white, text centered, inner sep=1mm, outer sep=0mm, draw]
 ');
 
 $liste_indi=array();
@@ -243,7 +167,7 @@ $genea_db_nom=$g4p_base_select[0]['nom'];
 
 foreach($liste_indi as $indi)
 {
-    g4p_write_indi($indi);
+    g4p_latex_write_indi($indi);
 }
 
 fwrite($latex,'\end{document}');

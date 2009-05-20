@@ -1,28 +1,110 @@
 <?php
 
-function g4p_link_nom_latex($indi)
+function g4p_latex_link_nom($indi)
 {
     if(!is_object($indi))
         $indi=g4p_load_indi_infos($indi);
        
-    $return=g4p_link('I'.$indi->indi_id,$indi->nom.' '.$indi->prenom);
+    $return=g4p_latex_link('I'.$indi->indi_id,$indi->nom.' '.$indi->prenom);
     $tmp=$indi->date_rapide();
     if(!empty($tmp)) $return.=' \begin{footnotesize}\textit{'.$tmp.'}\end{footnotesize}';
     return $return;
 }
 
-function g4p_link($target, $text)
+function g4p_latex_link($target, $text)
 {
     return '\hyperlink{'.$target.'}{'.$text.'}';
 }
 
-function g4p_write_event($event)
+function g4p_latex_write_header()
+{   
+    return '\documentclass[a4paper,10pt]{article}
+\usepackage{fontspec}
+\usepackage{xltxtra} % charge aussi fontspec et xunicode, nécessaires... 
+\usepackage{hyperref}
+\usepackage{framed}
+\usepackage{color}
+\usepackage{titlesec}
+\usepackage{underscore}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{hmargin=2.5cm, top=2cm, bottom=2cm}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\hypersetup{ % Modifiez la valeur des champs suivants
+    pdfauthor   = {Pascal Parois},%
+    pdftitle    = {},%
+    pdfsubject  = {},%
+    pdfkeywords = {},%
+    pdfcreator  = {XeLaTeX},%
+    pdfproducer = {XeLaTeX},
+    bookmarks         = false,%     % Signets
+    bookmarksnumbered = false,%     % Signets numerote
+    pdfpagemode       = UseOutlines,%     % Signets/vignettes ferme a l\'ouverture
+    bookmarksopen	= false,
+    pdfstartview      = FitH,%     % La page prend toute la largeur
+    pdfpagelayout     = SinglePage,% Vue par page
+    colorlinks        = true,%     % Liens en couleur
+    linkcolor         = blue,
+    pdfborder         = {0 0 0}%   % Style de bordure : ici, pas de bordure
+} 
+\usepackage[francais]{babel}
+
+
+\makeatletter
+\newcommand{\\affichedate}[1]{#1}
+
+\newcommand*{\limitbox}[3]{%
+  \begingroup
+    \setlength{\@tempdima}{#1}%
+    \setlength{\@tempdimb}{#2}%
+    \resizebox{%
+      \ifdim\width>\@tempdima\@tempdima\else\width\fi
+    }{!}{%
+      \resizebox{!}{%
+        \ifdim\height>\@tempdimb\@tempdimb\else\height\fi
+      }{#3}%
+    }%
+  \endgroup
+}
+\definecolor{LightBlue}{rgb}{0.94,0.94,1}
+\definecolor{LightGreen}{rgb}{0.9,1,0.9}
+
+\newenvironment{boite}[1][LightGreen]{%
+  \def\FrameCommand{\fboxsep=\FrameSep \colorbox{#1}}%
+  \MakeFramed {\hsize0.9\textwidth\FrameRestore}}%
+{\endMakeFramed}
+
+\makeatother
+
+\titleformat{\section}
+{\vspace{3cm}\titlerule[2pt]
+\vspace{.8ex}%
+\Huge\bfseries\filleft}
+{\thesection.}{1em}{}
+
+\titleformat{\subsection}
+{\vspace{0.5cm}%
+\LARGE\itshape}
+{\thesection.}{1em}{}
+
+\titleformat{\subsubsection}
+{%
+\Large\itshape}
+{\thesection.}{0.5em}{}
+
+\renewcommand{\paragraph}{\parskip = 0pt}
+
+\begin{document}';
+}
+
+function g4p_latex_write_event($event)
 {   
     global $latex, $g4p_tag_def;
-    
+
     fwrite($latex, '\begin{description}'."\n");
     //echo '<pre>'; print_r($g4p_a_ievents);
-    if($event->details_descriptor)
+    if(!empty($event->details_descriptor))
         $g4p_tmp=' ('.$event->details_descriptor.')';
     else
         $g4p_tmp='';
@@ -52,16 +134,16 @@ function g4p_write_event($event)
 
     if(!empty($event->sources))
         foreach($event->sources as $a_source)
-            g4p_write_source($a_source);
+            g4p_latex_write_source($a_source);
     if(!empty($event->notes))
         foreach($event->notes as $a_note)
-            g4p_write_note($a_note);
+            g4p_latex_write_note($a_note);
 }
 
-function g4p_write_attribut($event)
+function g4p_latex_write_attribut($event)
 {   
     global $latex, $g4p_tag_def;
-    
+
     fwrite($latex, '\begin{description}'."\n");
     if($event->details_descriptor)
         $g4p_tmp=' ('.$g4p_a_ievents->details_descriptor.')';
@@ -98,13 +180,13 @@ function g4p_write_attribut($event)
 
     if(!empty($event->sources))
         foreach($event->sources as $a_source)
-            g4p_write_source($a_source);
+            g4p_latex_write_event($a_source);
     if(!empty($event->notes))
         foreach($event->notes as $a_note)
-            g4p_write_note($a_note);
+            g4p_latex_write_note($a_note);
 }
 
-function g4p_write_source($a_source)
+function g4p_latex_write_source($a_source)
 {
     global $latex, $g4p_tag_def;
     //var_dump($a_source);
@@ -180,7 +262,7 @@ function g4p_write_source($a_source)
 
     if(!empty($a_source->medias))
         foreach($a_source->medias as $a_media)
-            g4p_write_media($a_media);
+            g4p_latex_write_media($a_media);
     fwrite($latex, '\end{footnotesize}'."\n");
     fwrite($latex, "\end{boite}\n");
 
@@ -190,7 +272,7 @@ function g4p_write_source($a_source)
     //echo (isset($g4p_a_ievents->id))?(' <a href="'.g4p_make_url('','detail_event.php','parent=INDI&amp;id_parent='.$g4p_a_ievents->id,0).'" class="noprint">'.$g4p_langue['detail'].'</a><br />'):('<br />');
 }
 
-function g4p_write_note($a_note)
+function g4p_latex_write_note($a_note)
 {
     global $latex, $g4p_tag_def;
     fwrite($latex, '\begin{boite}[LightBlue]%'."\n");
@@ -206,7 +288,7 @@ function g4p_write_note($a_note)
     //echo (isset($g4p_a_ievents->id))?(' <a href="'.g4p_make_url('','detail_event.php','parent=INDI&amp;id_parent='.$g4p_a_ievents->id,0).'" class="noprint">'.$g4p_langue['detail'].'</a><br />'):('<br />');
 }
 
-function g4p_write_media($a_media)
+function g4p_latex_write_media($a_media)
 {
     global $latex, $g4p_config;
 
@@ -223,7 +305,7 @@ function g4p_write_media($a_media)
     fwrite($latex, '\end{boite}'."\n");
 }
 
-function g4p_write_indi($g4p_indi)
+function g4p_latex_write_indi($g4p_indi)
 {
     global $latex, $g4p_langue, $g4p_lien_def; 
     
@@ -255,7 +337,7 @@ function g4p_write_indi($g4p_indi)
         fwrite($latex, '\subsection*{Évènements}'."\n");
         //fwrite($latex, '\begin{description}'."\n");
         foreach($g4p_indi->events as $g4p_a_ievents)
-            g4p_write_event($g4p_a_ievents);
+            g4p_latex_write_event($g4p_a_ievents);
         //fwrite($latex, '\end{description}'."\n");
     }
 
@@ -298,7 +380,7 @@ function g4p_write_indi($g4p_indi)
             fwrite($latex, '\begin{description}'."\n");
             fwrite($latex, '\item[Conjoint] ');
             if($conjoint!==false)
-                fwrite($latex, g4p_link_nom_latex($g4p_a_famille->$conjoint)."\n");
+                fwrite($latex, g4p_latex_link_nom($g4p_a_famille->$conjoint)."\n");
             else
                 fwrite($latex, 'inconnu(e)'."\n");
             fwrite($latex, '\end{description}'."\n");
@@ -309,7 +391,7 @@ function g4p_write_indi($g4p_indi)
                 fwrite($latex, '\subsubsection*{Évènements}'."\n");
                 //fwrite($latex, '\begin{description}'."\n");
                 foreach($g4p_a_famille->events as $g4p_a_ievents)
-                    g4p_write_event($g4p_a_ievents);
+                    g4p_latex_write_event($g4p_a_ievents);
                 //fwrite($latex, '\end{description}'."\n");
             }
 
@@ -321,17 +403,17 @@ function g4p_write_indi($g4p_indi)
                 fwrite($latex, '\begin{itemize}'."\n");
                 foreach($g4p_a_famille->enfants as $g4p_a_enfant)
                 {
-                    fwrite($latex, '\item '.$g4p_a_enfant['rela_type'].' '.g4p_link_nom_latex($g4p_a_enfant['indi'])."\n");
+                    fwrite($latex, '\item '.$g4p_a_enfant['rela_type'].' '.g4p_latex_link_nom($g4p_a_enfant['indi'])."\n");
                 }
                 fwrite($latex, '\end{itemize}'."\n\n");
             }
 
             if(!empty($g4p_a_famille->sources))
                 foreach($g4p_a_famille->sources as $a_source)
-                    g4p_write_source($a_source);
+                    g4p_latex_write_event($a_source);
             if(!empty($g4p_a_famille->notes))
                 foreach($g4p_a_famille->notes as $a_note)
-                    g4p_write_note($a_note);
+                    g4p_latex_write_note($a_note);
 
             //if ($_SESSION['permission']->permission[_PERM_MULTIMEDIA_])
             //    g4p_affiche_multimedia(@$g4p_a_famille->medias, $g4p_a_famille->id,'familles');
@@ -351,12 +433,12 @@ function g4p_write_indi($g4p_indi)
             fwrite($latex, '\subsection*{Parents '.str_replace(array_keys($g4p_lien_def),array_values($g4p_lien_def),$g4p_a_parent->rela_type).'}'."\n");
             fwrite($latex, '\begin{itemize}'."\n");
             if(isset($g4p_a_parent->pere))
-                fwrite($latex, '\item '.g4p_link_nom_latex($g4p_a_parent->pere)."\n");
+                fwrite($latex, '\item '.g4p_latex_link_nom($g4p_a_parent->pere)."\n");
             else
                 fwrite($latex, '\item '.$g4p_langue['index_parent_inconnu']."\n");
 
             if(isset($g4p_a_parent->mere))
-                fwrite($latex, '\item '.g4p_link_nom_latex($g4p_a_parent->mere)."\n");
+                fwrite($latex, '\item '.g4p_latex_link_nom($g4p_a_parent->mere)."\n");
             else
                 fwrite($latex, '\item '.$g4p_langue['index_parent_inconnu']."\n");
             fwrite($latex, '\end{itemize}'."\n");
@@ -371,10 +453,10 @@ function g4p_write_indi($g4p_indi)
 
     if(!empty($g4p_indi->sources))
         foreach($g4p_indi->sources as $a_source)
-            g4p_write_source($a_source);
+            g4p_latex_write_event($a_source);
     if(!empty($g4p_indi->notes))
         foreach($g4p_indi->notes as $a_note)
-            g4p_write_note($a_note);
+            g4p_latex_write_note($a_note);
 
     //if ($_SESSION['permission']->permission[_PERM_MULTIMEDIA_])
     //    g4p_affiche_multimedia(@$g4p_indi->multimedia, $g4p_indi->indi_id,'indi');

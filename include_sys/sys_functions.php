@@ -455,7 +455,8 @@ function g4p_load_indi_infos($id, $debug=false)
 
 function g4p_affiche_liste_nom($lettre, $cpt)
 {
-    global $cpt_fn,$g4p_langue,$g4p_mysqli ;
+    global $g4p_langue,$g4p_mysqli ;
+    static $cpt_fn=1;
     if($cpt_fn>30)
         die('fonction récursive en boucle n>30');
     $g4p_affiche=0;

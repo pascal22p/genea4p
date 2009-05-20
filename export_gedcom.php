@@ -35,6 +35,117 @@ require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 
+$sql="SELECT id FROM genea_permissions WHERE id_membre=".$_SESSION['g4p_id_membre']." AND type=".$g4p_module_export['export_pdf_db.php']['permission']." AND permission=1 and (id_base='".$_POST['base_rapport']."' OR id_base='*')";
+if($g4p_infos_req=g4p_db_query($sql))
+{
+  $g4p_result=g4p_db_result($g4p_infos_req);
+  if(!$g4p_result)
+  {
+    echo $g4p_langue['acces_admin'];
+    exit;
+  }
+}
+else
+{
+  echo $g4p_langue['acces_admin'];
+  exit;
+}
+
+$sql="SELECT nom FROM genea_infos WHERE id=".$_REQUEST['base'];
+$g4p_infos_req=$g4p_mysqli->g4p_query($sql);
+$g4p_base_select=$g4p_mysqli->g4p_result($g4p_infos_req);
+$genea_db_nom=$g4p_base_select[0]['nom'];
+
+// Les requètes SQL
+$sql="SELECT indi_id
+         FROM genea_individuals WHERE base=".(int)$_REQUEST['base']." AND indi_resn IS NULL 
+         ORDER BY indi_nom, indi_prenom";
+$g4p_infos_req=$g4p_mysqli->g4p_query($sql);
+$g4p_liste_indis=$g4p_mysqli->g4p_result($g4p_infos_req);
+
+// le serveur va souffrir... Si le cache est vide, des miliers de requètes vont être exécutés.
+
+$file=uniqid();
+//$file='test';
+$latex=fopen('/tmp/'.$file.'.ged','w');
+$date=date("d M Y");
+$time=date("H:i:s");
+
+fwrite($latex,<<<EOD
+0 HEAD 
+1 SOUR Genea4p
+2 VERS 0.2.99
+2 NAME Genea4p
+2 DATA 
+3 DATE $date
+1 DATE $date
+2 TIME $time
+1 FILE fichier
+1 GEDC 
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+1 LANG French
+1 PLAC 
+2 FORM lieu dit, ville, code postal, numero insee, département, région, pays, longitude, latitude
+EOD;
+);
+
+foreach($g4p_liste_indis as $indi_id)
+{
+    $indi_id=$indi_id['indi_id'];
+    $g4p_indi=g4p_load_indi_infos($indi_id);
+    g4p_latex_write_indi($g4p_indi);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ---------------------- MEMORY CACHE
 
