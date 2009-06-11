@@ -139,7 +139,7 @@ fwrite($latex,'\documentclass[a4paper,12pt]{article}
 \begin{document}
 ');
 
-g4p_write_indi($g4p_indi);
+g4p_latex_write_indi($g4p_indi);
 
 fwrite($latex,'\end{document}');
 fclose($latex);
