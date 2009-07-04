@@ -146,9 +146,6 @@ if(isset($g4p_titre_h1))
     echo '<h1>'.$g4p_titre_h1.'</h1>';
 else
 {
-    if(isset($g4p_indi->nom) or isset($g4p_indi->prenom))
-        echo '<h1>'.sprintf($g4p_langue['entete_grand_titre'],$_SESSION['genea_db_nom']).' / '.$g4p_indi->nom.' '.$g4p_indi->prenom.'</h1>';
-    else
         echo '<h1>'.sprintf($g4p_langue['entete_grand_titre'],$_SESSION['genea_db_nom']).'</h1>';
 }
 

@@ -150,14 +150,20 @@ function g4p_load_parent($g4p_indi, $generation, $descendance=false)
                         if(!empty($a_parent->pere->indi_id))
                         {
                             $pere=g4p_load_indi_infos($a_parent->pere->indi_id);
-                            fwrite($dot, g4p_print_label($pere));
-                            fwrite($dot, g4p_print_link(array('i'.$pere->indi_id,'f'.$a_parent->famille_id)));
+                            if($_SESSION['permission']->permission[_PERM_MASK_INDI_] or !($pere->resn=='privacy' or $pere->resn=='confidential'))
+                            {
+                                fwrite($dot, g4p_print_label($pere));
+                                fwrite($dot, g4p_print_link(array('i'.$pere->indi_id,'f'.$a_parent->famille_id)));
+                            }
                         }
                         if(!empty($a_parent->mere->indi_id))
                         {
                             $mere=g4p_load_indi_infos($a_parent->mere->indi_id);
-                            fwrite($dot, g4p_print_label($mere));
-                            fwrite($dot, g4p_print_link(array('i'.$mere->indi_id,'f'.$a_parent->famille_id)));
+                            if($_SESSION['permission']->permission[_PERM_MASK_INDI_] or !($mere->resn=='privacy' or $mere->resn=='confidential'))
+                            {
+                                fwrite($dot, g4p_print_label($mere));
+                                fwrite($dot, g4p_print_link(array('i'.$mere->indi_id,'f'.$a_parent->famille_id)));
+                            }
                         }
                         if(!empty($pere))
                             $a_famille=$pere->familles[$a_parent->famille_id];
@@ -180,12 +186,18 @@ function g4p_load_parent($g4p_indi, $generation, $descendance=false)
                     if(!empty($a_parent->pere))
                     {
                         $pere=g4p_load_indi_infos($a_parent->pere->indi_id);
-                        g4p_load_enfants($pere, $generation);
+                        if($_SESSION['permission']->permission[_PERM_MASK_INDI_] or !($pere->resn=='privacy' or $pere->resn=='confidential'))
+                        {                        
+                            g4p_load_enfants($pere, $generation);
+                        }
                     }
                     if(!empty($a_parent->mere))
                     {
                         $mere=g4p_load_indi_infos($a_parent->mere->indi_id);
-                        g4p_load_enfants($mere, $generation);
+                        if($_SESSION['permission']->permission[_PERM_MASK_INDI_] or !($mere->resn=='privacy' or $mere->resn=='confidential'))
+                        {
+                            g4p_load_enfants($mere, $generation);
+                        }
                     }
                 }
                 return $a_parent->famille_id;                

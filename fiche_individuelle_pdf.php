@@ -38,6 +38,8 @@ require_once($g4p_chemin.'include_sys/sys_latex_functions.php');
 $g4p_indi=g4p_load_indi_infos((int)$_REQUEST['id_pers']);
 //var_dump($g4p_indi);
 
+g4p_forbidden_access($g4p_indi);
+
 $sql="SELECT nom FROM genea_infos WHERE id=".$g4p_indi->base;
 $g4p_infos_req=$g4p_mysqli->g4p_query($sql);
 $_SESSION['genea_db_nom']=$g4p_mysqli->g4p_result($g4p_infos_req);
@@ -46,99 +48,7 @@ $_SESSION['genea_db_nom']=$_SESSION['genea_db_nom'][0]['nom'];
 $file=uniqid();
 //$file='test';
 $latex=fopen('/tmp/'.$file.'.tex','w');
-fwrite($latex,'\documentclass[a4paper,12pt]{article}
-%\usepackage[onlymath,mathlf]{MinionPro}
-%\usepackage{mathrsfs}
-\usepackage{fontspec}
-%\setmainfont{Minion Pro}
-%\setsansfont[BoldFont={%
-%  Myriad Pro Semibold}, BoldItalicFont={%
-%  Myriad Pro Semibold Italic}]{Myriad Pro}
-%\setmonofont{Luxi Mono}
-\usepackage{xltxtra} % charge aussi fontspec et xunicode, nécessaires... 
-\usepackage{hyperref}
-\usepackage{framed}
-\usepackage{color}
-%\definecolor{shadecolor}{rgb}{0.94,0.94,0.99} 
-\usepackage{titlesec}
-\usepackage{underscore}
-\usepackage{graphicx}
-\usepackage{boites}
-\usepackage{pstricks}
-\usepackage{geometry}
-\geometry{hmargin=2.5cm, vmargin=3cm}
-
-\hypersetup{ % Modifiez la valeur des champs suivants
-    pdfauthor   = {Pascal Parois},%
-    pdftitle    = {},%
-    pdfsubject  = {},%
-    pdfkeywords = {},%
-    pdfcreator  = {XeLaTeX},%
-    pdfproducer = {XeLaTeX},
-    bookmarks         = false,%     % Signets
-    bookmarksnumbered = false,%     % Signets numerote
-    pdfpagemode       = UseOutlines,%     % Signets/vignettes ferme a l\'ouverture
-    bookmarksopen	= false,
-    pdfstartview      = FitH,%     % La page prend toute la largeur
-    pdfpagelayout     = SinglePage,% Vue par page
-    colorlinks        = true,%     % Liens en couleur
-    pdfborder         = {0 0 0}%   % Style de bordure : ici, pas de bordure
-} 
-\usepackage{soul}
-\usepackage[francais]{babel}
-
-\makeatletter
-\newcommand{\\affichedate}[1]{#1}
-
-\makeatletter
-\newrgbcolor{LightBlue}{0.94 0.94 1}
-\newrgbcolor{LightGreen}{0.94 1 0.94}
-%% Seconde modification
-\def\boite#1{%
-  %\fboxrule=0.4pt
-  \def\bkvz@before@breakbox{\ifhmode\par\fi\vskip\breakboxskip\relax}%
-  \def\bkvz@set@linewidth{\advance\linewidth -2\fboxrule 
-    \advance\linewidth -2\fboxsep
-    \advance\linewidth -1cm}%
-  \def\bkvz@left{\hspace{0.5cm}}%
-\def\bk@line{\hbox to \linewidth{%
-      \ifbkcount\smash{\llap{\the\bk@lcnt\ }}\fi
-      \hspace{0.5cm}\psframebox*[framesep=0pt,fillcolor=#1,linewidth=0]{%
-        \hskip\fboxsep
-        \box\bk@bxa
-        \hskip\fboxsep 
-        }%
-      }}%
-  \def\bkvz@right{}%
-  \def\bkvz@top{}%
-  \def\bkvz@bottom{}%
-  \breakbox
-}
-\def\endboite{\endbreakbox}
-
-\makeatother
-
-\titleformat{\section}
-{\vspace{3cm}\titlerule[2pt]
-\vspace{.8ex}%
-\Huge\bfseries\filleft}
-{\thesection.}{1em}{}
-
-\titleformat{\subsection}
-{\vspace{0.5cm}%
-\LARGE\itshape}
-{\thesection.}{1em}{}
-
-\titleformat{\subsubsection}
-{%
-\Large\itshape}
-{\thesection.}{0.5em}{}
-
-\setlength{\parindent}{0pt}
-
-\begin{document}
-');
-
+fwrite($latex,g4p_latex_write_header());
 g4p_latex_write_indi($g4p_indi);
 
 fwrite($latex,'\end{document}');

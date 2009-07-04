@@ -128,14 +128,7 @@ if(isset($_GET['id_pers']))
 else
     die('Ausun id défini');
 
-
-if($_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi->resn=='privacy')
-{
-  echo $g4p_langue['acces_non_autorise'];
-  require_once($g4p_chemin.'copyright.php');
-  require_once($g4p_chemin.'pied_de_page.php');
-  exit;
-}
+g4p_forbidden_access($g4p_indi);
 
 $file=uniqid();
 //$file='test';

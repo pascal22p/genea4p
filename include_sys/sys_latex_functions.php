@@ -108,6 +108,8 @@ function g4p_latex_write_event($event)
         $g4p_tmp=' ('.$event->details_descriptor.')';
     else
         $g4p_tmp='';
+    if(empty($event->tag))
+        var_dump($event);
     fwrite($latex, '\item['.$g4p_tag_def[$event->tag].'] ');
     fwrite($latex, '\\affichedate{'.g4p_date($event->gedcom_date).'} '."\n");
 
@@ -180,7 +182,7 @@ function g4p_latex_write_attribut($event)
 
     if(!empty($event->sources))
         foreach($event->sources as $a_source)
-            g4p_latex_write_event($a_source);
+            g4p_latex_write_source($a_source);
     if(!empty($event->notes))
         foreach($event->notes as $a_note)
             g4p_latex_write_note($a_note);
@@ -410,7 +412,7 @@ function g4p_latex_write_indi($g4p_indi)
 
             if(!empty($g4p_a_famille->sources))
                 foreach($g4p_a_famille->sources as $a_source)
-                    g4p_latex_write_event($a_source);
+                    g4p_latex_write_source($a_source);
             if(!empty($g4p_a_famille->notes))
                 foreach($g4p_a_famille->notes as $a_note)
                     g4p_latex_write_note($a_note);
@@ -453,7 +455,7 @@ function g4p_latex_write_indi($g4p_indi)
 
     if(!empty($g4p_indi->sources))
         foreach($g4p_indi->sources as $a_source)
-            g4p_latex_write_event($a_source);
+            g4p_latex_write_source($a_source);
     if(!empty($g4p_indi->notes))
         foreach($g4p_indi->notes as $a_note)
             g4p_latex_write_note($a_note);

@@ -446,10 +446,19 @@ function g4p_load_indi_infos($id, $debug=false)
 	//$g4p_mon_indi->ignore_cache($debug);
 	$g4p_mon_indi->g4p_load();
 	
-    if(!isset($_SESSION['permission']->permission[_PERM_MASK_INDI_]) or (!$_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_mon_indi->resn=='privacy'))
-        g4p_error('Accès non autorisé');
-    
-    return $g4p_mon_indi;
+    if(empty($_SESSION['permission']->permission[_PERM_MASK_INDI_]) and ($g4p_mon_indi->resn=='privacy'))
+    {
+        $indi=new g4p_individu($g4p_mon_indi->indi_id);
+        $indi->nom='Accès non autorisé';
+        $indi->prenom='';
+        $indi->base=$g4p_mon_indi->base;
+        $indi->timestamp='';
+        $indi->resn=$g4p_mon_indi->resn;
+        $indi->sexe=$g4p_mon_indi->sexe;
+        return $indi;
+    }
+    else  
+        return $g4p_mon_indi;
 	
 }
 
@@ -1864,5 +1873,17 @@ function g4p_affiche_adresse($adresse)
     }
 }
 
+function g4p_forbidden_access($g4p_indi)
+{
+    global $g4p_chemin, $g4p_langue, $g4p_config, $time_start, $g4p_mysqli;
 
+    if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_] and ($g4p_indi->resn=='privacy' or $g4p_indi->resn=='confidential'))
+    {
+        require_once($g4p_chemin.'entete.php');
+        echo '<div class="box_title"><h2>'.$g4p_indi->prenom,' ',$g4p_indi->nom.'</h2></div>'."\n";
+        echo '<strong>Vous n\'êtes pas autorisé à visualiser cette fiche</strong>';
+        require_once($g4p_chemin.'pied_de_page.php');
+        exit;
+    }
+}
 ?>

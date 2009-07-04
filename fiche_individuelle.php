@@ -37,6 +37,8 @@ require_once($g4p_chemin.'p_conf/script_start.php');
 $g4p_indi=g4p_load_indi_infos((int)$_REQUEST['id_pers']);
 //var_dump($g4p_indi);
 
+g4p_forbidden_access($g4p_indi);
+
 //historique des fiches visitées
 g4p_add_intohistoric($g4p_indi->indi_id,'indi');
 $g4p_titre_page=$g4p_indi->prenom.' '.$g4p_indi->nom;
@@ -87,6 +89,8 @@ if($g4p_indi->spfx)
     echo '<dt>',$g4p_langue['index_spfx'],'</dt><dd>',$g4p_indi->spfx,'</dd>';
 if($g4p_indi->nsfx)
     echo '<dt>',$g4p_langue['index_nsfx'],'</dt><dd>',$g4p_indi->nsfx,'</dd>';
+if($g4p_indi->resn)
+    echo '<dt>Resn : </dt><dd>',$g4p_indi->resn,'</dd>';
 echo '</dl>';
 echo '</div>';
 

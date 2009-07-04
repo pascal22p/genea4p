@@ -2168,7 +2168,8 @@ function g4p_family_event_structure($bloc)
 
 function g4p_restriction_notice($resn)
 {
-    if($resn!='privacy' or $resn!='locked' or $resn!='confidential')
+    $resn=trim($resn);
+    if($resn!='privacy' and $resn!='locked' and $resn!='confidential')
         $resn='NULL';
     return $resn;
 }
