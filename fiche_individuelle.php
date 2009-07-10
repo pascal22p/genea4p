@@ -135,7 +135,7 @@ if(!empty($g4p_indi->events))
         echo (isset($g4p_a_ievents->notes))?(' <span style="color:blue; font-size:x-small;">-N-</span> '):('');
         echo (isset($g4p_a_ievents->medias))?(' <span style="color:blue; font-size:x-small;">-M-</span> '):('');
         echo (isset($g4p_a_ievents->asso))?(' <span style="color:blue; font-size:x-small;">-T-</span> '):('');
-        echo (isset($g4p_a_ievents->id))?(' <a href="'.g4p_make_url('','detail_event.php','parent=INDI&amp;id_parent='.$g4p_a_ievents->id,0).'" class="noprint">'.$g4p_langue['detail'].'</a><br />'):('<br />');
+        echo (isset($g4p_a_ievents->id))?(' <a href="'.g4p_make_url('','detail_eventi.php','id='.$g4p_a_ievents->id.'&amp;id_parent='.$g4p_indi->indi_id,0).'" class="noprint">'.$g4p_langue['detail'].'</a><br />'):('<br />');
         echo '</dt>';
                 
         //age
