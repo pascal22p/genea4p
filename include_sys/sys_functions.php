@@ -1,30 +1,4 @@
 <?php
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                          *
- *  Copyright (C) 2002  PAROIS Pascal                                       *
- *                                                                          *
- *  This program is free software; you can redistribute it and/or modify    *
- *  it under the terms of the GNU General Public License as published by    *
- *  the Free Software Foundation; either version 2 of the License, or       *
- *  any later version.                                                      *
- *                                                                          *
- *  This program is distributed in the hope that it will be useful,         *
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of          *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
- *  GNU General Public License for more details.                            *
- *                                                                          *
- *  You should have received a copy of the GNU General Public License       *
- *  along with this program; if not, write to the Free Software             *
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA *
- *                                                                          *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                Bibliothèques de fonctions systèmes                      *
- *                                                                         *
- * dernière mise à jour : 07/2004                                          *
- * En cas de problème : http://www.parois.net                              *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 function g4p_permission()
 {   
@@ -291,12 +265,12 @@ function g4p_affiche_mariage()
             if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
             {
                 echo '<div class="menu_interne">
-                    <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_note&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> -
-                    <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_source&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> -
-                    <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_media&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> -
+                    <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_note&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
+                    <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_source&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 
+                    <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_media&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> 
                     <a href="',g4p_make_url('admin','index.php','g4p_opt=mod_fams&amp;g4p_id='.$g4p_a_famille->id,0),'" class="admin">',$g4p_langue['menu_mod_famille'],'</a>';
                 if(isset($_SESSION['permission']) and ($_SESSION['permission']->permission[_PERM_SUPPR_FILES_]))
-                    echo ' - <a href="',g4p_make_url('admin','exec.php','g4p_opt=suppr_fams&amp;g4p_id='.$g4p_a_famille->id,0),'" class="admin" onclick=" return confirme(this, \'',$g4p_langue['menu_sppr_confirme'],'\')">',$g4p_langue['menu_sppr_fam'],'</a>';
+                    echo ' <a href="',g4p_make_url('admin','exec.php','g4p_opt=suppr_fams&amp;g4p_id='.$g4p_a_famille->id,0),'" class="admin" onclick=" return confirme(this, \'',$g4p_langue['menu_sppr_confirme'],'\')">',$g4p_langue['menu_sppr_fam'],'</a>';
                 echo '</div>';
             }
             echo '<div class="box">';
