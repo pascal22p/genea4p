@@ -72,6 +72,7 @@ $g4p_config['g4p_type_install']='seule';
 /*----------------------------------*/
 
 date_default_timezone_set('Europe/Paris');
+setlocale(LC_CTYPE, 'fr_FR.utf8');
 
 //constantes
 

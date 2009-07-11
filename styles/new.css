@@ -364,7 +364,7 @@ a.admin:link
   background-color:#FFC6C3;
   padding:1px;
   border:#65381B 1px solid;
-  font-size:70%;
+  font-size:0.8em;
   vertical-align:middle;
 }
 a.admin:visited
@@ -374,7 +374,7 @@ a.admin:visited
   background-color:#FFC6C3;
   padding:1px;
   border:#65381B 1px solid;
-  font-size:70%;
+  font-size:0.8em;
   vertical-align:middle;
 }
 a.admin:hover
@@ -384,7 +384,7 @@ a.admin:hover
   background-color:#d2eacc;
   padding:1px;
   border:#65381B 1px solid;
-    font-size:70%;
+    font-size:0.8em;
   vertical-align:middle;
 }
 /* fin menu interne */

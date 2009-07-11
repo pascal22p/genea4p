@@ -1886,4 +1886,52 @@ function g4p_forbidden_access($g4p_indi)
         exit;
     }
 }
+
+function g4p_base_namefolder($base)
+{
+    $base = iconv("utf-8", "us-ascii//TRANSLIT", $base); // TRANSLIT does the whole job
+    $base = strtolower($base);
+    $base = preg_replace('~[^-a-z0-9_]+~', '', $base); // keep only letters, numbers, '_' and separator
+    return $base;
+}
+
+//http://us2.php.net/manual/en/function.rmdir.php
+    function deleteDirectory($dir) {
+        //if (!file_exists($dir)) return true;
+        if (!is_dir($dir)) 
+        {
+            if(is_file($dir))
+                return unlink($dir);
+            else
+                return false;
+        }
+        foreach (scandir($dir) as $item) {
+            if ($item == '.' || $item == '..') continue;
+            if (!deleteDirectory($dir.DIRECTORY_SEPARATOR.$item)) return false;
+        }
+        return rmdir($dir);
+    }
+
+#http://nashruddin.com/Remove_Directories_Recursively_with_PHP
+//~ function deleteDirectory($dir) {
+    //~ if(!is_dir($dir))
+        //~ return false;
+    //~ $files = scandir($dir);
+    //~ array_shift($files);    // remove '.' from array
+    //~ array_shift($files);    // remove '..' from array
+
+    //~ foreach ($files as $file) {
+        //~ $file = $dir . '/' . $file;
+        //~ if (is_dir($file)) {
+            //~ rmdir_recursive($file);
+            //~ rmdir($file);
+        //~ } else {
+            //~ unlink($file);
+        //~ }
+    //~ }
+    //~ if(rmdir($dir))
+        //~ return true;
+    //~ else
+        //~ return false;
+//~ }
 ?>

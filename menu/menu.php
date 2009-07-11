@@ -115,7 +115,7 @@ if ($_SESSION['permission']->permission[_PERM_ADMIN_])
 if ($_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
 {
     echo '
-    <li class="ssmenu"><hr /></li><li class="ssmenu"><a href="',g4p_make_url('admin','index.php','g4p_opt=new_base',0),'">',$g4p_langue['menu_admin_ajout_base'],'</a></li>
+    <li class="ssmenu"><hr /></li><li class="ssmenu"><a href="',g4p_make_url('','new_base.php','',0),'">',$g4p_langue['menu_admin_ajout_base'],'</a></li>
     <li class="ssmenu"><a href="',g4p_make_url('','admin_utilisateurs.php','',0),'">',$g4p_langue['menu_admin_gere_perm'],'</a></li>
     <li class="ssmenu"><a href="',g4p_make_url('admin','index.php','g4p_opt=suppr_base',0),'">',$g4p_langue['menu_admin_suppr_base'],'</a></li>
     ';
