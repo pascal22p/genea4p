@@ -71,6 +71,8 @@ if($g4p_indi->nsfx)
     }
 if($g4p_indi->resn)
     echo '<dt>Resn : </dt><dd>',$g4p_indi->resn,' '.$link.'</dd>';
+else
+    echo '<dt>Resn : </dt><dd>Publique '.$link.'</dd>';
 echo '</dl>';
 echo '</div>';
 

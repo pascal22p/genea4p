@@ -445,7 +445,7 @@ function g4p_affiche_liste_nom($lettre, $cpt)
     $g4p_affiche=0;
     $cpt_fn++;
 
-    if(empty($lettre))
+    if(empty($lettre) or empty($_SESSION['patronyme']))
     {
         $sql="SELECT lettre, nombre, longueur FROM agregats_noms WHERE base=".$_SESSION['genea_db_id']." AND longueur=1 ORDER BY lettre";
         $g4p_result=$g4p_mysqli->g4p_query($sql);
@@ -456,17 +456,21 @@ function g4p_affiche_liste_nom($lettre, $cpt)
                 $g4p_total_nom+=$a_g4p_result['nombre'];
 
             $_SESSION['patronyme'][strlen($lettre)]=$g4p_result;
-
+            
+            $lettre=$g4p_result[0]['lettre'];
+            $g4p_affiche=1;
+/*
             if($g4p_total_nom<_AFF_NBRE_NOM_)
             {
                 $lettre='';
                 $g4p_affiche=1;
             }
             else  // recherche du nbre optimum à afficher
-                g4p_affiche_liste_nom($g4p_result[0]['lettre'],$g4p_result[0]['nombre']);
+                g4p_affiche_liste_nom($g4p_result[0]['lettre'],$g4p_result[0]['nombre']);*/
         }
     }
-    elseif(!empty($lettre) and $cpt>_AFF_NBRE_NOM_)
+    
+    if(!empty($lettre) and $cpt>_AFF_NBRE_NOM_)
     {
 
         $longueur_lettre=strlen($lettre);
@@ -497,7 +501,7 @@ function g4p_affiche_liste_nom($lettre, $cpt)
     {
         $longueur_lettre=strlen($lettre);
 
-	echo '<ul class="lettre">';
+        echo '<ul class="lettre">';
         foreach($_SESSION['patronyme'] as $a_niveau)
         {
 		echo '<li>';

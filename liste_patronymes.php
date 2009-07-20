@@ -42,6 +42,14 @@ if($_SESSION['permission']->permission[_PERM_MASK_DATABASE_])
     exit;
 }
 
+if(empty($_SESSION['genea_db_id']))
+{
+    if(empty($_GET['genea_db_id']))
+        die('Oups, base non définie');
+    else
+        $_SESSION['genea_db_id']=(int)$_GET['genea_db_id'];
+}
+
 echo '<div class="box_title"><h2>Liste des patronymes</h2></div>';
 
 if(!isset($_GET['patronyme']) or $_GET['patronyme']=='all')
@@ -53,14 +61,17 @@ if(!isset($_GET['patronyme']) or $_GET['patronyme']=='all')
 else
 {
     $_GET['patronyme']=urldecode($_GET['patronyme']);
-    $g4p_count_patro=count($_SESSION['patronyme']);
-    if(strlen($_GET['patronyme'])<$g4p_count_patro)
+    if(!empty($_SESSION['patronyme']))
     {
-        $i=strlen($_GET['patronyme'])+1;
-        while(isset($_SESSION['patronyme'][$i]))
+        $g4p_count_patro=count($_SESSION['patronyme']);
+        if(strlen($_GET['patronyme'])<$g4p_count_patro)
         {
-            unset($_SESSION['patronyme'][$i]);
-            $i++;
+            $i=strlen($_GET['patronyme'])+1;
+            while(isset($_SESSION['patronyme'][$i]))
+            {
+                unset($_SESSION['patronyme'][$i]);
+                $i++;
+            }
         }
     }
     g4p_affiche_liste_nom($_GET['patronyme'],$_GET['g4p_cpt']);
