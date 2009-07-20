@@ -457,7 +457,8 @@ function g4p_affiche_liste_nom($lettre, $cpt)
 
             $_SESSION['patronyme'][strlen($lettre)]=$g4p_result;
             
-            $lettre=$g4p_result[0]['lettre'];
+            if(empty($lettre))
+                $lettre=$g4p_result[0]['lettre'];
             $g4p_affiche=1;
 /*
             if($g4p_total_nom<_AFF_NBRE_NOM_)
