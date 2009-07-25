@@ -171,25 +171,33 @@ echo '<div id="arbre_div">';
 if(!empty($_GET['output']) and $_GET['output']=='png')
     echo '<a href="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('id_pers').'"><img id="arbre" id="arbre" name="arbre" src="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=png" width="100%" style="border:0;margin:0" /></a>';
 elseif(!empty($_GET['output']) and $_GET['output']=='java')
+{
     echo '<Applet id="arbre" code="net.claribole.zgrviewer.ZGRApplet.class" 
         archive="zvtm-0.10.0-SNAPSHOT.jar,zgrviewer-0.9.0-SNAPSHOT.jar,timingframework-1.0.jar" 
         width="100%" height="100%">  
         <param name="type" value="application/x-java-Applet;version=1.5" />  
-        <param name="scriptable" value="false" />  
-        <param name="svgURL" value="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'" />  
-        <param name="title" value="zgrviewer - Applet" />  
+        <param name="scriptable" value="false" />';
+    echo '<param name="svgURL" value="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'" />  ';
+    echo '<param name="title" value="zgrviewer - Applet" />  
         <param name="appletBackgroundColor" value="#F1EBDF" />  
         <param name="graphBackgroundColor" value="#F1EBDF" />  
         <param name="highlightColor" value="red" />  
-        <param name="displayOverview" value="true" />  
-        <param name="focusNodeMagFactor" value="0.1" />  </Applet> ';
-        //<param name="svgURL" value="arbre_svg.svg" />
+        <param name="displayOverview" value="true" />';  
+    echo '<param name="focusNodeMagFactor" value="0.1" /></applet>';
+    //echo '<param name="svgURL" value="http://zvtm.sourceforge.net/zgrviewer/applet/test1.svg" /></Applet>';
         //<param name="svgURL" value="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'" />  
+}
 else
     echo '<object type="image/svg+xml" id="arbre" name="arbre" data="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'" width="100%" >
     Votre navigateur ne supporte pas le format svg. Utilisez en un autre (firefox, opera...) ou utilisez le format png.
     </object>';
 echo '</div>';
+
+if(!empty($_GET['output']) and $_GET['output']=='java')
+    echo '<p style="margin-top:0.5em;font-size:smaller">E. Pietriga, <a href="http://doi.ieeecomputersociety.org/10.1109/VLHCC.2005.11" style="font-weight:bold">
+        A Toolkit for Addressing HCI Issues in Visual Language Environments</a>, 
+        <em>IEEE Symposium on Visual Languages and Human-Centric Computing (VL/HCC\'05)</em>, 
+        pages 145-152, September 2005, Dallas, TX, USA</p>';
 //archive="zvtm-0.10.0-SNAPSHOT.jar,zgrviewer-0.9.0-SNAPSHOT.jar,timingframework-1.0.jar" 
 //archive="zvtm-0.9.8.jar,zgrviewer-0.8.2.jar,timingframework-1.0.jar" 
 //echo '<iframe src="arbre_svg.php?id_pers='.$_GET['id_pers'].'" width="100%" height="700px" ></iframe>';

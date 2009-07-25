@@ -319,7 +319,7 @@ function g4p_affiche_mariage()
                     echo (isset($g4p_a_event->notes))?('  <span style="color:blue; font-size:x-small;">-N-</span>  '):('');
                     echo (isset($g4p_a_event->medias))?('  <span style="color:blue; font-size:x-small;">-M-</span>  '):('');
                     echo (isset($g4p_a_event->assos))?('  <span style="color:blue; font-size:x-small;">-T-</span>  '):('');
-                    echo ' <a href="',g4p_make_url('','detail_event.php','parent=FAM&amp;id_parent='.$g4p_a_event->id,0),'" class="noprint">',$g4p_langue['detail'],'</a>';
+                    echo ' <a href="',g4p_make_url('','detail_eventf.php','id='.$g4p_a_event->id.'&id_famille='.$g4p_a_famille->id.'&id_parent='.$g4p_indi->indi_id,0),'" class="noprint">',$g4p_langue['detail'],'</a>';
                     echo '</dt>';
                     
                     if($g4p_a_event->place->g4p_formated_place()!='')                    
