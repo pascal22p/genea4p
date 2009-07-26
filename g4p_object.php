@@ -14,8 +14,12 @@ require_once($g4p_chemin.'include_sys/g4p_class.php');
 if($_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
 {
     $g4p_mysqli=new g4p_mysqli();
-    $g4p_indi=g4p_load_indi_infos($_GET['id']);
-    var_dump($g4p_indi);
+    //$g4p_mon_indi->ignore_cache(true);
+    //$g4p_indi=g4p_load_indi_infos($_GET['id']);
+    $g4p_mon_indi=new g4p_individu($_GET['id']);
+	$g4p_mon_indi->ignore_cache(true);
+	$g4p_mon_indi->g4p_load();
+    var_dump($g4p_mon_indi);
 }
 
 require_once($g4p_chemin.'pied_de_page.php');

@@ -68,7 +68,7 @@ echo '
     }
     else
         $offset=0;
-    echo 'document.getElementById(\'arbre_div\').style.height=(window.innerHeight-'.(210-$offset).')+\'px\';';
+    echo 'document.getElementById(\'arbre_div\').style.height=(window.innerHeight-'.(255-$offset).')+\'px\';';
     //echo 'document.getElementById(\'arbre\').style.height=(window.innerHeight-'.(210-$offset).')+\'px\';';
 echo '}
 
@@ -147,9 +147,21 @@ function return_get($except='')
     return implode('',$tmp);
 }
 
-echo '<a href="#" onClick="Resizep(\'arbre\')">Zoom +</a> 
+if((int)$_GET['limite_descendance']>25)
+    $_GET['limite_descendance']=25;
+elseif((int)$_GET['limite_descendance']<=0)
+    $_GET['limite_descendance']=1;
+
+if((int)$_GET['limite_ascendance']>25)
+    $_GET['limite_ascendance']=25;
+elseif((int)$_GET['limite_ascendance']<=0)
+    $_GET['limite_ascendance']=1;
+
+echo '<div class="box_title"><h2>'.$g4p_indi->prenom,' ',$g4p_indi->nom.'</h2></div>'."\n";
+/*echo '<a href="#" onClick="Resizep(\'arbre\')">Zoom +</a> 
 | <a href="#" onClick="Resizem(\'arbre\')">Zoom -</a> 
-| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('limite_descendance').'&limite_descendance='.($_GET['limite_descendance']+1).'" >Descendance + 1</a>  
+| ';*/
+echo '<a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('limite_descendance').'&limite_descendance='.($_GET['limite_descendance']+1).'" >Descendance + 1</a>  
 | <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('limite_descendance').'&limite_descendance='.($_GET['limite_descendance']-1).'" > - 1 </a>  
 | <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('limite_ascendance').'&limite_ascendance='.($_GET['limite_ascendance']+1).'" >Ascendance + 1</a>  
 | <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('limite_ascendance').'&limite_ascendance='.($_GET['limite_ascendance']-1).'" > - 1 </a>  ';
@@ -162,11 +174,12 @@ echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('output').'" >s
 | <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=java" >java</a>  
 | <a href="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=pdf" >pdf</a>
 | <a href="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=dot" >dot</a>';
+/*
 if(empty($_GET['pleinecran']))
     echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('pleinecran').'&pleinecran=1" >Plein écran</a>';
 else
     echo '| <a href="arbre.php?id_pers='.$_GET['id_pers'].return_get('pleinecran').'" >Retour au site</a>';
-
+*/
 echo '<div id="arbre_div">';
 if(!empty($_GET['output']) and $_GET['output']=='png')
     echo '<a href="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('id_pers').'"><img id="arbre" id="arbre" name="arbre" src="arbre_svg.php?id_pers='.$_GET['id_pers'].return_get('output').'&output=png" width="100%" style="border:0;margin:0" /></a>';

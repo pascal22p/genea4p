@@ -74,12 +74,12 @@ if(!empty($_POST['g4p_id_note']))
     if($result=$g4p_mysqli->g4p_query($sql))
     {
         if($result===true)
-            echo 'Note liée avec succès';
+            echo '<div class="success">Note liée avec succès</div>';
         elseif($result=='Error:1062')
-            echo 'Note déjà liée';
+            echo '<div class="error">Note déjà liée</div>';
     }
     else
-        echo 'Erreur lors de la création du lien';
+        echo '<div class="error">Erreur lors de la création du lien</div>';
 }
 elseif(!empty($_POST['g4p_note']))
 {
@@ -95,18 +95,18 @@ elseif(!empty($_POST['g4p_note']))
         {
             if($result===true)
             {
-                echo 'Note crée et liée avec succès';
+                echo '<div class="success">Note crée et liée avec succès</div>';
                 $g4p_mysqli->commit();
             }
             elseif($result=='Error:1062')
             {
-                echo 'Note déjà liée';
+                echo '<div class="error">Note déjà liée</div>';
                 $g4p_mysqli->rollback();
             }
         }
         else
         {
-            echo 'Erreur lors de la création du lien';
+            echo '<div class="error">Erreur lors de la création du lien</div>';
             $g4p_mysqli->rollback();
         }
     }

@@ -469,6 +469,12 @@ function g4p_affiche_liste_nom($lettre, $cpt)
             else  // recherche du nbre optimum à afficher
                 g4p_affiche_liste_nom($g4p_result[0]['lettre'],$g4p_result[0]['nombre']);*/
         }
+        else
+        {
+            echo '<div class="error">Index des noms inexistant : ';
+            echo '<a href="'.g4p_make_url('admin','exec.php','g4p_opt=agregats',0).'">Créer l\'index</a> </div>';
+            return 0;
+        }
     }
     
     if(!empty($lettre) and $cpt>_AFF_NBRE_NOM_)

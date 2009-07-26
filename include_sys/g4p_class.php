@@ -91,7 +91,7 @@ class g4p_sql_datas
 		//Récupération des ids des sources de l'individu
 		$sql="SELECT sour_citations_id, indi_id
 			FROM rel_indi_sources
-			WHERE indi_id=".$indi_id;
+			WHERE indi_id=".$indi_id; 
 		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
 		while($ligne=$g4p_result_req->fetch_assoc())
 		{

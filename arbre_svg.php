@@ -18,16 +18,17 @@ $liste_nodes=array();
 $liste_links=array();
 $output_list=array('svg'=>'svg', 'png'=>'png', 'pdf'=>'pdf', 'java'=>'svg', 'dot'=>'dot');
 $output_headers=array('svg'=>'Content-Type: image/svg+xml', 'png'=>'Content-Type: image/png', 
-    'pdf'=>"Content-type: application/pdf", 'dot'=>'Content-Type: text/plain');
+    'pdf'=>"Content-type: application/pdf", 'dot'=>'Content-Type: text/plain', 
+    'xdot'=>'Content-Type: text/plain');
         
 if(isset($_GET['limite_ascendance']) and $_GET['limite_ascendance']<25)
     $limite_ascendance=$_GET['limite_ascendance'];
 else
-    $limite_ascendance=2;
-if(isset($_GET['limite_descendance']) and $_GET['limite_descendance']<10 and $_GET['limite_descendance']>=0)
+    $limite_ascendance=25;
+if(isset($_GET['limite_descendance']) and $_GET['limite_descendance']<25 and $_GET['limite_descendance']>=0)
     $limite_descendance=$_GET['limite_descendance'];
 else
-    $limite_descendance=1;
+    $limite_descendance=25;
 if(!empty($_GET['fulldesc']))
     define('_fulldesc_',true);
 else
@@ -37,10 +38,20 @@ if(!empty($_GET['output']) and !empty($output_list[$_GET['output']]))
 else
     $output='svg';
 define('_origine_',$_GET['id_pers']);
-if($output!='dot')
-    define('_MAX_NODES_',30);
-else
-    define('_MAX_NODES_',1000);
+
+if(!$_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
+{
+    if($output!='dot')
+        define('_MAX_NODES_',30);
+    else
+        define('_MAX_NODES_',1000);
+}
+{
+    if($output!='dot')
+        define('_MAX_NODES_',100);
+    else
+        define('_MAX_NODES_',1000);
+}
     
 $dot_filename=uniqid();
 $dot=fopen('/tmp/'.$dot_filename, 'w');
@@ -320,7 +331,7 @@ fclose($dot);
 if($output!='dot')
 {
     header($output_headers[$output]);
-    shell_exec('dot -T'.$output.' /tmp/'.$dot_filename.' -o /tmp/'.$dot_filename.'.'.$output);
+    shell_exec('nice -n 10 dot -T'.$output.' /tmp/'.$dot_filename.' -o /tmp/'.$dot_filename.'.'.$output);
 }
 else
 {

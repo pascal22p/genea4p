@@ -1233,14 +1233,15 @@ exit;*/
       else
         $g4p_tmp=$_SESSION['genea_db_nom'];
 
-      $g4p_indi=g4p_destroy_cache($_GET['g4p_id']);
-      header('Content-Type: text/html; charset=ISO-8859-1') ;
-      header('Date: ' . gmdate("D, d M Y H:i:s") . ' GMT');
-      header('Cache-Control: no-cache');
-      header('Pragma: public');
-      $modif = gmdate('D, d M Y H:i:s', @filemtime($g4p_chemin.'cache/'.$g4p_tmp.'/indi_'.$g4p_indi->indi_id.'.txt')) ;
-      header("Last-Modified: $modif GMT");
-      header('location:'.g4p_make_url('','fiche_individuelle.php','id_pers='.$g4p_indi->indi_id,0));
+      //$g4p_indi=g4p_destroy_cache($_GET['g4p_id']);
+      shell_exec('unlink ../cache/indis/indi_'.(int)$_GET['g4p_id'].'.txt');
+      //header('Content-Type: text/html; charset=ISO-8859-1') ;
+      //header('Date: ' . gmdate("D, d M Y H:i:s") . ' GMT');
+      //header('Cache-Control: no-cache');
+      //header('Pragma: public');
+      //$modif = gmdate('D, d M Y H:i:s', @filemtime($g4p_chemin.'cache/'.$g4p_tmp.'/indi_'.$g4p_indi->indi_id.'.txt')) ;
+      //header("Last-Modified: $modif GMT");
+      header('location:'.g4p_make_url('','fiche_individuelle.php','id_pers='.(int)$_GET['g4p_id'],0));
       exit;
     }
     break;
