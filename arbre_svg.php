@@ -49,7 +49,7 @@ if(!$_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
 else
 {
     if($output!='dot')
-        define('_MAX_NODES_',100);
+        define('_MAX_NODES_',200);
     else
         define('_MAX_NODES_',1000);
 }
