@@ -2888,14 +2888,14 @@ function g4p_user_reference_number($bloc)
         $sql_count2++;
         
         $g4p_requetes['refn'][$sql_count2]='INSERT INTO genea_refn ';
-        $g4p_requetes['refn'][$sql_count2].='(refn_id, base, refn_num, refn_type) VALUES ';
-        $g4p_requetes['refn'][$sql_count2].= '('.$refn_id.','.$g4p_base.',"'
+        $g4p_requetes['refn'][$sql_count2].='(refn_id, refn_num, refn_type) VALUES ';
+        $g4p_requetes['refn'][$sql_count2].= '('.$refn_id.',"'
             .g4p_protect_var($refn).'","'.g4p_protect_var($type).'")';
     }
     else
     {
         $sql_count1++;
-        $g4p_requetes['refn'][$sql_count2].= ', ('.$refn_id.','.$g4p_base.',"'
+        $g4p_requetes['refn'][$sql_count2].= ', ('.$refn_id.',"'
             .g4p_protect_var($refn).'","'.g4p_protect_var($type).'")';
     }
     

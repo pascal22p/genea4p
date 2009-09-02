@@ -1,13 +1,27 @@
 <?php
 
-function g4p_latex_link_nom($indi)
+function g4p_latex_link_nom($indi,$format='full')
 {
     if(!is_object($indi))
         $indi=g4p_load_indi_infos($indi);
        
     $return=g4p_latex_link('I'.$indi->indi_id,$indi->nom.' '.$indi->prenom);
-    $tmp=$indi->date_rapide();
-    if(!empty($tmp)) $return.=' \begin{footnotesize}\textit{'.$tmp.'}\end{footnotesize}';
+    if($format=='full')
+    {
+        $tmp=$indi->date_rapide();
+        if(!empty($tmp)) $return.=' \begin{footnotesize}\textit{'.$tmp.'}\end{footnotesize}';
+    }
+    return $return;
+}
+
+function g4p_latex_link_prenom($indi)
+{
+    if(!is_object($indi))
+        $indi=g4p_load_indi_infos($indi);
+       
+    $return=g4p_latex_link('I'.$indi->indi_id,$indi->prenom);
+    //$tmp=$indi->date_rapide();
+    //if(!empty($tmp)) $return.=' \begin{footnotesize}\textit{'.$tmp.'}\end{footnotesize}';
     return $return;
 }
 
@@ -28,9 +42,10 @@ function g4p_latex_write_header()
 \usepackage{underscore}
 \usepackage{graphicx}
 \usepackage{geometry}
+\usepackage{makeidx}
 \geometry{hmargin=2.5cm, top=2cm, bottom=2cm}
 \usepackage{tikz}
-\usetikzlibrary{trees}
+\usetikzlibrary{trees,positioning,arrows}
 \hypersetup{ % Modifiez la valeur des champs suivants
     pdfauthor   = {Pascal Parois},%
     pdftitle    = {},%
@@ -43,7 +58,7 @@ function g4p_latex_write_header()
     pdfpagemode       = UseOutlines,%     % Signets/vignettes ferme a l\'ouverture
     bookmarksopen	= false,
     pdfstartview      = FitH,%     % La page prend toute la largeur
-    pdfpagelayout     = SinglePage,% Vue par page
+    pdfpagelayout     = continuous,% Vue par page
     colorlinks        = true,%     % Liens en couleur
     linkcolor         = blue,
     pdfborder         = {0 0 0}%   % Style de bordure : ici, pas de bordure
@@ -80,20 +95,22 @@ function g4p_latex_write_header()
 \titleformat{\section}
 {\vspace{3cm}\titlerule[2pt]
 \vspace{.8ex}%
-\Huge\bfseries\filleft}
+\huge\bfseries\filleft}
 {\thesection.}{1em}{}
 
 \titleformat{\subsection}
 {\vspace{0.5cm}%
-\LARGE\itshape}
+\Large\itshape}
 {\thesection.}{1em}{}
 
 \titleformat{\subsubsection}
 {%
-\Large\itshape}
+\large\bfseries}
 {\thesection.}{0.5em}{}
 
 \renewcommand{\paragraph}{\parskip = 0pt}
+
+\makeindex
 
 \begin{document}';
 }
@@ -313,6 +330,7 @@ function g4p_latex_write_indi($g4p_indi)
     
     fwrite($latex, "\n\hypertarget{I".$g4p_indi->indi_id."}{}\n");
     fwrite($latex, "\section*{".$g4p_indi->prenom.' '.$g4p_indi->nom."}\n");
+    fwrite($latex, "\index{".$g4p_indi->nom."!".$g4p_indi->prenom."}\n");
     fwrite($latex, '\subsection*{Etat civil}'."\n");
     fwrite($latex, '\begin{description}'."\n");
     fwrite($latex, '\item[Id] '.number_format($g4p_indi->indi_id, 0, ',', ' ')."\n");
@@ -462,6 +480,84 @@ function g4p_latex_write_indi($g4p_indi)
 
     //if ($_SESSION['permission']->permission[_PERM_MULTIMEDIA_])
     //    g4p_affiche_multimedia(@$g4p_indi->multimedia, $g4p_indi->indi_id,'indi');
+    
+    //dessin
+    fwrite($latex, "\n\n".'\subsection*{Arbre}'."\n");
+    fwrite($latex, '\begin{center}\fbox{\limitbox{15cm}{25cm}{\begin{tikzpicture}'."\n");
+    fwrite($latex, '\node (moi) {'.$g4p_indi->prenom.' '.$g4p_indi->nom.'}'."\n");
+    
+    if(isset($g4p_indi->familles))
+    {
+        $test=false;
+        foreach($g4p_indi->familles as $g4p_a_famille)//affiche tous les mariages
+        {
+            if(isset($g4p_a_famille->enfants))
+            {
+                foreach($g4p_a_famille->enfants as $g4p_a_enfant)
+                {
+                    if(!$test)
+                        fwrite($latex, '[edge from parent fork down,sibling distance=2.5cm]'."\n");
+                    $test=true;
+                    fwrite($latex, 'child {node [text width=2.3cm,text centered] {\footnotesize '.g4p_latex_link_prenom($g4p_a_enfant['indi']).'}}'."\n");
+                }
+            }
+        }
+    }
+    fwrite($latex, ';'."\n");
+    
+    if(!empty($g4p_indi->parents))
+    {
+        foreach($g4p_indi->parents as $g4p_a_parent)
+        {
+            if($g4p_a_parent->rela_type=='BIRTH' or $g4p_a_parent->rela_type=='')
+            {
+                if(isset($g4p_a_parent->pere))
+                {
+                    fwrite($latex, '\node (P) [above=of moi,xshift=3cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_parent->pere,'sansdate').'} edge [->] (moi);'."\n");
+                    $gp=g4p_load_indi_infos($g4p_a_parent->pere->indi_id);
+                    if(!empty($gp->parents))
+                    {
+                        foreach($gp->parents as $g4p_a_gparent)
+                        {
+                            if($g4p_a_gparent->rela_type=='BIRTH' or $g4p_a_gparent->rela_type=='')
+                            {
+                                if(isset($g4p_a_gparent->pere))
+                                    fwrite($latex, '\node (GP-P) [above=of P,xshift=2cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_gparent->pere,'sansdate').'} edge [->] (P);'."\n");
+                                if(isset($g4p_a_gparent->mere))
+                                    fwrite($latex, '\node (GM-P) [above=of P,xshift=-2cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_gparent->mere,'sansdate').'} edge [->] (P);'."\n");
+                            }
+                        }
+                    }
+                }
+
+                if(isset($g4p_a_parent->mere))
+                {
+                    fwrite($latex, '\node (M) [above=of moi,xshift=-3cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_parent->mere,'sansdate').'} edge [->] (moi);'."\n");
+                    $gp=g4p_load_indi_infos($g4p_a_parent->mere->indi_id);
+                    if(!empty($gp->parents))
+                    {
+                        foreach($gp->parents as $g4p_a_gparent)
+                        {
+                            if($g4p_a_gparent->rela_type=='BIRTH' or $g4p_a_gparent->rela_type=='')
+                            {
+                                if(isset($g4p_a_gparent->pere))
+                                    fwrite($latex, '\node (GP-M) [above=of M,xshift=2cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_gparent->pere,'sansdate').'} edge [->] (M);'."\n");
+                                if(isset($g4p_a_gparent->pere))
+                                    fwrite($latex, '\node (GM-M) [above=of M,xshift=-2cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_gparent->mere,'sansdate').'} edge [->] (M);'."\n");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /*
+   %grand parents
+   \node	 (GPP)	[above=of P,xshift=2cm]			{GP-P}  edge [->] (P);
+   \node	 (GMP)	[above=of P,xshift=-2cm]			{GM-P}  edge [->] (P);
+   \node	 (GPM)	[above=of M,xshift=2cm]			{GP-M}  edge [->] (M);
+   \node	 (GMM)	[above=of M,xshift=-2cm]			{GM-M}  edge [->] (M);*/
+    fwrite($latex,'\end{tikzpicture}}}\end{center}'."\n");
 }
 
 ?>

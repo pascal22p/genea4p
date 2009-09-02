@@ -49,7 +49,7 @@ if(!$_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
 else
 {
     if($output!='dot')
-        define('_MAX_NODES_',200);
+        define('_MAX_NODES_',400);
     else
         define('_MAX_NODES_',1000);
 }
@@ -60,6 +60,7 @@ fwrite($dot, 'digraph arbre {
     bgcolor="transparent";
     ranksep="1.5";
     fontname="LiberationSans";
+    overlap="compress";
     node [shape = record, margin="0.45,0.05"];'."\n");
 /*
     dpi="72";
@@ -179,11 +180,13 @@ function g4p_load_parent($g4p_indi, $generation, $descendance=false)
                                 fwrite($dot, g4p_print_link(array('i'.$mere->indi_id,'f'.$a_parent->famille_id)));
                             }
                         }
-                        if(!empty($pere))
+                        $a_famille=null;
+                        if(!empty($pere) and isset($pere->familles[$a_parent->famille_id]))
                             $a_famille=$pere->familles[$a_parent->famille_id];
-                        else
+                        elseif(!empty($mere) and isset($mere->familles[$a_parent->famille_id]))
                             $a_famille=$mere->familles[$a_parent->famille_id];
-                        fwrite($dot, g4p_print_family($a_famille));
+                        if(!empty($a_famille))
+                            fwrite($dot, g4p_print_family($a_famille));
                         fwrite($dot, "}\n");
                     }
                 
