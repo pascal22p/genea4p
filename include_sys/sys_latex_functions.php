@@ -11,7 +11,7 @@ function g4p_latex_link_nom($indi,$format='full')
         $tmp=$indi->date_rapide();
         if(!empty($tmp)) $return.=' \begin{footnotesize}\textit{'.$tmp.'}\end{footnotesize}';
     }
-    return $return;
+    return '\mbox{'.$return.'}';
 }
 
 function g4p_latex_link_prenom($indi)
