@@ -11,7 +11,7 @@ function g4p_latex_link_nom($indi,$format='full')
         $tmp=$indi->date_rapide();
         if(!empty($tmp)) $return.=' \begin{footnotesize}\textit{'.$tmp.'}\end{footnotesize}';
     }
-    return '\mbox{'.$return.'}';
+    return $return;
 }
 
 function g4p_latex_link_prenom($indi)
@@ -30,9 +30,15 @@ function g4p_latex_link($target, $text)
     return '\hyperlink{'.$target.'}{'.$text.'}';
 }
 
-function g4p_latex_write_header()
+function g4p_latex_write_header($args='a4paper,10pt', $margins='hmargin=2.5cm, top=2cm, bottom=2cm', $paquets=array())
 {   
-    return '\documentclass[a4paper,10pt]{article}
+    $liste_p=array();
+    foreach($paquets as $a_paquet)
+    {
+        $liste_p[]='\usepackage{'.$a_paquet.'}';
+    }
+    $liste_p=implode("\n",$liste_p)."\n";
+    return '\documentclass['.$args.']{article}
 \usepackage{fontspec}
 \usepackage{xltxtra} % charge aussi fontspec et xunicode, nécessaires... 
 \usepackage{hyperref}
@@ -43,9 +49,8 @@ function g4p_latex_write_header()
 \usepackage{graphicx}
 \usepackage{geometry}
 \usepackage{makeidx}
-\geometry{hmargin=2.5cm, top=2cm, bottom=2cm}
-\usepackage{tikz}
-\usetikzlibrary{trees,positioning,arrows}
+\geometry{'.$margins.'}
+'.$liste_p.'
 \hypersetup{ % Modifiez la valeur des champs suivants
     pdfauthor   = {Pascal Parois},%
     pdftitle    = {},%
@@ -64,6 +69,8 @@ function g4p_latex_write_header()
     pdfborder         = {0 0 0}%   % Style de bordure : ici, pas de bordure
 } 
 \usepackage[francais]{babel}
+\usepackage{tikz}
+\usetikzlibrary{trees,positioning,arrows}
 
 
 \makeatletter
@@ -483,7 +490,8 @@ function g4p_latex_write_indi($g4p_indi)
     
     //dessin
     fwrite($latex, "\n\n".'\subsection*{Arbre}'."\n");
-    fwrite($latex, '\begin{center}\fbox{\limitbox{15cm}{25cm}{\begin{tikzpicture}'."\n");
+    fwrite($latex, '\begin{center}\fbox{\limitbox{15cm}{25cm}{\begin{tikzpicture}
+    \tikzstyle{level 1}=[level distance=2cm, sibling distance=2.5cm, anchor=center]'."\n");
     fwrite($latex, '\node (moi) {'.$g4p_indi->prenom.' '.$g4p_indi->nom.'}'."\n");
     
     if(isset($g4p_indi->familles))
@@ -496,9 +504,9 @@ function g4p_latex_write_indi($g4p_indi)
                 foreach($g4p_a_famille->enfants as $g4p_a_enfant)
                 {
                     if(!$test)
-                        fwrite($latex, '[edge from parent fork down,sibling distance=2.5cm]'."\n");
+                        fwrite($latex, '[edge from parent fork down,sibling distance=2.5cm, level distance=2cm,grow=down,text width=2.3cm,text centered]'."\n");
                     $test=true;
-                    fwrite($latex, 'child {node [text width=2.3cm,text centered] {\footnotesize '.g4p_latex_link_prenom($g4p_a_enfant['indi']).'}}'."\n");
+                    fwrite($latex, 'child {node {\footnotesize '.g4p_latex_link_prenom($g4p_a_enfant['indi']).'}}'."\n");
                 }
             }
         }
@@ -513,7 +521,7 @@ function g4p_latex_write_indi($g4p_indi)
             {
                 if(isset($g4p_a_parent->pere))
                 {
-                    fwrite($latex, '\node (P) [above=of moi,xshift=3cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_parent->pere,'sansdate').'} edge [->] (moi);'."\n");
+                    fwrite($latex, '\node (P) [above=of moi,xshift=3.5cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_parent->pere,'sansdate').'} edge [->] (moi);'."\n");
                     $gp=g4p_load_indi_infos($g4p_a_parent->pere->indi_id);
                     if(!empty($gp->parents))
                     {
@@ -532,7 +540,7 @@ function g4p_latex_write_indi($g4p_indi)
 
                 if(isset($g4p_a_parent->mere))
                 {
-                    fwrite($latex, '\node (M) [above=of moi,xshift=-3cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_parent->mere,'sansdate').'} edge [->] (moi);'."\n");
+                    fwrite($latex, '\node (M) [above=of moi,xshift=-3.5cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_parent->mere,'sansdate').'} edge [->] (moi);'."\n");
                     $gp=g4p_load_indi_infos($g4p_a_parent->mere->indi_id);
                     if(!empty($gp->parents))
                     {

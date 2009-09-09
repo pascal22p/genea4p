@@ -103,7 +103,9 @@ function g4p_ascendance($mon_indi)
     global $latex, $liste_indi;
     $liste_indi[$mon_indi->indi_id]=$mon_indi;
     
-    fwrite($latex, "\begin{center}\n\\resizebox{\\textwidth}{!}{\begin{tikzpicture}[text width=4cm, grow=right]\n\\tikzset{my node/.code=\ifpgfmatrix\else\\tikzset{matrix of nodes}\\fi}\n");
+    fwrite($latex, '\begin{center}
+    \resizebox{\textwidth}{!}{\begin{tikzpicture}[text width=4cm, grow=right]
+    \tikzset{my node/.code=\ifpgfmatrix\else\tikzset{matrix of nodes}\fi}');
 
     $mon_indi->prenom=explode(' ',$mon_indi->prenom);
     $mon_indi->prenom=$mon_indi->prenom[0];
@@ -136,16 +138,15 @@ $latex=fopen('/tmp/'.$file.'.tex','w');
 fwrite($latex,g4p_latex_write_header());
 
 fwrite($latex,'\section*{Ascendance '.$g4p_indi->prenom.' '.$g4p_indi->nom.'}
-% Set the overall layout of the tree
-\tikzstyle{level 1}=[level distance=0.5cm, sibling distance=12cm, anchor=center]
-\tikzstyle{level 2}=[level distance=1cm, sibling distance=6cm]
-\tikzstyle{level 3}=[level distance=4.7cm, sibling distance=3cm, anchor=center,child anchor=west, edge from parent fork right]
-\tikzstyle{level 4}=[level distance=4.7cm, sibling distance=1.5cm]
-\tikzstyle{level 5}=[level distance=4.4cm, sibling distance=0.6cm]
-
-% Define styles for leafs
-\tikzstyle{leaf} = [fill=white, text centered, inner sep=1mm, outer sep=0mm, draw]
-');
+    % Set the overall layout of the tree
+    \tikzstyle{level 1}=[level distance=0.5cm, sibling distance=12cm, anchor=center]
+    \tikzstyle{level 2}=[level distance=1cm, sibling distance=6cm]
+    \tikzstyle{level 3}=[level distance=4.7cm, sibling distance=3cm, anchor=center,child anchor=west, edge from parent fork right]
+    \tikzstyle{level 4}=[level distance=4.7cm, sibling distance=1.5cm]
+    \tikzstyle{level 5}=[level distance=4.4cm, sibling distance=0.6cm]
+    % Define styles for leafs
+    \tikzstyle{leaf} = [fill=white, text centered, inner sep=1mm, outer sep=0mm, draw]
+    ');
 
 $liste_indi=array();
 g4p_ascendance($g4p_indi);

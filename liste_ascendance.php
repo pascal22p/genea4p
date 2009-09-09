@@ -22,7 +22,7 @@ function recursive_ascendance($g4p_id, $generation=1, $sosa=1)
     , $g4p_max_gen, $g4p_max_pers;
 
     $g4p_indi_info=g4p_load_indi_infos($g4p_id);
-    if($_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi_info->resn=='privacy')
+    if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi_info->resn=='privacy')
         return;
 
   if($_GET['implexe']==1)
@@ -124,6 +124,7 @@ $a=0;
 echo '</li></ul>';
 
 echo '<dl>';
+
 foreach($g4p_liste_personnes as $g4p_generation=>$g4p_liste_generation)
 {
     echo '<dt style="margin-bottom:0.3em;">';

@@ -61,6 +61,7 @@ fwrite($dot, 'digraph arbre {
     ranksep="1.5";
     fontname="LiberationSans";
     overlap="compress";
+    size = "150, 50";
     node [shape = record, margin="0.45,0.05"];'."\n");
 /*
     dpi="72";
@@ -339,7 +340,7 @@ if($output!='dot')
 }
 else
 {
-    header('Content-Type: text/plain');
+    header('Content-Type: text/plain; charset=utf-8');
     shell_exec('cp /tmp/'.$dot_filename.' /tmp/'.$dot_filename.'.'.$output);
 }
 

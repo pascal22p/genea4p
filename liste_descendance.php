@@ -68,7 +68,7 @@ function recursive_descendance($g4p_id, $generation=1)
 
     $g4p_indi_info=g4p_load_indi_infos($g4p_id);
 
-    if($_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi_info->resn=='privacy')
+    if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi_info->resn=='privacy')
         return;
 
     if(isset($g4p_indi_info->familles))
