@@ -62,7 +62,10 @@ fwrite($dot, 'digraph arbre {
     fontname="LiberationSans";
     overlap="compress";
     size = "150, 50";
-    node [shape = record, margin="0.45,0.05"];'."\n");
+    mclimit = "100";
+    remincross = "true";
+    node [shape = record, margin="0.45,0.05", width=0.1, height=0.2];
+    '."\n");
 /*
     dpi="72";
     size="8,100";
@@ -249,6 +252,7 @@ function g4p_load_enfants($g4p_indi, $generation)
         fwrite($dot, 'subgraph cluster_familleb'.$famille_index++.'{'."\n");
         fwrite($dot, 'style="invisible"; 
             clusterrank="none";
+            mclimit = "100";
             ranksep="1"; '."\n");
         fwrite($dot,$tmp);
         

@@ -268,7 +268,7 @@ function g4p_affiche_mariage()
                     <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_note&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
                     <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_source&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 
                     <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_media&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> 
-                    <a href="',g4p_make_url('admin','index.php','g4p_opt=mod_fams&amp;g4p_id='.$g4p_a_famille->id,0),'" class="admin">',$g4p_langue['menu_mod_famille'],'</a>';
+                    <a href="',g4p_make_url('','modification_famille.php','id_pers='.$g4p_indi->indi_id.'&id_famille='.$g4p_a_famille->id,0),'" class="admin">',$g4p_langue['menu_mod_famille'],'</a>';
                 if(isset($_SESSION['permission']) and ($_SESSION['permission']->permission[_PERM_SUPPR_FILES_]))
                     echo ' <a href="',g4p_make_url('admin','exec.php','g4p_opt=suppr_fams&amp;g4p_id='.$g4p_a_famille->id,0),'" class="admin" onclick=" return confirme(this, \'',$g4p_langue['menu_sppr_confirme'],'\')">',$g4p_langue['menu_sppr_fam'],'</a>';
                 echo '</div>';
@@ -357,50 +357,33 @@ function g4p_affiche_mariage()
     }
 }
 
-function g4p_destroy_cache($fichier='session')
+function g4p_destroy_cache(&$id_pers)
 {
+    global $g4p_mysqli, $g4p_chemin;
+    
 	// fichier, permet de choisir le cache à detruire
-	global $g4p_chemin, $g4p_langue;
-	if($fichier=='session')
-	{
-		$id=$g4p_indi->indi_id;
-		unset($g4p_indi);
-	}
-	else
-		$id=$fichier;
-
-	if($g4p_langue['entete_charset']=='UTF-8')
-		$g4p_tmp=utf8_decode($_SESSION['genea_db_nom']);
-	else
-		$g4p_tmp=$_SESSION['genea_db_nom'];
-
-  // fiches pdf
-  /*
-  if(file_exists($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_000_'.$id.'.pdf'))
-    unlink($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_000_'.$id.'.pdf');
-  if(file_exists($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_001_'.$id.'.pdf'))
-    unlink($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_001_'.$id.'.pdf');
-  if(file_exists($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_010_'.$id.'.pdf'))
-    unlink($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_010_'.$id.'.pdf');
-  if(file_exists($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_100_'.$id.'.pdf'))
-    unlink($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_100_'.$id.'.pdf');
-  if(file_exists($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_011_'.$id.'.pdf'))
-    unlink($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_011_'.$id.'.pdf');
-  if(file_exists($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_011_'.$id.'.pdf'))
-    unlink($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_110_'.$id.'.pdf');
-  if(file_exists($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_111_'.$id.'.pdf'))
-    unlink($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_111_'.$id.'.pdf');
-  if(file_exists($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_101_'.$id.'.pdf'))
-    unlink($g4p_chemin.'cache/'.$g4p_tmp.'/pdf/indi_101_'.$id.'.pdf');
-*/
-
-	//cache des données
-	if(file_exists($g4p_chemin.'cache/'.$g4p_tmp.'/indi_'.$id.'.txt'))
-	{
-		if(!unlink($g4p_chemin.'cache/'.$g4p_tmp.'/indi_'.$id.'.txt'))
-			$_SESSION['message'].=$g4p_langue['message_imp_suppr_cache'];
-	}
-	return g4p_load_indi_infos($id);
+    $dep_array=array();
+    $sql="SELECT indi_id, indi_dep FROM genea_cache_deps WHERE indi_id=".(int)$id_pers." OR indi_dep=".(int)$id_pers;
+    $g4p_result=$g4p_mysqli->g4p_query($sql);
+    if($g4p_result=$g4p_mysqli->g4p_result($g4p_result))
+    {
+        foreach($g4p_result as $a_result)
+        {
+            $dep_array[]=$a_result['indi_id'];
+            $dep_array[]=$a_result['indi_dep'];
+        }
+        $dep_array=array_unique($dep_array);
+    }
+    
+    if(!empty($dep_array))
+    {
+        foreach($dep_array as $a_indi)
+        {
+            @unlink($g4p_chemin.'cache/indis/indi_'.$a_indi.'.txt');
+        }    
+        $sql="DELETE FROM genea_cache_deps WHERE indi_id IN (".implode(',',$dep_array).") OR indi_dep IN (".implode(',',$dep_array).")";
+        $g4p_mysqli->g4p_query($sql);
+    }
 }
 
 function g4p_load_indi_infos($id, $debug=false)

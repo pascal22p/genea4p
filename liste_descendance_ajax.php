@@ -1,6 +1,6 @@
 <?php
 
-$g4p_chemin='../';
+$g4p_chemin='';
 // $g4p_chemin='modules/genea4p/';
 
 require_once($g4p_chemin.'p_conf/g4p_config.php');
@@ -8,7 +8,6 @@ require_once($g4p_chemin.'include_sys/sys_functions.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 
 $tmp_indi=g4p_load_indi_infos((int)$_REQUEST['root']);
-
 
 if(!empty($tmp_indi->familles))
 {

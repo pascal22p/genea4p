@@ -550,7 +550,7 @@ function g4p_latex_write_indi($g4p_indi)
                             {
                                 if(isset($g4p_a_gparent->pere))
                                     fwrite($latex, '\node (GP-M) [above=of M,xshift=2cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_gparent->pere,'sansdate').'} edge [->] (M);'."\n");
-                                if(isset($g4p_a_gparent->pere))
+                                if(isset($g4p_a_gparent->mere))
                                     fwrite($latex, '\node (GM-M) [above=of M,xshift=-2cm,text width=3cm,text centered] {'.g4p_latex_link_nom($g4p_a_gparent->mere,'sansdate').'} edge [->] (M);'."\n");
                             }
                         }
