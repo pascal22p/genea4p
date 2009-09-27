@@ -49,19 +49,7 @@ if(!isset($_POST['g4p_email']))
 }
 else
 {
-  magic_quotes_runtime(0);
-  if (!get_magic_quotes_gpc())
-  {
-    foreach ($_POST as $a_POST_key=>$a_POST_value)
-      $_POST[$a_POST_key]=trim(htmlspecialchars(addslashes($a_POST_value)));
-  }
-  else
-  {
-    foreach ($_POST as $a_POST_key=>$a_POST_value)
-      $_POST[$a_POST_key]=trim(htmlspecialchars($a_POST_value));
-  }
-
-    $sql="SELECT email,id,langue,theme,place FROM genea_membres WHERE email='".mysql_escape_string($_POST['g4p_email'])."' AND pass='".md5($_POST['g4p_password'])."'";
+    $sql="SELECT email,id,langue,theme,place FROM genea_membres WHERE email='".$g4p_mysqli->escape_string($_POST['g4p_email'])."' AND pass='".md5($_POST['g4p_password'])."'";
     if($g4p_result=$g4p_mysqli->g4p_query($sql))
     {
         if($g4p_result=$g4p_mysqli->g4p_result($g4p_result))

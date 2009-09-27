@@ -20,23 +20,38 @@ $output_list=array('svg'=>'svg', 'png'=>'png', 'pdf'=>'pdf', 'java'=>'svg', 'dot
 $output_headers=array('svg'=>'Content-Type: image/svg+xml', 'png'=>'Content-Type: image/png', 
     'pdf'=>"Content-type: application/pdf", 'dot'=>'Content-Type: text/plain', 
     'xdot'=>'Content-Type: text/plain');
-        
-if(isset($_GET['limite_ascendance']) and $_GET['limite_ascendance']<25)
-    $limite_ascendance=$_GET['limite_ascendance'];
-else
-    $limite_ascendance=25;
-if(isset($_GET['limite_descendance']) and $_GET['limite_descendance']<25 and $_GET['limite_descendance']>=0)
-    $limite_descendance=$_GET['limite_descendance'];
-else
-    $limite_descendance=25;
-if(!empty($_GET['fulldesc']))
-    define('_fulldesc_',true);
-else
-    define('_fulldesc_',false);
+
+//definition format de sortie
 if(!empty($_GET['output']) and !empty($output_list[$_GET['output']]))
     $output=$output_list[$_GET['output']];
 else
     $output='svg';
+    
+if($output=='dot')
+    $dotmultiplier=2;
+else
+    $dotmultiplier=1;
+
+
+if(isset($_GET['limite_ascendance']) and $_GET['limite_ascendance']<$dotmultiplier*25)
+    $limite_ascendance=$_GET['limite_ascendance'];
+elseif(isset($_GET['limite_ascendance']) and $_GET['limite_ascendance']<0)
+    $limite_ascendance=0;
+else
+    $limite_ascendance=2;
+    
+if(isset($_GET['limite_descendance']) and $_GET['limite_descendance']<$dotmultiplier*25)
+    $limite_descendance=$_GET['limite_descendance'];
+elseif(isset($_GET['limite_descendance']) and $_GET['limite_descendance']<$dotmultiplier*0)
+    $limite_descendance=0;
+else
+    $limite_descendance=1;
+
+if(!empty($_GET['fulldesc']))
+    define('_fulldesc_',true);
+else
+    define('_fulldesc_',false);
+
 define('_origine_',$_GET['id_pers']);
 
 if(!$_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
@@ -44,27 +59,28 @@ if(!$_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
     if($output!='dot')
         define('_MAX_NODES_',30);
     else
-        define('_MAX_NODES_',1000);
+        define('_MAX_NODES_',4000);
 }
 else
 {
     if($output!='dot')
         define('_MAX_NODES_',400);
     else
-        define('_MAX_NODES_',1000);
+        define('_MAX_NODES_',2000);
 }
     
 $dot_filename=uniqid();
 $dot=fopen('/tmp/'.$dot_filename, 'w');
 fwrite($dot, 'digraph arbre {
     bgcolor="transparent";
-    ranksep="1.5";
+    ranksep="0.75";
     fontname="LiberationSans";
     overlap="compress";
     size = "150, 50";
     mclimit = "100";
     remincross = "true";
-    node [shape = record, margin="0.45,0.05", width=0.1, height=0.2];
+    edge [dir=none];
+    node [shape = record, margin="0.45,0.05", width=0.1, height=0.2, tooltip=" "];
     '."\n");
 /*
     dpi="72";
@@ -126,7 +142,33 @@ function g4p_print_family($famille, $option=' [style="filled", fillcolor="#fffff
                 }
             }   
         }
-        return 'f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="13.0" FACE="LiberationSans">'.$date.' </FONT> >];'."\n";
+        
+        if(!empty($famille->enfants))
+        {
+            if(!empty($date))
+            {
+                $tmp='f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="13.0" FACE="LiberationSans">'.$date.' </FONT> >];'."\n";
+                $tmp.="	{\n node [label=\"\" width=0 height=0 shape=point]
+                fa".$famille->id." \n}\n";
+                $tmp.="f".$famille->id." -> fa".$famille->id." [dir=none]\n";
+            }
+            else
+            {
+                $tmp='f'.$famille->id.' '.$option.' [ shape=point, label="" width=0 height=0];'."\n";
+                $tmp.="	{\n node [label=\"\" width=0 height=0 shape=point]
+                fa".$famille->id." \n}\n";
+                $tmp.="f".$famille->id." -> fa".$famille->id." [dir=none]\n";            
+            }
+        }
+        elseif(!empty($date))
+        {
+            $tmp='f'.$famille->id.' '.$option.' [ shape=ellipse, label=< <FONT POINT-SIZE="13.0" FACE="LiberationSans">'.$date.' </FONT> >];'."\n";        
+        }
+        else
+        {
+            $tmp='f'.$famille->id.' '.$option.' [ shape=point, label="" width=0 height=0];'."\n";        
+        }
+        return $tmp;
     }
     else
         return '';
@@ -197,10 +239,10 @@ function g4p_load_parent($g4p_indi, $generation, $descendance=false)
                     //echo '---',count($liste_nodes),'-';
                     if(!empty($pere) and count($liste_nodes)<_MAX_NODES_)
                         if($famille_id=g4p_load_parent($pere, $generation+1, _fulldesc_))
-                            fwrite($dot, g4p_print_link(array('f'.$famille_id, 'i'.$pere->indi_id)));
+                            fwrite($dot, g4p_print_link(array('fa'.$famille_id, 'i'.$pere->indi_id)));
                     if(!empty($mere) and count($liste_nodes)<_MAX_NODES_)
                         if($famille_id=g4p_load_parent($mere, $generation+1, _fulldesc_))
-                            fwrite($dot, g4p_print_link(array('f'.$famille_id, 'i'.$mere->indi_id)));
+                            fwrite($dot, g4p_print_link(array('fa'.$famille_id, 'i'.$mere->indi_id)));
                 }
                 else
                 {
@@ -304,7 +346,7 @@ function g4p_load_enfants($g4p_indi, $generation)
                 else
                     fwrite($dot, g4p_print_label($tmp));
                     
-                fwrite($dot, g4p_print_link(array('f'.$key, 'i'.$enfant_id)));    
+                fwrite($dot, g4p_print_link(array('fa'.$key, 'i'.$enfant_id)));    
             }
         }
     }
@@ -313,12 +355,12 @@ function g4p_load_enfants($g4p_indi, $generation)
     if(!empty($conjoint) and $generation<$limite_ascendance and count($liste_nodes)<_MAX_NODES_)
         foreach($conjoint as $a_conjoint)
             if($famille_id=g4p_load_parent($a_conjoint, $generation+1, _fulldesc_))
-                fwrite($dot, g4p_print_link(array('f'.$famille_id, 'i'.$a_conjoint->indi_id)));
+                fwrite($dot, g4p_print_link(array('fa'.$famille_id, 'i'.$a_conjoint->indi_id)));
         
     //On remonte l'ascendance la personne en cours
     if($generation<$limite_ascendance and count($liste_nodes)<_MAX_NODES_)
         if($famille_id=g4p_load_parent($g4p_indi, $generation+1, _fulldesc_))
-            fwrite($dot, g4p_print_link(array('f'.$famille_id, 'i'.$g4p_indi->indi_id)));   
+            fwrite($dot, g4p_print_link(array('fa'.$famille_id, 'i'.$g4p_indi->indi_id)));   
 }
 
 g4p_load_enfants($g4p_indi,0);

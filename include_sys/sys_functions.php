@@ -507,7 +507,7 @@ function g4p_affiche_liste_nom($lettre, $cpt)
         
         if(!empty($lettre))
             $sql="SELECT indi_nom, count(*) as cpt FROM genea_individuals
-                WHERE base=".$_SESSION['genea_db_id']." AND indi_nom LIKE'".mysql_escape_string($lettre)."%' GROUP BY indi_nom ORDER BY indi_nom";
+                WHERE base=".$_SESSION['genea_db_id']." AND indi_nom LIKE'".$g4p_mysqli->escape_string($lettre)."%' GROUP BY indi_nom ORDER BY indi_nom";
         else
             $sql="SELECT indi_nom, count(*) as cpt FROM genea_individuals
                 WHERE base=".$_SESSION['genea_db_id']." GROUP BY indi_nom ORDER BY indi_nom";
@@ -1795,12 +1795,12 @@ function word_limiter($str, $limit = 100, $end_char = '&#8230;') {
     return rtrim($matches[0]) . $end_char;
 } 
 
-function g4p_birth_death($timestamp)
+function g4p_timestamp($timestamp)
 {
     global $g4p_langue;
     
     if(!empty($timestamp))
-        return '<span class="petit">'.sprintf($g4p_langue['index_chan'],g4p_strftime($g4p_langue['date_complete'], strtotime($timestamp))).'</span>';
+        return '<span class="petit">'.g4p_strftime($g4p_langue['date_complete'], strtotime($timestamp)).'</span>';
 }
 
 function g4p_affiche_adresse($adresse)

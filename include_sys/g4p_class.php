@@ -1184,141 +1184,6 @@ class g4p_address
 }
 
 /**
- * Objet date
- * Vraiment pas terrible cette class
- * @author Pascal Parois
- * @param g4p_date Tableau contenant le détail de la date
- */
-class g4p_date
-{
-	/**
-	 * Constructeur de l'objet date
-	 * @author Pascal Parois
-	 * @param g4p_date Tableau contenant le détail de la date
-	 */
-	function __construct($g4p_date,&$g4p_sql_datas)
-	{
-		if(!empty($g4p_date))
-		{
-			$this->jd_count=$g4p_date['jd_count'];
-			$this->jd_precision=$g4p_date['jd_precision'];
-			$this->jd_calendar=$g4p_date['jd_calendar'];
-		
-			$this->gedcom_date=$g4p_date['events_details_gedcom_date'];
-			$this->g4p_gedom2date();
-		}
-	}
-	
-	/**
-	 * Objet date
-	 * @author Pascal Parois
-	 * @return boolean
-	 */
-	function g4p_gedom2date()
-	{
-		$gedcom=$this->gedcom_date;
-		
-		//texte dans la date
-		if(preg_match ('/^\(.*\)$/u',$gedcom,$reg))
-		{
-			if(!empty($reg[1]))
-			{
-				$this->date_phrase=new g4p_date_phrase();
-				$this->date_phrase->set_phrase($reg[1]);
-				return true;
-			}
-		}
-		
-		if(preg_match ('/INT.*\(.*\)/u',$gedcom,$reg))
-		{
-			if(!empty($reg[1]))
-			{
-				$this->date_phrase=new g4p_date_phrase();
-				$this->date_phrase->set_phrase($reg[1]);
-			}
-		}
-
-		if(preg_match ('/(BET|FROM) (.*) (AND|TO) (.*)/u',$this->gedcom_date,$reg))
-		{		
-			if(empty($reg[2]) or empty($reg[4]))
-				return false;
-			if($reg[1]=='BET' and $reg [3]!='AND')
-				return false;
-		
-			if(!empty($reg[2]))
-			{
-				$date1=new g4p_date_value();
-				$date1->load_from_ged($reg[2]);
-			}
-			else
-				$date1='';
-			
-			if(!empty($reg[4]))
-			{
-				$date2=new g4p_date_value();
-				$date2->load_from_ged($reg[4]);
-			}
-			else
-				$date2='';
-		
-			$this->date_range=new g4p_date_range();
-			$this->date_range->set_date($date1,$date2);		
-		}
-		elseif(preg_match ('/(ABT|CAL|EST) (.*)/u',$this->gedcom_date,$reg))
-		{
-			if(!empty($reg[2]))
-			{
-				$date=new g4p_date_value();
-				$date->load_from_ged($reg[2]);
-				
-				$this->date_approximated=new g4p_date_approximated();
-				$this->date_approximated->set_date($reg[1], $date);
-			}
-			else 
-				return false;	
-		}
-		else
-		{
-				$date=new g4p_date_value();
-				$date->load_from_ged($this->gedcom_date);
-				$this->date_exact=$date;
-		}
-			
-			return true;
-	}
-	
-	/**
-	 * Crée une chaine gedcom à partir d'un tableau
-	 * A faire et définir le fameux tableau
-	 * @author Pascal Parois
-	 * @return chaine gedcom
-	 */
-	function g4p_date2gedom($table)
-	{
-	
-		if(!empty($this->date_approximated))
-			$gedcom=$this->date_approximated->get_gedcom();
-		elseif(!empty($this->date_range))
-			$gedcom=$this->date_range->get_gedcom();
-		elseif(!empty($this->date_exact))
-			$gedcom=$this->date_exact->get_gedcom();
-			
-		if(!empty($this->date_phrase))
-			$phrase=$this->date_phrase->get_gedcom();
-			
-		if(!empty($gedcom) and !empty($phrase))
-			return 'INT '.$gedcom.' '.$phrase;
-		elseif(!empty($gedcom))
-			return $gedcom;
-		elseif(!empty($phrase))
-			return $phrase;
-		else
-			return false;
-	}
-	
-}
-
-/**
  * Objet parents
  * @author Pascal Parois
  * @param g4p_parents Tableau contenant le détail des parents
@@ -1356,6 +1221,149 @@ class g4p_parents
 	}
 }
 
+/**
+ * Objet date
+ * Vraiment pas terrible cette class
+ * @author Pascal Parois
+ * @param g4p_date Tableau contenant le détail de la date
+ */
+class g4p_date
+{
+	/**
+	 * Constructeur de l'objet date
+	 * @author Pascal Parois
+	 * @param g4p_date Tableau contenant le détail de la date
+	 */
+	function __construct($g4p_date,&$g4p_sql_datas=NULL)
+	{
+		if(!empty($g4p_date))
+		{
+			$this->jd_count=$g4p_date['jd_count'];
+			$this->jd_precision=$g4p_date['jd_precision'];
+			$this->jd_calendar=$g4p_date['jd_calendar'];
+		
+			$this->gedcom_date=$g4p_date['events_details_gedcom_date'];
+			$this->g4p_gedom2date();
+		}
+	}
+    
+    function set_gedcomdate($g4p_date)
+    {
+        $this->gedcom_date=$g4p_date;
+    }
+	
+	/**
+	 * Objet date
+	 * @author Pascal Parois
+	 * @return boolean
+	 */
+	function g4p_gedom2date()
+	{
+		$gedcom=$this->gedcom_date;
+		
+		//texte dans la date
+		if(preg_match ('/^\(.*\)$/u',trim($gedcom),$reg))
+		{
+			if(!empty($reg[1]))
+			{
+				$this->date->phrase=$reg[1];
+				return true;
+			}
+		}
+		
+		if(preg_match ('/^INT (.*)\(([^)]+)\)/u',trim($gedcom),$reg))
+		{
+			if(!empty($reg[1]))
+			{
+				$this->date->phrase=$reg[2];
+                $gedcom=$reg[1];
+			}
+		}
+
+		if(preg_match ('/(BET|FROM) (.*) (AND|TO) (.*)/u',$this->gedcom_date,$reg))
+		{		
+			if(empty($reg[2]) or empty($reg[4]))
+				return false;
+			if($reg[1]=='BET' and $reg [3]!='AND')
+				return false;
+		
+			if(!empty($reg[2]))
+			{
+				$date1=new g4p_date_value();
+				$date1->load_from_ged($reg[1].' '.$reg[2]);
+			}
+			else
+				$date1='';
+			
+			if(!empty($reg[4]))
+			{
+				$date2=new g4p_date_value();
+				$date2->load_from_ged($reg[3].' '.$reg[4]);
+			}
+			else
+				$date2='';
+		
+			//$this->date_range=new g4p_date_range();
+			//$this->date_range->set_date($date1,$date2);		
+            $this->date1=$date1;
+            $this->date2=$date2;
+		}
+		elseif(preg_match ('/(ABT|CAL|EST) (.*)/u',$this->gedcom_date,$reg))
+		{
+			if(!empty($reg[2]))
+			{
+				$date=new g4p_date_value();
+				$date->load_from_ged($reg[1].' '.$reg[2]);
+				
+				//$this->date_approximated=new g4p_date_approximated();
+				//$this->date_approximated->set_date($date);
+                $this->date1=$date;
+			}
+			else 
+				return false;	
+		}
+		else
+		{
+				$date=new g4p_date_value();
+				$date->load_from_ged($this->gedcom_date);
+				//$this->date_exact=$date;
+                $this->date1=$date;
+		}
+			
+			return true;
+	}
+	
+	/**
+	 * Crée une chaine gedcom à partir d'un tableau
+	 * A faire et définir le fameux tableau
+	 * @author Pascal Parois
+	 * @return chaine gedcom
+	 */
+	function g4p_date2gedom($table)
+	{
+	
+		if(!empty($this->date_approximated))
+			$gedcom=$this->date_approximated->get_gedcom();
+		elseif(!empty($this->date_range))
+			$gedcom=$this->date_range->get_gedcom();
+		elseif(!empty($this->date_exact))
+			$gedcom=$this->date_exact->get_gedcom();
+			
+		if(!empty($this->date_phrase))
+			$phrase=$this->date_phrase->get_gedcom();
+			
+		if(!empty($gedcom) and !empty($phrase))
+			return 'INT '.$gedcom.' '.$phrase;
+		elseif(!empty($gedcom))
+			return $gedcom;
+		elseif(!empty($phrase))
+			return $phrase;
+		else
+			return false;
+	}
+	
+}
+
 /************
 	DATE_VALUE: = {Size=1:35}
 	[<DATE> | <DATE_PERIOD> | <DATE_RANGE> <DATE_APPROXIMATED> | INT <DATE> (<DATE_PHRASE>) | (<DATE_PHRASE>) ]
@@ -1384,94 +1392,6 @@ class g4p_parents
 	(<TEXT>)
 *****************/
 
-class g4p_date_range
-{
-	function set_date($date1, $date2)
-	{
-		//$date1=BEF
-		//$date2=AFT
-				
-		if(empty($date1) and empty($date2))
-			return false;
-		elseif(!empty($date1) and !empty($date2))
-		{
-			if(is_object($date1) and get_class($date1)=='g4p_date_value' and is_object($date2) and get_class($date2)=='g4p_date_value')
-			{
-				$this->range1='BET';
-				$this->date1=$date1;
-				$this->range2='AND';
-				$this->date2=$date2;
-			}
-			else
-				return false;
-		}
-		elseif(!empty($date1))
-		{
-			if(is_object($date1) and isset($date_class_table[get_class($date1)]))
-			{
-				$this->range='BEF';
-				$this->date=$date1;
-			}
-			else
-				return false;
-		}
-		else
-		{
-			if(is_object($date2) and isset($date_class_table[get_class($date2)]))
-			{
-				$this->range='AFT';
-				$this->date=$date2;
-			}
-			else
-				return false;
-		}
-	}
-	
-	function get_gedcom()
-	{
-		if(!empty($this->range))
-		{
-			return $this->range.' '.$this->date->get_gedcom();
-		}
-		else
-		{
-			return $this->range1.' '.$this->date1->get_gedcom().' '.$this->range2.' '.$this->date2->get_gedcom();
-		}
-	}
-}
-
-class g4p_date_approximated
-{
-	function set_date($approx, $date)
-	{
-		$approx_table=array('ABT'=>1, 'CAL'=>1, 'EST'=>1);
-		if(isset($approx_table[$approx]) and is_object($date) and get_class($date)=='g4p_date_value')
-		{
-			$this->approximated=$approx;
-			$this->date=$date;
-		}
-	}
-	
-	function get_gedcom()
-	{
-		return $this->approximated=$approx.' '.$this->date->get_gedcom();
-	}
-}
-
-class g4p_date_phrase
-{
-	function set_phrase($phrase)
-	{
-		preg_replace('/[ ]*\((.*)\)[ ]*/u','$1',$phrase);
-		$this->phrase=$phrase;
-	}
-	
-	function get_gedcom()
-	{
-		return '('.$this->phrase.')';
-	}
-}
-
 class g4p_date_value
 {
 	function __construct()
@@ -1484,7 +1404,7 @@ class g4p_date_value
 		$fren_cal=array_flip($g4p_cal_mrev);
 		$greg_cal=array_flip($g4p_cal_gregorien);
 		$hebr_cal=array_flip($g4p_cal_mrev);
-		
+	
 		if(!empty($year) and (int)$year==$year)
 		{
 			$this->year=$year;
@@ -1525,16 +1445,21 @@ class g4p_date_value
 	 */
 	function load_from_ged($date_ged)
 	{
+        $liste_modificateur=array('EST','ABT','CAL','TO','AFT','FROM','BET','TO','AND');
 		$g4p_cal_ged_php=array('@#DHEBREW@'=>1,'@#DFRENCH R@'=>1,'@#DGREGORIAN@'=>1,'@#DJULIAN@'=>1,'@#UNKOWN@'=>1);
-		
-		if(preg_match('/(@.*@) (.*)/',$date_ged,$reg))
+        
+		if(preg_match('/^('.implode('|',$liste_modificateur).')/',trim($date_ged),$reg))
+		{
+            $this->mod=$reg[1];
+            $date_ged=trim(str_replace($reg[1],'',$date_ged));
+		}
+
+        if(preg_match('/(@.*@) (.*)/',$date_ged,$reg))
 		{
 			if(isset($g4p_cal_ged_php[$reg[1]]))
 			{
 				$this->calendar=$reg[1];
 			}
-			else
-				return false;
 			$date_ged=str_replace($reg[1],'',$date_ged);
 		}
 
@@ -1556,7 +1481,6 @@ class g4p_date_value
 		}
 		else
 			return false;
-			
 		
 		return true;
 	}
@@ -1699,6 +1623,10 @@ class g4p_mysqli extends mysqli
         return (count($table))?($table):(false);
     }
 
+    function escape_string($string)
+    {
+        return parent::real_escape_string($string);
+    }
     
 }
 

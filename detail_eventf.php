@@ -9,11 +9,15 @@ $_GET['id_parent']=(int)$_GET['id_parent'];
 if(empty($_GET['id_parent']))
     g4p_error('Error on parameter');
 
+$_GET['id_famille']=(int)$_GET['id_famille'];
+if(empty($_GET['id_famille']))
+    g4p_error('Error on parameter');
+
 $g4p_indi=g4p_load_indi_infos($_GET['id_parent']);
 if(empty($g4p_indi))
 	g4p_error('Erreur lors du chargement des données de l\'individu');
 
-$g4p_event=$g4p_indi->events[(int)$_GET['id']];
+$g4p_event=$g4p_indi->familles[$_GET['id_famille']]->events[(int)$_GET['id']];
 
 $g4p_javascript2='<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAMe86qX804-6hOkmbFiJGnhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTN0WwgJOmI-QsJ6XCnMj6Ja5mBw"
             type="text/javascript"></script>
@@ -40,7 +44,7 @@ echo '<div class="box_title"><h2>Détail de l\'évènement</h2></div>'."\n";
 
 echo '<div class="menu_interne"><a href="'.g4p_make_url('','fiche_individuelle.php','id_pers='.$g4p_indi->indi_id,'fiche-'.$g4p_indi->base.'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id).'" class="retour">',$g4p_langue['retour'],'</a>';
 if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
-    echo ' - <a href="'.g4p_make_url('','modification_event.php','type_event=indi&amp;id_event='.$g4p_event->id,0).'" class="admin">',$g4p_langue['menu_mod_event'],'</a>
+    echo ' - <a href="'.g4p_make_url('admin','index.php','g4p_opt=mod_event&amp;g4p_id='.$_GET['id_parent'],0).'" class="admin">',$g4p_langue['menu_mod_event'],'</a>
            - <a href="'.g4p_make_url('admin','exec.php','g4p_opt=del_event&amp;g4p_id='.$_GET['id_parent'],0).'" class="admin">',$g4p_langue['menu_del_event'],'</a>
            - <a href="'.g4p_make_url('admin','index.php','g4p_opt=ajout_note&amp;g4p_id='.$_GET['id_parent'].'&amp;g4p_type=events',0).'" class="admin">',$g4p_langue['menu_ajout_note'],'</a>
            - <a href="'.g4p_make_url('admin','index.php','g4p_opt=ajout_source&amp;g4p_id='.$_GET['id_parent'].'&amp;g4p_type=events',0).'" class="admin">',$g4p_langue['menu_ajout_source'],'</a>

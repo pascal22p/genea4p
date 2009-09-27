@@ -50,7 +50,7 @@ if(!isset($_GET['nom']))
     $_GET['nom'] = urldecode($_GET['id_nom']);
             
 $sql="SELECT indi_id  FROM `genea_individuals`";
-$sql.=" WHERE base =".$_SESSION['genea_db_id']." AND indi_nom='".mysql_escape_string($_GET['nom'])."'";
+$sql.=" WHERE base =".$_SESSION['genea_db_id']." AND indi_nom='".$g4p_mysqli->escape_string($_GET['nom'])."'";
 if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_])
     $sql.=" AND (indi_resn IS NULL OR indi_resn<>'privacy')";
 $sql.=" ORDER BY indi_nom, indi_prenom LIMIT ".($_GET['g4p_page']-1)*_AFF_NBRE_PRENOM_.","._AFF_NBRE_PRENOM_;
