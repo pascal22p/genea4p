@@ -1266,7 +1266,7 @@ class g4p_date
 		{
 			if(!empty($reg[1]))
 			{
-				$this->date->phrase=$reg[1];
+				$this->phrase=$reg[1];
 				return true;
 			}
 		}
@@ -1275,7 +1275,7 @@ class g4p_date
 		{
 			if(!empty($reg[1]))
 			{
-				$this->date->phrase=$reg[2];
+				$this->phrase=$reg[2];
                 $gedcom=$reg[1];
 			}
 		}

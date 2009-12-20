@@ -33,6 +33,7 @@ dl
 li
 {
 	margin-bottom:0.3em;
+	visibility: inherit;
 }
 
 div#content
@@ -155,6 +156,7 @@ em
 ul
 {
 	list-style-type: none;
+	visibility: inherit;
 }
 
 dl.horizontal
@@ -636,6 +638,38 @@ div.liste_prenoms
 	margin-left:1px solid black;
 }
 
+/* modification event */
+/* style pour l'affichage de la fiche de la personne */
+
+
+dl.mod_event
+{
+	margin-bottom: 1em;
+	padding:0;
+	display:block;
+}
+
+dl.mod_event dt
+{
+	font-style:italic;
+	float: left;
+	display:block;
+	width: 25ex;
+	margin: 0;
+	padding: 2px 2px 0 0 ;
+	vertical-align:text-bottom;
+	height:1.7em;
+	line-height:1.7em;
+}
+
+dl.mod_event dd
+{
+	clear: right;
+	margin: 0;
+	padding: 2px 2px 0 0 ;
+	height:1.7em;
+}
+
 /* divers */
 
 .link_nom
@@ -646,6 +680,13 @@ div.liste_prenoms
 form
 {
 		margin:1em;
+}
+
+select, input
+{
+	visibility: inherit;
+	display:inline;
+	vertical-align:middle;
 }
 
 DIV.error
