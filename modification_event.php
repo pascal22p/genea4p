@@ -53,125 +53,139 @@ elseif($g4p_select=='rel_familles_events')//évènement familiale
     $select_type_event.='</select>';
 }
   
-$g4p_date=new g4p_date('');
-//$g4p_date->set_gedcomdate($g4p_event['events_details_gedcom_date']);
-$g4p_date->set_gedcomdate('FROM @#DFRENCH R@ 12 DEC 1898');
-$g4p_date->g4p_gedom2date();
+if(empty($_POST['g4p_type']))
+{
+    $g4p_date=new g4p_date('');
+    $g4p_date->set_gedcomdate($g4p_event['events_details_gedcom_date']);
+    //$g4p_date->set_gedcomdate('FROM @#DFRENCH R@ 12 DEC 1898');
+    $g4p_date->g4p_gedom2date();
 
-$g4p_javascript='<link type="text/css" href="styles/jquery/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
-    <script type="text/javascript" src="http://jqueryui.com/latest/jquery-1.3.2.js"></script>
-    <script type="text/javascript" src="http://jqueryui.com/latest/ui/ui.core.js"></script>
-    <script type="text/javascript" src="http://jqueryui.com/latest/ui/ui.tabs.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $("#eventstabs").tabs();
-        });
-    
-    
-    function date_mask()
-    {
-        if($("select#date_mod0 :selected").val()==\'FROM\' || $("select#date_mod0 :selected").val()==\'BET\')
+    $g4p_javascript='<link type="text/css" href="styles/jquery/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
+        <script type="text/javascript" src="http://jqueryui.com/latest/jquery-1.3.2.js"></script>
+        <script type="text/javascript" src="http://jqueryui.com/latest/ui/ui.core.js"></script>
+        <script type="text/javascript" src="http://jqueryui.com/latest/ui/ui.tabs.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#eventstabs").tabs();
+            });
+        
+        
+        function date_mask()
         {
-            $("div#date2").show();
-            if($("select#date_mod0 :selected").val()==\'FROM\')
-                $("select#date_mod1").html("<option value=\"\"></option><option selected=\"selected\" value=\"TO\">à</option>");
-            if($("select#date_mod0 :selected").val()==\'BET\')
-                $("select#date_mod1").html("<option value=\"\"></option><option selected=\"selected\" value=\"AND\">et</option>");
+            if($("select#date_mod0 :selected").val()==\'FROM\' || $("select#date_mod0 :selected").val()==\'BET\')
+            {
+                $("div#date2").show();
+                if($("select#date_mod0 :selected").val()==\'FROM\')
+                    $("select#date_mod1").html("<option value=\"\"></option><option selected=\"selected\" value=\"TO\">à</option>");
+                if($("select#date_mod0 :selected").val()==\'BET\')
+                    $("select#date_mod1").html("<option value=\"\"></option><option selected=\"selected\" value=\"AND\">et</option>");
+            }
+            else
+                $("div#date2").hide();
         }
-        else
+
+        $(function(){
+            $("select#date_mod0").change(function(){
+                date_mask();
+            })
+        })
+        
+        </script>
+    ';
+
+    $body=' OnLoad="date_mask()" ';
+    /*
+          function(){
             $("div#date2").hide();
+            $("table#permission_table").append("<thead><tr><td>Nom de la base</td><td>'.$g4p_langue['a_index_gerer_perm_type_perm'].'</td><td>'.$g4p_langue['a_index_gerer_perm_valeur'].'</td><td>Supprimer</td></tr></thead>");
+            updateperms(listeperms[$(this).val()]);
+          })
+        })    
+    */
+
+
+    require_once($g4p_chemin.'entete.php');
+    echo '<div class="box_title"><h2>Modification de l\'évènement</h2></div>'."\n";
+
+    echo '<form class="formulaire" method="post" action="'.$_SERVER['PHP_SELF'].'" id="mod_event">';
+    echo '<dl class="mod_event">';
+    echo '<dt>Type évènement : </dt><dd>'.$select_type_event.'</dd>';
+    echo '<dt>events_details_descriptor : </dt><dd><input type="text" name="events_details_descriptor" style="width:55ex;" value="'.@$g4p_event['events_details_descriptor'].'" /></dd>';
+    echo '<dt>Attestation : </dt><dd><input type="checkbox" name="attestation" style="width:55ex;" value="'.@$g4p_event['events_attestation'].'" /></dd>';
+    echo '<dt>Age : </dt><dd><input type="text" name="age" style="width:55ex;" value="'.@$g4p_event['events_details_age'].'" /></dd>';
+    echo '<dt>Cause : </dt><dd><input type="text" name="cause" style="width:55ex;" value="'.@$g4p_event['events_details_cause'].'" /></dd>';
+    echo '</dl>';
+
+    echo '<div id="eventstabs">
+
+        <ul>
+            <li><a href="#fragment-1"><span style="color:#65381B;font-weight:normal;font-size:110%;">Date</span></a></li>
+            <li><a href="#fragment-2"><span style="color:#65381B;font-weight:normal;font-size:110%;">Format Gedcom</span></a></li>
+        </ul>
+    <div id="fragment-1">';
+    echo '<ul>';
+    echo '<li>';
+    if(!empty($g4p_date->date1))
+        g4p_form_date(0, $g4p_date->date1);
+    else
+        g4p_form_date(0, '');
+    echo "</li>\n";
+
+    if(!empty($g4p_date->date2))
+    {
+        echo '<li><div id="date2">';
+        g4p_form_date(1, $g4p_date->date2);
+        echo "</div></li>\n";
+    }
+    else
+    {
+        echo '<li><div id="date2">';
+        g4p_form_date(1, '');
+        echo '</div></li>';
     }
 
-    $(function(){
-        $("select#date_mod0").change(function(){
-            date_mask();
-        })
-    })
-    
-    </script>
-';
+    if(!empty($g4p_date->date2))
+    {
+        echo '<li>';
+        echo 'Commentaire : <input type="text" name="g4p_phrase" style="width:55ex;" value="'.@$g4p_date->phrase.'" />';
+        echo "</li>\n";
+    }
+    else
+    {
+        echo '<li>';
+        echo 'Commentaire : <input type="text" name="g4p_phrase" style="width:55ex;" value="" />';
+        echo "</li>\n";
+    }
 
-$body=' OnLoad="date_mask()" ';
-/*
-      function(){
-        $("div#date2").hide();
-        $("table#permission_table").append("<thead><tr><td>Nom de la base</td><td>'.$g4p_langue['a_index_gerer_perm_type_perm'].'</td><td>'.$g4p_langue['a_index_gerer_perm_valeur'].'</td><td>Supprimer</td></tr></thead>");
-        updateperms(listeperms[$(this).val()]);
-      })
-    })    
-*/
+    echo '</ul>';
+    echo '</div>
 
+    <div id="fragment-2">
+        <input type="text" name="g4p_gedcom_date" style="width:70ex;" value="'.$g4p_date->gedcom_date.'" />
+    </div>
 
-require_once($g4p_chemin.'entete.php');
-echo '<div class="box_title"><h2>Modification de l\'évènement</h2></div>'."\n";
+    </div>';
 
+    echo '<dl class="mod_event">';
+    echo '<input type="hidden" name="type_event" value="'.$_REQUEST['type_event'].'"';
+    echo '<input type="hidden" name="id_event" value="'.$_REQUEST['id_event'].'"';
+    echo '<input type="submit" value="Valider" />';
+    echo '</dl>';
 
-echo '<dl class="mod_event">';
-echo '<dt>Type évènement : </dt><dd>'.$select_type_event.'</dd>';
-echo '<dt>events_details_descriptor : </dt><dd><input type="text" name="events_details_descriptor" style="width:55ex;" value="'.@$g4p_event['events_details_descriptor'].'" /></dd>';
-echo '<dt>Attestation : </dt><dd><input type="checkbox" name="attestation" style="width:55ex;" value="'.@$g4p_event['events_attestation'].'" /></dd>';
-echo '<dt>Age : </dt><dd><input type="text" name="age" style="width:55ex;" value="'.@$g4p_event['events_details_age'].'" /></dd>';
-echo '<dt>Cause : </dt><dd><input type="text" name="cause" style="width:55ex;" value="'.@$g4p_event['events_details_cause'].'" /></dd>';
-echo '</dl>';
-
-echo '<div id="eventstabs">
-
-    <ul>
-        <li><a href="#fragment-1"><span style="color:#65381B;font-weight:normal;font-size:110%;">Date</span></a></li>
-        <li><a href="#fragment-2"><span style="color:#65381B;font-weight:normal;font-size:110%;">Format Gedcom</span></a></li>
-    </ul>
-<div id="fragment-1">';
-echo '<ul>';
-echo '<li>';
-if(!empty($g4p_date->date1))
-    g4p_form_date(0, $g4p_date->date1);
-else
-    g4p_form_date(0, '');
-echo "</li>\n";
-
-if(!empty($g4p_date->date2))
-{
-    echo '<li><div id="date2">';
-    //g4p_form_date(1, $g4p_date->date2);
-    echo "aaaaaa";
-    echo "</div></li>\n";
+    echo '</div>';
+    require_once($g4p_chemin.'pied_de_page.php');
 }
 else
 {
-    echo '<li><div id="date2">';
-    g4p_form_date(1, '');
-    echo '</div></li>';
-}
 
-if(!empty($g4p_date->date2))
-{
-    echo '<li>';
-    echo 'Commentaire : <input type="text" name="g4p_phrase" style="width:55ex;" value="'.@$g4p_date->phrase.'" />';
-    echo "</li>\n";
-}
-else
-{
-    echo '<li>';
-    echo 'Commentaire : <input type="text" name="g4p_phrase" style="width:55ex;" value="" />';
-    echo "</li>\n";
-}
 
-echo '</ul>';
-echo '</div>
 
-<div id="fragment-2">
-    <input type="text" name="g4p_gedcom_date" style="width:70ex;" value="'.$g4p_date->gedcom_date.'" />
-</div>
-
-</div>';
 
   var_dump($g4p_event);
 
 
 
-echo '</div>';
-require_once($g4p_chemin.'pied_de_page.php');
-
+}
  
   
   exit;
