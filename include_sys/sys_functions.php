@@ -265,8 +265,8 @@ function g4p_affiche_mariage()
             if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
             {
                 echo '<div class="menu_interne">
-                    <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_note&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
-                    <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_source&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 
+					<a href="',g4p_make_url('','new_note.php','parent=FAMILLE&amp;id_parent='.$g4p_a_famille->id,0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
+				    <a href="',g4p_make_url('','new_source.php','parent=FAMILLE&amp;id_parent='.$g4p_a_famille->id,0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 
                     <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_media&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> 
                     <a href="',g4p_make_url('','modification_famille.php','id_pers='.$g4p_indi->indi_id.'&id_famille='.$g4p_a_famille->id,0),'" class="admin">',$g4p_langue['menu_mod_famille'],'</a>';
                 if(isset($_SESSION['permission']) and ($_SESSION['permission']->permission[_PERM_SUPPR_FILES_]))

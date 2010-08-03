@@ -5,11 +5,12 @@ $g4p_chemin='';
 require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 
-$g4p_javascript='<script src="javascript/jquery/jquery-1.3.1.min.js"></script>
+$g4p_javascript='<script type="text/javascript" src="javascript/jquery/jquery-1.3.1.min.js"></script>
   <script type="text/javascript" src="javascript/jquery/lib/jquery.bgiframe.min.js"></script>
   <script type="text/javascript" src="javascript/jquery/lib/jquery.dimensions.js"></script>
   <script type="text/javascript" src="javascript/jquery/jquery.autocomplete.min.js"></script>
-  <script>
+  <script type="text/javascript">
+  /* <![CDATA[ */  
   $(document).ready(function(){
     $("#g4p_id_note").autocomplete(\'ajax/autocomplete_note.php\', {max:40}).result(callback);
   });
@@ -23,6 +24,7 @@ $g4p_javascript='<script src="javascript/jquery/jquery-1.3.1.min.js"></script>
             $("#note").show();
         }
     }    
+  /* ]]> */	
   </script>
 ';
 
@@ -43,7 +45,7 @@ if(empty($id_parent))
 $tables=array(
     'INDI'=>'rel_indi_notes',
     'EVENT'=>'rel_events_notes',
-    'FAMILLE'=>'rel_famille_notes',
+    'FAMILLE'=>'rel_familles_notes',
     'MEDIA'=>'rel_multimedia_notes',
     'PLACE'=>'rel_place_notes',
     'REPO'=>'rel_repo_notes',
@@ -58,13 +60,30 @@ $colonnes=array(
     'REPO'=>'repo_id',
     'SCITE'=>'sour_citations_id',
     'SRECORD'=>'sour_records_id');
-    
+$origin_tables=array(
+    'INDI'=>'genea_individuals',
+    'EVENT'=>'genea_events_details',
+    'FAMILLE'=>'genea_familles');
+
 if(!isset($tables[$_REQUEST['parent']]))
     die('Type de note inconnu');
 else
 {
     $table=$tables[$_REQUEST['parent']];
+	$origin_table=$origin_tables[$_REQUEST['parent']];	
     $parentcol=$colonnes[$_REQUEST['parent']];
+}
+    
+// recuperation de la base
+//stocké dans $g4p_base et $g4p_base_nom
+$g4p_query=$g4p_mysqli->g4p_query("SELECT base, nom FROM  $origin_table
+	LEFT JOIN genea_infos on id=base
+	WHERE $parentcol=$id_parent");
+if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
+{
+	$g4p_base=$g4p_result[0]['base'];
+	$g4p_base_nom=$g4p_result[0]['nom'];
+
 }
 
 if(!empty($_POST['g4p_id_note']))
@@ -128,8 +147,9 @@ echo '
     <div class="box">
     <div class="box_title">Ajouter une nouvelle note</div>
     <form class="formulaire" method="post" action="',$_SERVER['PHP_SELF'],'" name="ajout_note"><ul>';
-    echo '<li>Base généalogique : <select name="g4p_base" id="g4p_base" />';
-    $g4p_query=$g4p_mysqli->g4p_query("SELECT id, nom FROM genea_infos ORDER BY nom");
+    echo '<li>Base généalogique : <select name="g4p_base" id="g4p_base" >';
+	echo '<option value="'.$g4p_base.'">'.$g4p_base_nom.'</option></select>';
+/*    $g4p_query=$g4p_mysqli->g4p_query("SELECT id, nom FROM genea_infos ORDER BY nom");
     if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
     {
         foreach($g4p_result as $g4p_a_result)
@@ -137,12 +157,12 @@ echo '
             $select=($g4p_a_result['id']==$_SESSION['genea_db_id'])?('selected="selected"'):('');
             echo '<option value="'.$g4p_a_result['id'].'"  '.$select.'>'.$g4p_a_result['nom'].'</option>';
         }
-    }
+    }*/
     echo '</li>';
     echo '<li><textarea rows="8" cols="50" name="g4p_note" ></textarea></li>';
-    echo '<input name="id_parent" type="hidden" value="',$_REQUEST['id_parent'],'" />
+    echo '<li><input name="id_parent" type="hidden" value="',$_REQUEST['id_parent'],'" />
         <input name="parent" type="hidden" value="',$_REQUEST['parent'],'" />
-        <li><input type="submit" value="Ajouter la note" /></li></form>';
+		<input type="submit" value="Ajouter la note" /></li></ul></form>';
 echo '</div>';
 
 

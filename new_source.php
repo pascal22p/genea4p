@@ -95,7 +95,7 @@ if(empty($id_parent))
 $tables=array(
     'INDI'=>'rel_indi_sources',
     'EVENT'=>'rel_events_sources',
-    'FAMILLE'=>'rel_famille_sources');
+    'FAMILLE'=>'rel_familles_sources');
 // $origin_tables utiliser pour récupérer l'identifiant de la base
 $origin_tables=array(
     'INDI'=>'genea_individuals',
