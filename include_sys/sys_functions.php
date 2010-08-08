@@ -651,11 +651,11 @@ function g4p_update_agregat_noms($nom)
 
 function g4p_affiche_multimedia($multimedia, $lien, $type)
 {
-    global $g4p_chemin, $g4p_langue;
+    global $g4p_chemin, $g4p_langue, $g4p_base_nom;
 
     if($_SESSION['permission']->permission[_PERM_MULTIMEDIA_] and is_array($multimedia))
     {
-        echo '<div class="multimedias">';
+        //echo '<div class="multimedias">';
         foreach($multimedia as $g4p_a_multimedia)
         {
             if (isset($_SESSION['permission']) and $_SESSION['permission']->permission[_PERM_EDIT_FILES_])
@@ -681,11 +681,11 @@ function g4p_affiche_multimedia($multimedia, $lien, $type)
         if(($g4p_a_multimedia->format)=='URL')
             echo '<dt>',$g4p_langue['sys_function_media_lien'],'</dt><dd><a href="',$g4p_a_multimedia->file,'">',str_replace('mailto:','',$g4p_a_multimedia->title),'</a></dd>';
         else
-            echo '<dt>',$g4p_langue['sys_function_media_lien'],'</dt><dd><a href="',$g4p_chemin.'cache/'.$_SESSION['genea_db_nom'].'/objets/',$g4p_a_multimedia->file,'" target="_blank">',$g4p_a_multimedia->title,'</a></dd>';
+            echo '<dt>',$g4p_langue['sys_function_media_lien'],'</dt><dd><a href="',$g4p_chemin.'cache/'.g4p_base_namefolder($g4p_base_nom).'/objets/',$g4p_a_multimedia->file,'" target="_blank">',$g4p_a_multimedia->title,'</a></dd>';
         echo '</dl>';
         echo '</div>';
     }
-    echo '</div>';
+    //echo '</div>';
   }
 }
 

@@ -303,10 +303,10 @@ class g4p_sql_datas
 				" FROM rel_events_multimedia" .
 				" WHERE events_details_id IN (".implode(',',$liste_events).")";
 			$g4p_infos_req=$g4p_mysqli->g4p_query($sql);
-			while($ligne=$g4p_result_req->fetch_assoc())
+			while($ligne=$g4p_infos_req->fetch_assoc())
 			{
 				$liste_medias[]=$ligne['media_id'];
-				$this->rel_events_media[$ligne['events_details_id']][]=$ligne;
+				$this->rel_events_medias[$ligne['events_details_id']][]=$ligne;
 			}
 		}
 	

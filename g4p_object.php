@@ -19,6 +19,7 @@ if($_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
     $g4p_mon_indi=new g4p_individu($_GET['id']);
 	$g4p_mon_indi->ignore_cache(true);
 	$g4p_mon_indi->g4p_load();
+	echo '<pre>';
     var_dump($g4p_mon_indi);
 }
 

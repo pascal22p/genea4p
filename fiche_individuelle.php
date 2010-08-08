@@ -26,7 +26,7 @@ if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     echo '<div class="menu_interne">
         <a href="',g4p_make_url('','new_note.php','parent=INDI&amp;id_parent='.$g4p_indi->indi_id,0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
         <a href="',g4p_make_url('','new_source.php','parent=INDI&amp;id_parent='.$g4p_indi->indi_id,0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 
-        <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_media&amp;g4p_id='.$g4p_indi->indi_id.'&amp;g4p_type=indi',0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a>  ';
+        <a href="',g4p_make_url('','new_media.php','parent=INDI&amp;id_parent='.$g4p_indi->indi_id,0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> ';
         //<a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_asso&amp;g4p_lien='.$g4p_indi->indi_id.'&amp;g4p_type=indi',0),'" class="admin">',$g4p_langue['menu_ajout_relation'],'</a> - ';
     echo '<a href="',g4p_make_url('','modification_fiche.php','id_pers='.$g4p_indi->indi_id,0),'" class="admin">',$g4p_langue['menu_modif_fiche'],'</a> ';
     echo ' <a href="',g4p_make_url('admin','exec.php','g4p_opt=del_cache&g4p_id='.$g4p_indi->indi_id,0),'" class="admin">',$g4p_langue['menu_recreer_cache'],'</a> 
@@ -210,7 +210,7 @@ if ($_SESSION['permission']->permission[_PERM_SOURCE_])
     g4p_affiche_sources(@$g4p_indi->sources, $g4p_indi->indi_id,'indi');
 
 if ($_SESSION['permission']->permission[_PERM_MULTIMEDIA_])
-    g4p_affiche_multimedia(@$g4p_indi->multimedia, $g4p_indi->indi_id,'indi');
+    g4p_affiche_multimedia(@$g4p_indi->medias, $g4p_indi->indi_id,'indi');
 
 //  echo '</div>';
 require_once($g4p_chemin.'pied_de_page.php');

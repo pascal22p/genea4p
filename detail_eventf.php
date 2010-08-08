@@ -48,7 +48,7 @@ if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
            - <a href="'.g4p_make_url('admin','exec.php','g4p_opt=del_event&amp;g4p_id='.$_GET['id_parent'],0).'" class="admin">',$g4p_langue['menu_del_event'],'</a>
 		   - <a href="',g4p_make_url('','new_note.php','parent=EVENT&amp;id_parent='.$_GET['id'],0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
 		   - <a href="',g4p_make_url('','new_source.php','parent=EVENT&amp;id_parent='.$_GET['id'],0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 
-           - <a href="'.g4p_make_url('admin','index.php','g4p_opt=ajout_media&amp;g4p_id='.$_GET['id_parent'].'&amp;g4p_type=events',0).'" class="admin">',$g4p_langue['menu_ajout_media'],'</a>
+           - <a href="',g4p_make_url('','new_media.php','parent=EVENT&amp;id_parent='.$_GET['id'],0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> 
            - <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_asso&amp;g4p_lien='.$_GET['id_parent'].'&amp;g4p_type=events',0).'" class="admin">',$g4p_langue['menu_ajout_relation'],'</a>';
 echo '</div>';
  
