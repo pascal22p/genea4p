@@ -13,7 +13,7 @@ if(!empty($_POST) and !empty($_POST['nom']))
 {
     $success=true;
     
-    $sql="INSERT INTO genea_infos (nom, descriptif) VALUES ('".mysql_escape_string($_POST['nom'])."','".mysql_escape_string($_POST['description'])."')";
+    $sql="INSERT INTO genea_infos (nom, descriptif) VALUES ('".$g4p_mysqli->escape_string($_POST['nom'])."','".$g4p_mysqli->escape_string($_POST['description'])."')";
     if(!$error=$g4p_mysqli->g4p_query($sql))
     {
         $success=false;
