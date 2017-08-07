@@ -177,7 +177,7 @@ function g4p_gedcom2sql($file)
     $g4p_requetes=array(); // liste de requetes, j'insere tout à la fin dans une belle transaction
     //g4p_db_connect();
 
-    if(eregi('.zip$',$file))
+    if(preg_match('/\.zip$/i',$file))
     {
         $zip = new ZipArchive;
         if ($zip->open($g4p_chemin.'gedcoms/'.$file) === TRUE) 
