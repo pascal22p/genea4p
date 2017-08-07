@@ -1515,12 +1515,6 @@ exit;*/
     header('location:'.g4p_make_url('','index.php','',0));
     break;
     
-    default:
-    echo 'fonction pas encore faite';
-    break;
-
-
-
 //////////////////////////////////////
 //////  Supprimer un rapport
 ////////////////////////////////////
