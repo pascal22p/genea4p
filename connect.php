@@ -36,6 +36,10 @@ if(!isset($_POST['g4p_email']))
 {
   require_once($g4p_chemin.'entete.php');
   echo '<h2>',$g4p_langue['connect_titre'],'</h2><div class="cadre">';
+  if(!empty($_SESSION['message']))
+  {
+    echo '<div class="error">'.$_SESSION['message'].'</div>';
+  }
   echo '<form class="formulaire" method="post" action="',g4p_make_url('','connect.php','',0),'">';
   echo '<label for="g4p_email">',$g4p_langue['connect_mail'],'</label><input type="text" id="g4p_email" name="g4p_email" /><br />';
   echo '<label
