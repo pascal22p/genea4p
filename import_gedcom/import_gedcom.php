@@ -30,7 +30,7 @@ if(!isset($_POST['g4p_entete_lieux']) and !isset($_POST['savesql']) and !isset($
     $file=array();
     while($g4p_fichier=readdir($g4p_rep))
     {
-        if(is_file($g4p_chemin.'gedcoms/'.$g4p_fichier) and (eregi('.ged$',$g4p_fichier) or eregi('.zip$',$g4p_fichier)))
+        if(is_file($g4p_chemin.'gedcoms/'.$g4p_fichier) and preg_match('/\.(ged|zip)$/i',$g4p_fichier) )
            $file[]='<option value="'.$g4p_fichier.'">'.$g4p_fichier.'</option>';
     }
     natcasesort($file);
