@@ -28,8 +28,11 @@ if(!$_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
     
 if(!empty($_POST['email_add']) and !empty($_POST['g4p_mdp']))
 {
-    $sql="INSERT INTO genea_membres (email, pass) VALUES 
-        ('".mysql_escape_string($_POST['email_add'])."', '".md5(mysql_escape_string($_POST['g4p_mdp']))."')";
+    $hash=password_hash($_POST['g4p_mdp'], PASSWORD_DEFAULT);
+    
+    $sql="INSERT INTO genea_membres (email, saltpass) VALUES 
+        ('".$g4p_mysqli->escape_string($_POST['email_add'])."', '".
+        $g4p_mysqli->escape_string($hash)."')";
     if($result=$g4p_mysqli->g4p_query($sql))
     {
         if($result!=='Error:1062')

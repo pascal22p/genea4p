@@ -49,50 +49,61 @@ if(!isset($_POST['g4p_email']))
 }
 else
 {
-    $sql="SELECT email,id,langue,theme,place FROM genea_membres WHERE email='".$g4p_mysqli->escape_string($_POST['g4p_email'])."' AND pass='".md5($_POST['g4p_password'])."'";
+    $sql="SELECT email,saltpass,id,langue,theme,place FROM genea_membres WHERE email='".$g4p_mysqli->escape_string($_POST['g4p_email'])."'";
     if($g4p_result=$g4p_mysqli->g4p_query($sql))
     {
         if($g4p_result=$g4p_mysqli->g4p_result($g4p_result))
         {
             $g4p_result=$g4p_result[0];
-            $_SESSION['g4p_id_membre']=$g4p_result['id'];
-            $_SESSION['langue']=$g4p_result['langue'];
-            $_SESSION['g4p_email_membre']=$g4p_result['email'];
-            $_SESSION['theme']=$g4p_result['theme'];
-            /*
-            $place=explode(',',$g4p_result['place']);
-            for($i=0;$i<count($g4p_config['subdivision'])&&$place[$i]!=-1;$i++)
-            {
-                $_SESSION['place'][$i]=$place[$i];
-            }
-            */
 
-            if(isset($_POST['g4p_cookie']))
+            // check password
+            if(password_verify($_POST['g4p_password'], $g4p_result['saltpass']))
             {
-                setcookie('genea4p[g4p_id_membre]',$g4p_result['id'],time()+$g4p_config['cookie_time_limit'],'/');
-                setcookie('genea4p[g4p_membre]',md5($g4p_result['email']),time()+$g4p_config['cookie_time_limit'],'/');
-                setcookie('genea4p[langue]',$g4p_result['langue'],time()+$g4p_config['cookie_time_limit'],'/');
-                setcookie('genea4p[theme]',$g4p_result['theme'],time()+$g4p_config['cookie_time_limit'],'/');
+            
+                $_SESSION['g4p_id_membre']=$g4p_result['id'];
+                $_SESSION['langue']=$g4p_result['langue'];
+                $_SESSION['g4p_email_membre']=$g4p_result['email'];
+                $_SESSION['theme']=$g4p_result['theme'];
                 /*
-                for($i=0;$i<count($g4p_config['subdivision'])&&isset($_SESSION['place_'.$i]);$i++)
+                $place=explode(',',$g4p_result['place']);
+                for($i=0;$i<count($g4p_config['subdivision'])&&$place[$i]!=-1;$i++)
                 {
-                    setcookie('genea4p[place]['.$i.']',$place[$i],time()+$g4p_config['cookie_time_limit'],'/');
+                    $_SESSION['place'][$i]=$place[$i];
                 }
                 */
+
+                if(isset($_POST['g4p_cookie']))
+                {
+                    setcookie('genea4p[g4p_id_membre]',$g4p_result['id'],time()+$g4p_config['cookie_time_limit'],'/');
+                    setcookie('genea4p[g4p_membre]',md5($g4p_result['email']),time()+$g4p_config['cookie_time_limit'],'/');
+                    setcookie('genea4p[langue]',$g4p_result['langue'],time()+$g4p_config['cookie_time_limit'],'/');
+                    setcookie('genea4p[theme]',$g4p_result['theme'],time()+$g4p_config['cookie_time_limit'],'/');
+                    /*
+                    for($i=0;$i<count($g4p_config['subdivision'])&&isset($_SESSION['place_'.$i]);$i++)
+                    {
+                        setcookie('genea4p[place]['.$i.']',$place[$i],time()+$g4p_config['cookie_time_limit'],'/');
+                    }
+                    */
+                }
+                else
+                {
+                    setcookie('genea4p[langue]','',0,'/','',0);
+                    setcookie('genea4p[g4p_membre]','',0,'/','',0);
+                    setcookie('genea4p[g4p_id_membre]','',0,'/','',0);
+                    setcookie('genea4p[theme]','',0,'/','',0);
+                    //setcookie('genea4p[place]','',0,'/','',0);
+                    setcookie('genea4p');
+                    unset($_COOKIE['genea4p']);
+                }
+                unset($_SESSION['permission']);
+                $_SESSION['message']=$g4p_langue['connect_bienvenue']." : ".$_POST['g4p_email']."/".$_SESSION['langue'];
+                header('location:'.g4p_make_url('','index.php',SID,0));
             }
             else
             {
-                setcookie('genea4p[langue]','',0,'/','',0);
-                setcookie('genea4p[g4p_membre]','',0,'/','',0);
-                setcookie('genea4p[g4p_id_membre]','',0,'/','',0);
-                setcookie('genea4p[theme]','',0,'/','',0);
-                //setcookie('genea4p[place]','',0,'/','',0);
-                setcookie('genea4p');
-                unset($_COOKIE['genea4p']);
+                $_SESSION['message']=$g4p_langue['acces_login_pass_incorrect']." : ".$_POST['g4p_email'];
+                header('location:'.g4p_make_url('','connect.php',SID,0));
             }
-            unset($_SESSION['permission']);
-            $_SESSION['message']=$g4p_langue['connect_bienvenue']." : ".$_POST['g4p_email']."/".$_SESSION['langue'];
-            header('location:'.g4p_make_url('','index.php',SID,0));
         }
         else
         {
