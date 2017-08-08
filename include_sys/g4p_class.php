@@ -1198,7 +1198,7 @@ class g4p_parents
 	 * @author Pascal Parois
 	 * @param g4p_parents Tableau contenant le détail des parents
 	 */
-	function g4p_parents($g4p_parents, &$g4p_sql_datas, $debug)
+	function __construct($g4p_parents, &$g4p_sql_datas, $debug)
 	{
 		if($debug===true)
 		    $this->debug=true;
