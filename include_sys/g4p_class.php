@@ -57,10 +57,12 @@ class g4p_sql_datas
         if($this->debug)
             echo 'Charge indi : '.$indi_id.'<br />';
 
-        $sql="SELECT base, indi_nom , indi_prenom , 
+        $sql="SELECT base, nom AS basename, indi_nom , indi_prenom , 
 			indi_sexe, indi_timestamp, indi_npfx, indi_givn, indi_nick, 
 			indi_spfx, indi_nsfx, indi_resn 
- 			FROM genea_individuals WHERE indi_id=".$indi_id;
+ 			FROM genea_individuals 
+            LEFT JOIN genea_infos ON genea_individuals.base=genea_infos.id 
+            WHERE indi_id=".$indi_id;
 		$g4p_infos_req=$g4p_mysqli->g4p_query($sql);
 		if($g4p_infos=$g4p_mysqli->g4p_result($g4p_infos_req))
 		{
