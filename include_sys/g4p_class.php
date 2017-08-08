@@ -399,8 +399,9 @@ class g4p_sql_datas
 		if(!empty($liste_medias))
 		{
 			//Chargement des médias
-			$sql="SELECT media_id,base,media_title,media_format,media_file,media_timestamp" .
+			$sql="SELECT media_id,base,nom AS basename,media_title,media_format,media_file,media_timestamp" .
 				" FROM genea_multimedia" .
+                " LEFT JOIN genea_infos ON genea_multimedia.base=genea_infos.id" .
 				" WHERE media_id IN (".implode(',',$liste_medias).")";
 			$g4p_infos_req=$g4p_mysqli->g4p_query($sql);
 			$this->g4p_medias=$g4p_mysqli->g4p_result($g4p_infos_req,'media_id');
