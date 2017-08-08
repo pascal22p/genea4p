@@ -655,6 +655,7 @@ class g4p_individu
 		//var_dump($g4p_sql_datas->g4p_infos_indi);
 		//echo $this->indi_id;
 		$this->base=$g4p_sql_datas->g4p_infos_indi[$this->indi_id]['base'];
+		$this->basename=$g4p_sql_datas->g4p_infos_indi[$this->indi_id]['basename'];
 		$this->nom=$g4p_sql_datas->g4p_infos_indi[$this->indi_id]['indi_nom'];
 		$this->prenom=$g4p_sql_datas->g4p_infos_indi[$this->indi_id]['indi_prenom'];
 		$this->npfx=$g4p_sql_datas->g4p_infos_indi[$this->indi_id]['indi_npfx'];
@@ -1048,6 +1049,7 @@ class g4p_media
 	{
         //var_dump($g4p_media);
 		$this->id=$g4p_media['media_id'];
+		$this->basename=$g4p_media['basename'];
 		$this->title=$g4p_media['media_title'];
 		$this->format=$g4p_media['media_format'];
 		$this->file=$g4p_media['media_file'];
