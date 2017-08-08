@@ -1512,7 +1512,7 @@ class g4p_date_value
 
 class g4p_permission
 {
-	function g4p_permission()
+	function __construct()
 	{
 		global $g4p_permissions;
 
