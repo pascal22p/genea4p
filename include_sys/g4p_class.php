@@ -429,9 +429,11 @@ class g4p_sql_datas
 		}
 		
 		//chargement des individus
-		$g4p_infos_req=$g4p_mysqli->g4p_query("SELECT indi_id, base, indi_nom , indi_prenom , 
+		$g4p_infos_req=$g4p_mysqli->g4p_query("SELECT indi_id, base, nom AS basename, indi_nom , indi_prenom , 
 			indi_sexe, indi_timestamp, indi_npfx, indi_givn, indi_nick, indi_spfx, indi_nsfx, indi_resn
-			FROM genea_individuals WHERE indi_id IN (".implode(',',$liste_indi).")");
+			FROM genea_individuals 
+            LEFT JOIN genea_infos ON genea_individuals.base=genea_infos.id
+            WHERE indi_id IN (".implode(',',$liste_indi).")");
 		$this->g4p_infos_indi=$g4p_mysqli->g4p_result($g4p_infos_req, 'indi_id');
         $this->liste_indi=$liste_indi;
 	}
