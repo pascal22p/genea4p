@@ -395,7 +395,7 @@ function g4p_latex_write_indi($g4p_indi)
             fwrite($latex, '\subsection*{'.$tmp.'}'."\n");
             //fwrite($latex, "\begin{leftbar}"."\n");
             if(!empty($g4p_a_famille->timestamp))
-                fwrite($latex, '\chandate{'.sprintf($g4p_langue['sys_function_mariage_chan'],g4p_strftime($g4p_langue['date_complete'], strtotime($g4p_a_famille->timestamp))),'}'."\n");
+                fwrite($latex, '\chandate{'.sprintf($g4p_langue['sys_function_mariage_chan'],g4p_strftime($g4p_langue['date_complete'], strtotime($g4p_a_famille->timestamp))).'}'."\n");
                 
             if(!empty($g4p_a_famille->husb->indi_id) and $g4p_indi->indi_id!=$g4p_a_famille->husb->indi_id)
                 $conjoint='husb';
