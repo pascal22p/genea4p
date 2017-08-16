@@ -290,7 +290,7 @@ function g4p_latex_write_source($a_source)
         foreach($a_source->medias as $a_media)
             g4p_latex_write_media($a_media);
     fwrite($latex, '\end{footnotesize}'."\n");
-    fwrite($latex, "\end{boite}\n");
+    fwrite($latex, '\end{boite}'."\n");
 
     //echo (isset($g4p_a_ievents->notes))?(' <span style="color:blue; font-size:x-small;">-N-</span> '):('');
     //echo (isset($g4p_a_ievents->medias))?(' <span style="color:blue; font-size:x-small;">-M-</span> '):('');

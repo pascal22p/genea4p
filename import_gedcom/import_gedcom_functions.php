@@ -182,11 +182,20 @@ function g4p_gedcom2sql($file)
         $zip = new ZipArchive;
         if ($zip->open($g4p_chemin.'gedcoms/'.$file) === TRUE) 
         {
+            if (is_dir($g4p_chemin.'gedcoms/temp'))
+            {
+                foreach (glob($g4p_chemin."gedcoms/temp/*.*") as $filename) {
+                    if (is_file($filename)) {
+                        unlink($filename);
+                    }
+               }
+               rmdir($g4p_chemin.'gedcoms/temp');
+            }
             mkdir($g4p_chemin.'gedcoms/temp');
             $zip->extractTo($g4p_chemin.'gedcoms/temp/');
             $zip->close();
             
-            $filename=glob("temp/*.ged");
+            $filename=glob($g4p_chemin.'gedcoms/temp/*.ged');
             $file=$filename[0];
         }
         else

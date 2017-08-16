@@ -681,7 +681,7 @@ function g4p_affiche_multimedia($multimedia, $lien, $type)
         if(($g4p_a_multimedia->format)=='URL')
             echo '<dt>',$g4p_langue['sys_function_media_lien'],'</dt><dd><a href="',$g4p_a_multimedia->file,'">',str_replace('mailto:','',$g4p_a_multimedia->title),'</a></dd>';
         else
-            echo '<dt>',$g4p_langue['sys_function_media_lien'],'</dt><dd><a href="',$g4p_chemin.'cache/'.g4p_base_namefolder($g4p_base_nom).'/objets/',$g4p_a_multimedia->file,'" target="_blank">',$g4p_a_multimedia->title,'</a></dd>';
+            echo '<dt>',$g4p_langue['sys_function_media_lien'],'</dt><dd><a href="',$g4p_chemin.'cache/'.$g4p_a_multimedia->basename.'/objets/',$g4p_a_multimedia->file,'" target="_blank">',$g4p_a_multimedia->title,'</a></dd>';
         echo '</dl>';
         echo '</div>';
     }

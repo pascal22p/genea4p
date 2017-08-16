@@ -176,7 +176,7 @@ shell_exec('sed -i \'s/\&//\' /tmp/'.$file.'.tex');
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
-$output=shell_exec('nice -n 10 xelatex -interaction=nonstopmode -output-directory=/tmp /tmp/'.$file.'.tex');
+$output=shell_exec('export PATH=/usr/local/texlive/2017/bin/x86_64-linux/:/bin/:/usr/bin/ && nice -n 10 xelatex -interaction=nonstopmode -output-directory=/tmp/ /tmp/'.$file.'.tex');
 if(file_exists('/tmp/'.$file.'.pdf'))
 {
     header('Content-type: application/pdf');
