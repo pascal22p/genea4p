@@ -630,7 +630,7 @@ function g4p_update_agregat_noms($nom)
   for($i=0;$i<strlen($nom);$i++)
   {
     $tmp.=$nom[$i];
-    $cond[]="lettre='".mysql_escape_string($tmp)."'";
+    $cond[]="lettre='".$g4p_mysqli->escape_string($tmp)."'";
   }
   $cond=implode(' or ',$cond);
 

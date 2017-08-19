@@ -102,10 +102,10 @@ else
     case 'ajout_place':
     $g4p_chps=implode(',',$g4p_config['subdivision']);
     foreach($_POST['place'] as $key=>$val)
-      $_POST['place'][$key]=mysql_escape_string($val);
+      $_POST['place'][$key]=$g4p_mysqli->escape_string($val);
     $g4p_chps2='"'.implode('","',$_POST['place']).'"';
     $sql="INSERT INTO genea_place (".$g4p_chps.", base) VALUES (".$g4p_chps2.", ".$_SESSION['genea_db_id'].")";
-    if($g4p_last_id=g4p_db_query($sql))
+    if($g4p_last_id=$g4p_mysqli->g4p_query($sql))
       $_SESSION['message']='Requète éffectuée avec succès';
     else
       $_SESSION['message']='Erreur lors de la requète';

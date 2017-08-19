@@ -95,11 +95,11 @@ else
     $_POST['g4p_nom']=strtoupper($_POST['g4p_nom']);
 
     $sql="INSERT INTO genea_individuals (indi_nom, indi_prenom, indi_sexe, base, indi_npfx, indi_givn, indi_nick, indi_spfx, indi_nsfx) VALUES (
-         '".mysql_escape_string($_POST['g4p_nom'])."', '".mysql_escape_string($_POST['g4p_prenom'])."', 
-         '".mysql_escape_string($_POST['g4p_sexe'])."',".(int)$_POST['g4p_base'].",
-         '".mysql_escape_string($_POST['npfx'])."', '".mysql_escape_string($_POST['givn'])."', 
-         '".mysql_escape_string($_POST['nick'])."', '".mysql_escape_string($_POST['spfx'])."', 
-         '".mysql_escape_string($_POST['nsfx'])."')";
+         '".$g4p_mysqli->escape_string($_POST['g4p_nom'])."', '".$g4p_mysqli->escape_string($_POST['g4p_prenom'])."', 
+         '".$g4p_mysqli->escape_string($_POST['g4p_sexe'])."',".(int)$_POST['g4p_base'].",
+         '".$g4p_mysqli->escape_string($_POST['npfx'])."', '".$g4p_mysqli->escape_string($_POST['givn'])."', 
+         '".$g4p_mysqli->escape_string($_POST['nick'])."', '".$g4p_mysqli->escape_string($_POST['spfx'])."', 
+         '".$g4p_mysqli->escape_string($_POST['nsfx'])."')";
     if($g4p_query=$g4p_mysqli->g4p_query($sql))
       $_SESSION['message']='Requète éffectuée avec succès';
     else
