@@ -394,6 +394,7 @@ else
 
 // ajout d'un évènement individuel
     case 'ajout_ievent':
+    
     $g4p_date_gedcom='';
 
     if(empty($_POST['g4p_type']))
@@ -456,6 +457,8 @@ else
         }
         if(empty($_POST['g4p_lieu']))
             $_POST['g4p_lieu']='null';
+        else
+			$_POST['g4p_lieu']=(int)$_POST['g4p_lieu'];
 
         if(isset($_POST['g4p_attestation']) and $_POST['g4p_attestation']=='on')
             $g4p_attestation="'Y'";
@@ -472,16 +475,18 @@ else
         $sql="START TRANSACTION";
         $g4p_mysqli->g4p_query($sql);        
         $sql="INSERT INTO genea_events_details
-            (`place_id`, `addr_id`, `events_details_descriptor`, `events_details_gedcom_date`, `events_details_age`, 
-            `events_details_cause`, `events_age`, `jd_count`, `jd_precision`, `jd_calendar`, `base`, `events_details_timestamp`) 
-            VALUES ('".(int)$_POST['g4p_lieu'].",".(int)$_POST['g4p_addr'].",".mysql_escape_string(trim($_POST['g4p_type']))."','".$g4p_attestation."','".$g4p_date_gedcom."',".mysql_escape_string(trim($_POST['g4p_lieu'])).",'".$_POST['g4p_age']."','".mysql_escape_string(trim($_POST['g4p_cause']))."',".$_SESSION['genea_db_id'].",".$g4p_jd['jd_count'].",'".$g4p_jd['calendrier']."',".$g4p_jd['precision'].")";
+            (`place_id`, `events_details_descriptor`, `events_details_gedcom_date`,
+             `jd_count`, `jd_calendar`, `jd_precision`, `base`, `events_details_timestamp`) 
+            VALUES (".$_POST['g4p_lieu'].",'".$g4p_mysqli->escape_string(trim($_POST['g4p_type']))."','".
+            $g4p_date_gedcom."',".$g4p_jd['jd_count'].",'".$g4p_jd['calendrier']."',".$g4p_jd['precision'].",".
+            $_SESSION['genea_db_id'].", NOW() )";
         if($g4p_tmp=$g4p_mysqli->g4p_query($sql))
         {
             $_POST['g4p_id']=explode('|',$_POST['g4p_id']);
             if($_POST['g4p_id'][0]=='i')
-                $sql="INSERT INTO rel_indi_event (events_details_id, indi_id, events_tag, events_attestation) VALUES 
-                    (".$g4p_tmp.", ".(int)$_POST['g4p_id'][1].",'".mysql_escape_string(trim($_POST['g4p_tag']))."',".
-                    $g4p_attestation.",".$_SESSION['genea_db_id'].")";
+                $sql="INSERT INTO rel_indi_events (events_details_id, indi_id, events_tag, events_attestation) VALUES 
+                    (".$g4p_mysqli->insert_id.", ".(int)$_POST['g4p_id'][1].",'".$g4p_mysqli->escape_string(trim($_POST['g4p_type']))."',".
+                    $g4p_attestation.")";
 
             if($ds=$g4p_mysqli->g4p_query($sql))
             {
@@ -499,8 +504,8 @@ else
             $_SESSION['message'].=$g4p_langue['message_req_echec'];
         }
 
-        $g4p_indi=g4p_destroy_cache();
-        header('location:'.g4p_make_url('','detail_event.php','g4p_id='.$_POST['g4p_id'][0].'|'.$_POST['g4p_id'][1].'|'.$g4p_tmp,0,0));
+        $g4p_indi=g4p_destroy_cache($_POST['g4p_id'][1]);
+        header('location:'.g4p_make_url('','fiche_individuelle.php','g4p_id='.$_POST['g4p_id'][1],0,0));
     }
     break;
 

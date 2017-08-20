@@ -1135,8 +1135,17 @@ function g4p_liste_membres()
 function g4p_relations_avancees($id)
 {
   global $g4p_chemin, $g4p_langue, $g4p_config;
+  
+  $debug=false;
 
   $mon_indi=g4p_load_indi_infos($id);
+  
+  if($debug)
+  {
+    echo '<textarea>';
+	echo $mon_indi->prenom.' '.$mon_indi->nom;
+  }
+	
 
   $tatas=array();
   $cousins=array();
@@ -1162,6 +1171,12 @@ function g4p_relations_avancees($id)
 
         $pere=g4p_load_indi_infos($pere);
         $mere=g4p_load_indi_infos($mere);
+        
+        if($debug)
+        {
+		  print 'Pere: '.$pere->prenom.' '.$pere->nom;
+		  print 'Mere: '.$mere->prenom.' '.$mere->nom;
+		}
 
         // je récupère la famille des grands parents
         if(isset($pere->parents))
@@ -1225,8 +1240,8 @@ function g4p_relations_avancees($id)
         {
           foreach($pere->familles[$famille_pere]->enfants as $a_enfant)
           {
-            if($a_enfant->indi_id!=$mon_indi->indi_id )
-              $freres[$a_enfant->indi_id]=$a_enfant;
+            if((int)$a_enfant['indi']->indi_id!=$mon_indi->indi_id )
+              $freres[(int)$a_enfant['indi']->indi_id]=$a_enfant;
           }
         }
       }
@@ -1253,6 +1268,9 @@ function g4p_relations_avancees($id)
 
     }
   }
+  
+  if($debug)
+    echo '</textarea>';
 
   if(count($freres)>0)
   {
@@ -1260,7 +1278,7 @@ function g4p_relations_avancees($id)
     echo '<em>',$g4p_langue['sys_function_show_rela_ext_freres'],'</em>';
     foreach($freres as $frere)
     {
-      if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_] or $g4p_indi->resn!='privacy')
+      if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_] or $frere->resn!='privacy')
         echo '<br /><a href="',g4p_make_url('','index.php','g4p_action=fiche_indi&amp;id_pers='.$frere->indi_id.'&amp;genea_db_id='.$frere->base,'fiche-'.$frere->base.'-'.g4p_prepare_varurl($frere->nom).'-'.g4p_prepare_varurl($frere->prenom).'-'.$frere->indi_id),'">',$frere->nom,' ',$frere->prenom,' ',g4p_date($frere->date_rapide()),'</a>';
     }
     echo '</div>';
