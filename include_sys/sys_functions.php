@@ -1157,7 +1157,7 @@ function g4p_relations_avancees($id)
   {
     foreach($mon_indi->parents as $famille=>$parents)
     {
-      if(strtoupper($parents->rela_type)=='BIRTH')
+      if(strtoupper($parents->rela_type)=='BIRTH' or empty($parents->rela_type))
       {
         if(isset($parents->pere))
           $pere=$parents->pere->indi_id;
@@ -1183,7 +1183,7 @@ function g4p_relations_avancees($id)
         {
           foreach($pere->parents as $famille=>$gparents)
           {
-            if(strtoupper($gparents->rela_type)=='BIRTH')
+            if(strtoupper($gparents->rela_type)=='BIRTH' or empty($gparents->rela_type))
             {
               if(isset($gparents->pere->indi_id))
               {
@@ -1196,10 +1196,10 @@ function g4p_relations_avancees($id)
                 {
                   foreach($gpere->familles[$famille_gpere]->enfants as $a_enfant)
                   {
-                    if($a_enfant->indi_id!=$pere->indi_id )
-                      $tatas[$a_enfant->indi_id]=$a_enfant;
+                    if($a_enfant['indi']->indi_id!=$pere->indi_id )
+                      $tatas[$a_enfant['indi']->indi_id]=$a_enfant;
                     else
-                      $parents_liste[$a_enfant->indi_id]=$a_enfant;
+                      $parents_liste[$a_enfant['indi']->indi_id]=$a_enfant;
                   }
                 }
               }
@@ -1211,7 +1211,7 @@ function g4p_relations_avancees($id)
         {
           foreach($mere->parents as $famille=>$gparents)
           {
-            if(strtoupper($gparents->rela_type)=='BIRTH')
+            if(strtoupper($gparents->rela_type)=='BIRTH' or empty($gparents->rela_type))
             {
               if(isset($gparents->pere->indi_id))
               {
@@ -1224,10 +1224,10 @@ function g4p_relations_avancees($id)
                 {
                   foreach($gpere->familles[$famille_gpere]->enfants as $a_enfant)
                   {
-                    if($a_enfant->indi_id!=$mere->indi_id )
-                      $tatas[$a_enfant->indi_id]=$a_enfant;
+                    if($a_enfant['indi']->indi_id!=$mere->indi_id )
+                      $tatas[$a_enfant['indi']->indi_id]=$a_enfant;
                     else
-                      $parents_liste[$a_enfant->indi_id]=$a_enfant;
+                      $parents_liste[$a_enfant['indi']->indi_id]=$a_enfant;
                   }
                 }
               }
@@ -1249,7 +1249,7 @@ function g4p_relations_avancees($id)
       //liste des cousins et des frères et soeurs
       foreach($tatas as $a_tata)
       {
-        $g4p_tmp=g4p_load_indi_infos($a_tata->indi_id);
+        $g4p_tmp=g4p_load_indi_infos($a_tata['indi']->indi_id);
         if(isset($g4p_tmp->familles))
         {
           foreach($g4p_tmp->familles as $cle_famille=>$une_famille)
@@ -1259,7 +1259,7 @@ function g4p_relations_avancees($id)
               foreach($une_famille->enfants as $un_enfant)
               {
                 if($cle_famille!=$famille_pere)
-                  $cousins[$un_enfant->indi_id]=$un_enfant;
+                  $cousins[$un_enfant['indi']->indi_id]=$un_enfant;
               }
             }
           }
@@ -1272,14 +1272,21 @@ function g4p_relations_avancees($id)
   if($debug)
     echo '</textarea>';
 
+  echo '<div class="box"><div class="box_title"><h3>Filiation</h3></div>';
+
   if(count($freres)>0)
   {
     echo '<div class="freres">';
     echo '<em>',$g4p_langue['sys_function_show_rela_ext_freres'],'</em>';
     foreach($freres as $frere)
     {
-      if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_] or $frere->resn!='privacy')
-        echo '<br /><a href="',g4p_make_url('','index.php','g4p_action=fiche_indi&amp;id_pers='.$frere->indi_id.'&amp;genea_db_id='.$frere->base,'fiche-'.$frere->base.'-'.g4p_prepare_varurl($frere->nom).'-'.g4p_prepare_varurl($frere->prenom).'-'.$frere->indi_id),'">',$frere->nom,' ',$frere->prenom,' ',g4p_date($frere->date_rapide()),'</a>';
+      $frere=$frere['indi'];
+      if($_SESSION['permission']->permission[_PERM_MASK_INDI_] or $frere->resn!='privacy')
+        echo '<br /><a href="',g4p_make_url('','index.php','g4p_action=fiche_indi&amp;id_pers='.$frere->indi_id.'&amp;genea_db_id='.$frere->base,
+        'fiche-'.$frere->base.'-'.g4p_prepare_varurl($frere->nom).'-'.g4p_prepare_varurl($frere->prenom).'-'.$frere->indi_id),'">',
+        $frere->nom,' ',$frere->prenom,' ',g4p_date($frere->date_rapide()),'</a>';
+      else
+        echo '<br />Caché';
     }
     echo '</div>';
   }
@@ -1290,8 +1297,11 @@ function g4p_relations_avancees($id)
     echo '<em>',$g4p_langue['sys_function_show_rela_ext_oncles'],'</em>';
     foreach($tatas as $tata)
     {
-      if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_] or $g4p_indi->resn!='privacy')
+      $tata=$tata['indi'];
+      if($_SESSION['permission']->permission[_PERM_MASK_INDI_] or $tata->resn!='privacy')
         echo '<br /><a href="',g4p_make_url('','index.php','g4p_action=fiche_indi&amp;id_pers='.$tata->indi_id.'&amp;genea_db_id='.$tata->base,'fiche-'.$tata->base.'-'.g4p_prepare_varurl($tata->nom).'-'.g4p_prepare_varurl($tata->prenom).'-'.$tata->indi_id),'">',$tata->nom,' ',$tata->prenom,' ',g4p_date($tata->date_rapide()),'</a>';
+      else
+        echo '<br />Caché';
     }
     echo '</div>';
   }
@@ -1302,11 +1312,17 @@ function g4p_relations_avancees($id)
     echo '<em>',$g4p_langue['sys_function_show_rela_ext_cousins'],'</em>';
     foreach($cousins as $cousin)
     {
-      if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_] or $g4p_indi->resn!='privacy')
+      $cousin=$cousin['indi'];
+      if($_SESSION['permission']->permission[_PERM_MASK_INDI_] or $cousin->resn!='privacy')
         echo '<br /><a href="',g4p_make_url('','index.php','g4p_action=fiche_indi&amp;id_pers='.$cousin->indi_id.'&amp;genea_db_id='.$cousin->base,'fiche-'.$cousin->base.'-'.g4p_prepare_varurl($cousin->nom).'-'.g4p_prepare_varurl($cousin->prenom).'-'.$cousin->indi_id),'">',$cousin->nom,' ',$cousin->prenom,' ',g4p_date($cousin->date_rapide()),'</a>';
+      else
+        echo '<br />Caché';
     }
     echo '</div>';
   }
+ 
+  echo '</div>';
+
 }
 
 function vide_repertoire($base)
