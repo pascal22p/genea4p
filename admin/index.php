@@ -830,7 +830,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
     //date gedcom
     echo '<div class="boite_tabulation">';
   
-    echo $g4p_langue['a_index_mod_event_type'],'<select name="g4p_tag">';
+    echo $g4p_langue['a_index_mod_event_type'],'<select name="g4p_type">';
     echo '<option value="">Choisissez</option>';
     reset($g4p_tag_fevents);
     while(list($g4p_key, $g4p_value)=each($g4p_tag_fevents))
@@ -840,7 +840,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
     }
     echo '</select>';
     echo ' Attestation de l\'évènement <input type="checkbox" name="g4p_attestation" style="vertical-align:middle" /><br />';
-    echo ' EVENT_OR_FACT_CLASSIFICATION <input type="checkbox" name="g4p_type" style="vertical-align:middle" /><br />';
+    echo ' EVENT_OR_FACT_CLASSIFICATION <input type="checkbox" name="g4p_tag" style="vertical-align:middle" /><br />';
     
     g4p_formulaire_date_event('','ajout_event');
     echo '</div>';
