@@ -393,7 +393,7 @@ else
     break;
 
 // ajout d'un évènement individuel
-    case 'ajout_ievent':
+    case 'ajout_event':
     
     $g4p_date_gedcom='';
 
@@ -484,9 +484,17 @@ else
         {
             $_POST['g4p_id']=explode('|',$_POST['g4p_id']);
             if($_POST['g4p_id'][0]=='i')
+            {
                 $sql="INSERT INTO rel_indi_events (events_details_id, indi_id, events_tag, events_attestation) VALUES 
                     (".$g4p_mysqli->insert_id.", ".(int)$_POST['g4p_id'][1].",'".$g4p_mysqli->escape_string(trim($_POST['g4p_type']))."',".
                     $g4p_attestation.")";
+            }
+            else($_POST['g4p_id'][0]=='f')
+            {
+                $sql="INSERT INTO rel_familles_events (events_details_id, familles_id, events_tag, events_attestation) VALUES 
+                    (".$g4p_mysqli->insert_id.", ".(int)$_POST['g4p_id'][1].",'".$g4p_mysqli->escape_string(trim($_POST['g4p_type']))."',".
+                    $g4p_attestation.")";
+            }
 
             if($ds=$g4p_mysqli->g4p_query($sql))
             {

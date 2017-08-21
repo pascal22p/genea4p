@@ -210,7 +210,7 @@ echo '</div>';
 //evenements familiaux
 echo '<div class="box">';
 echo '<div class="box_title">Évènements</div>';        
-echo '<a class="admin" href="',g4p_make_url('admin','index.php','g4p_opt=ajout_event&amp;g4p_id=i|'.$g4p_indi->indi_id),'">',$g4p_langue['a_index_ajout_ievent'],'</a>';
+echo '<a class="admin" href="',g4p_make_url('admin','index.php','g4p_opt=ajout_event&amp;g4p_id=f|'.$g4p_famille->id),'">',$g4p_langue['a_index_ajout_ievent'],'</a>';
 if(!empty($g4p_famille->events))
 {               
     echo '<dl class="evenements">';

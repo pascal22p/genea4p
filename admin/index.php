@@ -755,14 +755,13 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
   {
 	echo '<div class="menu_interne"><a href="'.g4p_make_url('admin','index.php','',0).'" class="retour">'.$g4p_langue['retour'].'</a></div>';
 	echo '<div class="cadre"><h2>',$g4p_langue['a_index_ajout_event_titre'],'</h2>';
+    echo '<form class="formulaire" method="post" action="',g4p_make_url('admin','exec.php','g4p_opt=ajout_event',0),'" name="mod_event">';
     if($g4p_id[0]=='i')
     {
-	  echo '<form class="formulaire" method="post" action="',g4p_make_url('admin','exec.php','g4p_opt=ajout_ievent',0),'" name="mod_event">';
       $g4p_select='ievent';
     }
     else
     {
-	  echo '<form class="formulaire" method="post" action="',g4p_make_url('admin','exec.php','g4p_opt=ajout_fevent',0),'" name="mod_event">';
       $g4p_select='fevent';
     }
   }
