@@ -15,25 +15,6 @@ if(empty($g4p_indi))
 
 $g4p_event=$g4p_indi->events[(int)$_GET['id']];
 
-$g4p_javascript2='<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAMe86qX804-6hOkmbFiJGnhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTN0WwgJOmI-QsJ6XCnMj6Ja5mBw"
-            type="text/javascript"></script>
-    <script type="text/javascript">
-
-    function plot(latitude, longitude, texte) {
-      if (GBrowserIsCompatible()) {
-        var map = new GMap2(document.getElementById("map_canvas"));
-        map.addControl(new GSmallMapControl());
-        map.addControl(new GMapTypeControl());
-        map.setCenter(new GLatLng(latitude, longitude), 9);
- 
-          var point = new GLatLng(latitude, longitude);
-          map.addOverlay(new GMarker(point));
-        }
-      }
-
-
-    </script>';
-
 require_once($g4p_chemin.'entete.php');
 
 echo '<div class="box_title"><h2>Détail de l\'évènement</h2></div>'."\n";
@@ -63,8 +44,8 @@ if(g4p_date($g4p_event->date->gedcom_date))
  if($g4p_event->date->jd_count and $_SESSION['permission']->permission[_PERM_AFF_DATE_])
  {
     echo '<dt>Détail date : </dt><dd style="margin-left:3em;clear:both"><dl class="collapsed">'."\n";
-    $g4p_tmp=cal_from_jd($g4p_event->jd_count, CAL_GREGORIAN);
-    switch($g4p_event->jd_precision)
+    $g4p_tmp=cal_from_jd($g4p_event->date->jd_count, CAL_GREGORIAN);
+    switch($g4p_event->date->jd_precision)
     {
         case 3:
         echo '<dt>'.$g4p_langue['detail_cal_gregorien'].'</dt><dd>',g4p_strftime($g4p_langue['date'],$g4p_tmp['dow'].'-'.$g4p_tmp['day'].'-'.$g4p_tmp['month'].'-'.$g4p_tmp['year'],'jd_cal_gregorien'),'</dd>';
@@ -79,10 +60,10 @@ if(g4p_date($g4p_event->date->gedcom_date))
         break;
     }
     
-    $g4p_tmp=cal_from_jd($g4p_event->jd_count, CAL_FRENCH);
+    $g4p_tmp=cal_from_jd($g4p_event->date->jd_count, CAL_FRENCH);
     if($g4p_tmp['date']!='0/0/0')
     {
-        switch($g4p_event->jd_precision)
+        switch($g4p_event->date->jd_precision)
         {
             case 3:
             echo '<dt>'.$g4p_langue['detail_cal_revolutionnaire'].'</dt><dd>',g4p_strftime($g4p_langue['date'],$g4p_tmp['dow'].'-'.$g4p_tmp['day'].'-'.$g4p_tmp['month'].'-'.$g4p_tmp['year'],'jd_cal_revolutionnaire'),'</dd>';
@@ -97,8 +78,8 @@ if(g4p_date($g4p_event->date->gedcom_date))
             break;
         }
     }
-    $g4p_tmp=cal_from_jd($g4p_event->jd_count, CAL_JEWISH);
-    switch($g4p_event->jd_precision)
+    $g4p_tmp=cal_from_jd($g4p_event->date->jd_count, CAL_JEWISH);
+    switch($g4p_event->date->jd_precision)
     {
         case 3:
         echo '<dt>'.$g4p_langue['detail_cal_juif'].'</dt><dd>',g4p_strftime($g4p_langue['date'],$g4p_tmp['dow'].'-'.$g4p_tmp['day'].'-'.$g4p_tmp['month'].'-'.$g4p_tmp['year'],'jd_cal_juif'),'</dd>';
@@ -112,8 +93,8 @@ if(g4p_date($g4p_event->date->gedcom_date))
         echo '<dt>'.$g4p_langue['detail_cal_juif'].'</dt><dd>',g4p_strftime($g4p_langue['date'],'---'.$g4p_tmp['year'],'jd_cal_juif'),'</dd>';
         break;
     }
-    $g4p_tmp=cal_from_jd($g4p_event->jd_count, CAL_JULIAN);
-    switch($g4p_event->jd_precision)
+    $g4p_tmp=cal_from_jd($g4p_event->date->jd_count, CAL_JULIAN);
+    switch($g4p_event->date->jd_precision)
     {
         case 3:
         echo '<dt>'.$g4p_langue['detail_cal_julien'].'</dt><dd>',g4p_strftime($g4p_langue['date'],$g4p_tmp['dow'].'-'.$g4p_tmp['day'].'-'.$g4p_tmp['month'].'-'.$g4p_tmp['year'],'jd_cal_gregorien'),'</dd>';
@@ -155,9 +136,7 @@ echo '</dl>';
 
 if(!empty($latitude) and !empty($longitude) )
 {
-    echo $g4p_javascript2;
-    echo '<div id="map_canvas" style="margin-left:auto; margin-right:auto; border:2px ridge blue; margin-bottom:1.5em; width: 500px; height: 300px"></div>';
-    echo '<script type="text/javascript">plot('.$latitude.','.$longitude.',"'.$ville.'")</script>';
+    echo '<iframe width="600px" height="400px" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q='.$latitude.','.$longitude.'&amp;key=AIzaSyBimqSKc5tF3KpJLFprP5wO-BkxDLr-TH8"></iframe>';
 }
 echo '</div>';
 
