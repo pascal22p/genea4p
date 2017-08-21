@@ -64,6 +64,9 @@ if(!empty($g4p_event->details_descriptor))
 
 if(g4p_date($g4p_event->date->gedcom_date))
     echo '<dt>',$g4p_langue['detail_date_event'],'</dt><dd>',g4p_date($g4p_event->date->gedcom_date),'</dd>'."\n";
+    
+
+    
  if($g4p_event->date->jd_count and $_SESSION['permission']->permission[_PERM_AFF_DATE_])
  {
     echo '<dt>Détail date : </dt><dd style="margin-left:3em;clear:both"><dl class="collapsed">'."\n";
@@ -159,10 +162,9 @@ echo '</dl>';
 
 if(!empty($latitude) and !empty($longitude) )
 {
-    echo $g4p_javascript2;
-    echo '<div id="map_canvas" style="margin-left:auto; margin-right:auto; border:2px ridge blue; margin-bottom:1.5em; width: 500px; height: 300px"></div>';
-    echo '<script type="text/javascript">plot('.$latitude.','.$longitude.',"'.$ville.'")</script>';
+    echo '<iframe width="600px" height="400px" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q='.$latitude.','.$longitude.'&amp;key=AIzaSyBimqSKc5tF3KpJLFprP5wO-BkxDLr-TH8"></iframe>';
 }
+
 echo '</div>';
 
 g4p_affiche_adresse(@$g4p_event->address);
