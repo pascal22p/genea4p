@@ -489,12 +489,14 @@ else
                     (".$g4p_mysqli->insert_id.", ".(int)$_POST['g4p_id'][1].",'".$g4p_mysqli->escape_string(trim($_POST['g4p_type']))."',".
                     $g4p_attestation.")";
             }
-            else($_POST['g4p_id'][0]=='f')
+            elseif($_POST['g4p_id'][0]=='f')
             {
                 $sql="INSERT INTO rel_familles_events (events_details_id, familles_id, events_tag, events_attestation) VALUES 
                     (".$g4p_mysqli->insert_id.", ".(int)$_POST['g4p_id'][1].",'".$g4p_mysqli->escape_string(trim($_POST['g4p_type']))."',".
                     $g4p_attestation.")";
             }
+            else
+               echo "Error: wrong type";
 
             if($ds=$g4p_mysqli->g4p_query($sql))
             {
