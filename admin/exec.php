@@ -400,7 +400,7 @@ else
     if(empty($_POST['g4p_type']))
     {
         $_SESSION['message']='Veuillez définir le type d\'évènement';
-        header('location:'.g4p_make_url('admin','index.php','g4p_opt=mod_event&g4p_id='.$_POST['g4p_event_id'],0,0));
+        header('location:'.g4p_make_url('admin','index.php','g4p_opt=ajout_event&g4p_id='.$_POST['g4p_id'],0,0));
         exit;
     }
 
