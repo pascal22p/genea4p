@@ -1116,11 +1116,8 @@ class g4p_place
 			}
 			else
             {
-                $tmp='';
-                foreach($this as $key=>$value)
-                    if(!empty($value))
-                        $tmp.=$key.' : '.$value.', ';
-				return $tmp;
+                return '<a href="https://www.google.com/maps/place/'.$this->ville.', '.$this->region.', '.$this->pays.'">'.
+                  $this->ville.', '.$this->region.', '.$this->pays.'</a>';
             }
 		}
 	}
