@@ -1116,7 +1116,12 @@ class g4p_place
 			}
 			else
             {
-                return '<a href="https://www.google.com/maps/place/'.$this->ville.', '.$this->region.', '.$this->pays.'">'.
+                if(!empty($this->lieudit))
+                    $tmp=$this->lieudit;
+                else
+                    $tmp=$this->ville;
+
+                return '<a href="https://www.google.com/maps/place/'.$tmp.', '.$this->region.', '.$this->pays.'">'.
                   $this->ville.', '.$this->region.', '.$this->pays.'</a>';
             }
 		}
