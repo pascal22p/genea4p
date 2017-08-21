@@ -162,7 +162,7 @@ echo '</dl>';
 
 if(!empty($latitude) and !empty($longitude) )
 {
-    echo '<iframe width="600px" height="400px" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q='.$latitude.','.$longitude.'&amp;key=AIzaSyBimqSKc5tF3KpJLFprP5wO-BkxDLr-TH8"></iframe>';
+    echo '<iframe width="600px" height="400px" style="border:2px solid black;margin-bottom:1em;margin-left:10em;" src="https://www.google.com/maps/embed/v1/place?q='.$latitude.','.$longitude.'&amp;zoom=10&amp;key=AIzaSyBimqSKc5tF3KpJLFprP5wO-BkxDLr-TH8"></iframe>';
 }
 
 echo '</div>';
