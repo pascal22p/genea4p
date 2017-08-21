@@ -70,8 +70,8 @@ if(g4p_date($g4p_event->date->gedcom_date))
  if($g4p_event->date->jd_count and $_SESSION['permission']->permission[_PERM_AFF_DATE_])
  {
     echo '<dt>Détail date : </dt><dd style="margin-left:3em;clear:both"><dl class="collapsed">'."\n";
-    $g4p_tmp=cal_from_jd($g4p_event->jd_count, CAL_GREGORIAN);
-    switch($g4p_event->jd_precision)
+    $g4p_tmp=cal_from_jd($g4p_event->date->jd_count, CAL_GREGORIAN);
+    switch($g4p_event->date->jd_precision)
     {
         case 3:
         echo '<dt>'.$g4p_langue['detail_cal_gregorien'].'</dt><dd>',g4p_strftime($g4p_langue['date'],$g4p_tmp['dow'].'-'.$g4p_tmp['day'].'-'.$g4p_tmp['month'].'-'.$g4p_tmp['year'],'jd_cal_gregorien'),'</dd>';
@@ -86,10 +86,10 @@ if(g4p_date($g4p_event->date->gedcom_date))
         break;
     }
     
-    $g4p_tmp=cal_from_jd($g4p_event->jd_count, CAL_FRENCH);
+    $g4p_tmp=cal_from_jd($g4p_event->date->jd_count, CAL_FRENCH);
     if($g4p_tmp['date']!='0/0/0')
     {
-        switch($g4p_event->jd_precision)
+        switch($g4p_event->date->jd_precision)
         {
             case 3:
             echo '<dt>'.$g4p_langue['detail_cal_revolutionnaire'].'</dt><dd>',g4p_strftime($g4p_langue['date'],$g4p_tmp['dow'].'-'.$g4p_tmp['day'].'-'.$g4p_tmp['month'].'-'.$g4p_tmp['year'],'jd_cal_revolutionnaire'),'</dd>';
@@ -104,8 +104,8 @@ if(g4p_date($g4p_event->date->gedcom_date))
             break;
         }
     }
-    $g4p_tmp=cal_from_jd($g4p_event->jd_count, CAL_JEWISH);
-    switch($g4p_event->jd_precision)
+    $g4p_tmp=cal_from_jd($g4p_event->date->jd_count, CAL_JEWISH);
+    switch($g4p_event->date->jd_precision)
     {
         case 3:
         echo '<dt>'.$g4p_langue['detail_cal_juif'].'</dt><dd>',g4p_strftime($g4p_langue['date'],$g4p_tmp['dow'].'-'.$g4p_tmp['day'].'-'.$g4p_tmp['month'].'-'.$g4p_tmp['year'],'jd_cal_juif'),'</dd>';
@@ -119,8 +119,8 @@ if(g4p_date($g4p_event->date->gedcom_date))
         echo '<dt>'.$g4p_langue['detail_cal_juif'].'</dt><dd>',g4p_strftime($g4p_langue['date'],'---'.$g4p_tmp['year'],'jd_cal_juif'),'</dd>';
         break;
     }
-    $g4p_tmp=cal_from_jd($g4p_event->jd_count, CAL_JULIAN);
-    switch($g4p_event->jd_precision)
+    $g4p_tmp=cal_from_jd($g4p_event->date->jd_count, CAL_JULIAN);
+    switch($g4p_event->date->jd_precision)
     {
         case 3:
         echo '<dt>'.$g4p_langue['detail_cal_julien'].'</dt><dd>',g4p_strftime($g4p_langue['date'],$g4p_tmp['dow'].'-'.$g4p_tmp['day'].'-'.$g4p_tmp['month'].'-'.$g4p_tmp['year'],'jd_cal_gregorien'),'</dd>';
