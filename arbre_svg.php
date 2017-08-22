@@ -101,24 +101,26 @@ function g4p_print_label($indi, $option=' [style="filled", fillcolor="#ffffff"] 
     {
         $liste_nodes['i'.$indi->indi_id]=true;
         //return 'i'.$indi->indi_id.' '.$option.' [URL="'.g4p_make_url('','famille_proche_svg.php','id_pers='.$indi->indi_id,0).'", label="'.$indi->prenom.' '.$indi->nom.'\n'.$indi->date_rapide().'"]'.";\n";
-        $date=$indi->date_rapide();
+        $date=$indi->date_rapide('short');
         if(!empty($date))
-           return 'i'.$indi->indi_id.' '.$option.' [label=<
+/*           return 'i'.$indi->indi_id.' '.$option.' [label=<
                 <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" 
                     HREF="'.g4p_make_url('','arbre.php','id_pers='.$indi->indi_id.implode('',$tmp),0).'"
                     TARGET="_top" ALIGN="CENTER" TITLE="">
                 <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="15.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
                 <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="11.0" FACE="LiberationSans">'.$date.'</FONT></TD></TR>
                 </TABLE>
-                >]'."\n";        
+                >]'."\n";        */
+                return 'i'.$indi->indi_id.' '.$option.' [href="'.g4p_make_url('','arbre_svg.php','id_pers='.$indi->indi_id.implode('',$tmp),0).'", label="'.$indi->prenom.' '.$indi->nom.'\\n'.$date.'"]'."\n";
         else
-            return 'i'.$indi->indi_id.' '.$option.' [label=<
+            /* return 'i'.$indi->indi_id.' '.$option.' [label=<
                 <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" 
                     HREF="'.g4p_make_url('','arbre.php','id_pers='.$indi->indi_id.implode('',$tmp),0).'"
                     TARGET="_top" ALIGN="CENTER"  TITLE="">
                 <TR><TD ALIGN="CENTER" TITLE=""><FONT POINT-SIZE="15.0">'.$indi->prenom.' '.$indi->nom.'</FONT></TD></TR>
                 </TABLE>
-                >]'."\n";                
+                >]'."\n";                */
+               return 'i'.$indi->indi_id.' '.$option.' [href="'.g4p_make_url('','arbre_svg.php','id_pers='.$indi->indi_id.implode('',$tmp),0).'", label="'.$indi->prenom.' '.$indi->nom.'"]'."\n";
     }
     else
         return '';

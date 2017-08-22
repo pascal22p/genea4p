@@ -48,7 +48,7 @@ function g4p_db_numrows($g4p_result)//OK
 
 function g4p_date($g4p_date, $date='date1', $cache=0)
 {
-    global $g4p_date_modif,$g4p_langue, $date1;
+    global $g4p_date_modif,$g4p_langue, $date1, $date1short;
     static $date1keys, $date1values;
     //date1 affichage long (12 janvier 2005...)
     //date1short affichage abrege (12 janv. 2005...)

@@ -1136,10 +1136,33 @@ class g4p_place
                 if(!empty($this->lieudit))
                     $tmp=$this->lieudit;
                 else
-                    $tmp=$this->ville;
+                {
+                    if(!empty($this->ville))
+                        $tmp=$this->ville;
+                    else
+                        $tmp='';
+                }
 
-                return '<a href="https://www.google.com/maps/place/'.$tmp.', '.$this->region.', '.$this->pays.'">'.
-                  $this->ville.', '.$this->region.', '.$this->pays.'</a>';
+                if(!empty($this->region))
+                {
+                    if(!empty($tmp))
+                        $tmp=$tmp.', '.$this->region;
+                    else
+                        $tmp=$this->region;
+                }
+
+                if(!empty($this->pays))
+                {
+       	       	    if(!empty($tmp))
+       	       	       	$tmp=$tmp.', '.$this->pays;
+                    else
+                        $tmp=$this->pays;
+                }
+
+                if(!empty($tmp))
+                    return '<a href="https://www.google.com/maps/place/'.$tmp.'">'.$tmp.'</a>';
+                else
+                    return '';
             }
         }
     }
