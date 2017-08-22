@@ -698,7 +698,7 @@ class g4p_individu
     function date_rapide($format='')
     {
         if($format='short')
-            $format2='date3';
+            $format2='date1short';
         else
             $format2='date1';
         
