@@ -51,6 +51,7 @@ function g4p_date($g4p_date, $date='date1', $cache=0)
     global $g4p_date_modif,$g4p_langue, $date1;
     static $date1keys, $date1values;
     //date1 affichage long (12 janvier 2005...)
+    //date1short affichage abrege (12 janv. 2005...)
     //date2 conversion jj/mm/aaaa
     //date3 conversion 12 JAN 2005
     //date4 comme date2 plus suppression du texte
