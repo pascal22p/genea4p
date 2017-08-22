@@ -707,13 +707,13 @@ class g4p_individu
             foreach($this->events as $a_event)
             {
                 if($a_event->tag=='BIRT')
-                    $date['BIRT']=g4p_date($a_event->gedcom_date);
+                    $date['BIRT']=g4p_date($a_event->gedcom_date, $format2);
                 elseif($a_event->tag=='BAPM')
-                    $date['BAPM']=g4p_date($a_event->gedcom_date);
+                    $date['BAPM']=g4p_date($a_event->gedcom_date, $format2);
                 elseif($a_event->tag=='DEAT')
-                    $date['DEAT']=g4p_date($a_event->gedcom_date);
+                    $date['DEAT']=g4p_date($a_event->gedcom_date, $format2);
                 elseif($a_event->tag=='BURI')
-                    $date['BURI']=g4p_date($a_event->gedcom_date);
+                    $date['BURI']=g4p_date($a_event->gedcom_date, $format2);
             }
     
             if(!empty($date['BIRT']))
