@@ -160,14 +160,20 @@ if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
     foreach($g4p_result as $g4p_a_result)
     {
         $indi_tmp=g4p_load_indi_infos($g4p_a_result['familles_husb']);
-        echo '<dt>'.
-            g4p_link_nom($indi_tmp).' &mdash;  '.
-            g4p_link_nom($indi_tmp->familles[$g4p_a_result['familles_id']]->wife).' '.
-            '</dt>';
+        if(!empty($indi_tmp->familles))
+            echo '<dt>'.
+                g4p_link_nom($indi_tmp).' &mdash;  '.
+                g4p_link_nom($indi_tmp->familles[$g4p_a_result['familles_id']]->wife).' '.
+                '</dt>';
+        else
+            echo '<dt>'.
+                g4p_link_nom($indi_tmp).
+                '</dt>';
             
-        echo '<dd>'.$g4p_tag_def[$indi_tmp->familles[$g4p_a_result['familles_id']]->events[$g4p_a_result['events_details_id']]->tag].' '.
-            '<span class="date">',g4p_date($indi_tmp->familles[$g4p_a_result['familles_id']]->events[$g4p_a_result['events_details_id']]->gedcom_date),
-            '</span> '.g4p_timestamp($indi_tmp->familles[$g4p_a_result['familles_id']]->events[$g4p_a_result['events_details_id']]->timestamp).'</dd>';
+        if(!empty($indi_tmp->familles[$g4p_a_result['familles_id']]->events))
+            echo '<dd>'.$g4p_tag_def[$indi_tmp->familles[$g4p_a_result['familles_id']]->events[$g4p_a_result['events_details_id']]->tag].' '.
+                '<span class="date">',g4p_date($indi_tmp->familles[$g4p_a_result['familles_id']]->events[$g4p_a_result['events_details_id']]->gedcom_date),
+                '</span> '.g4p_timestamp($indi_tmp->familles[$g4p_a_result['familles_id']]->events[$g4p_a_result['events_details_id']]->timestamp).'</dd>';
     }
 }
 echo '</dl>';
