@@ -1566,10 +1566,13 @@ class g4p_date_value
         if(!empty($this->calendar)) // still not set...
         {
             // using the year if present
-            if(!empty($this->year) and $this->year<3000)
-                $this->calendar='@#DGREGORIAN@';
-            else
-                $this->calendar='@#DHEBREW@';
+            if(!empty($this->year))
+            {
+                if($this->year<3000)
+                    $this->calendar='@#DGREGORIAN@';
+                else
+                    $this->calendar='@#DHEBREW@';
+            }
         }
         
         if(!empty($this->calendar))
