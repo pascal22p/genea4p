@@ -1545,15 +1545,13 @@ class g4p_date_value
         else
             return false;
             
-        // Guess calendar
+        // Guess calendar using months name
         if(!empty($this->month) and empty($this->calendar) and !empty($this->year))
         {
             if(in_array(strtoupper($this->month),$g4p_cal_gregorien))
             {
-                if($this->year>1582) // There is no clear cut but it is a best guess
-                    $this->calendar='@#DGREGORIAN@';
-                else
-                    $this->calendar='@#DJULIAN@';
+                //assuming gregorian as per gedcom recomandation
+                $this->calendar='@#DGREGORIAN@';
             }
             elseif(in_array(strtoupper($this->month),$g4p_cal_mrev))
             {
@@ -1563,6 +1561,15 @@ class g4p_date_value
             {
                 $this->calendar='@#DHEBREW@';
             }
+        }
+
+        if(!empty($this->calendar)) // still not set...
+        {
+            // using the year if present
+            if(!empty($this->year) and $this->year<3000)
+                $this->calendar='@#DGREGORIAN@';
+            else
+                $this->calendar='@#DHEBREW@';
         }
         
         if(!empty($this->calendar))
