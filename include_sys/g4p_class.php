@@ -26,9 +26,6 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 // $Id: g4p_class.php 297 2007-02-17 20:32:20Z pascal $
 
-$g4p_chemin='../';
-require_once($g4p_chemin.'p_conf/g4p_calendar.php');
-
 /**
  * Contient les données temporaires extraits des tables sqls
  * @author Pascal Parois
@@ -1497,7 +1494,59 @@ class g4p_date_value
      */
     function load_from_ged($date_ged)
     {
-        global $g4p_cal_gregorien, $g4p_cal_mrev, $g4p_cal_mhebreux;
+		$g4p_cal_mrev=array(
+		1=>'VEND',
+		'BRUM',
+		'FRIM',
+		'NIVO',
+		'PLUV',
+		'VENT',
+		'GERM',
+		'FLOR',
+		'PRAI',
+		'MESS',
+		'THER',
+		'FRUC',
+		'COMP'
+		);
+
+		$g4p_cal_mhebreux=array(
+		1=>'TSH',
+		'CSH',
+		'KSL',
+		'TVT',
+		'SHV',
+		'ADR',
+		'ADS',
+		'NSN',
+		'IYR',
+		'SVN',
+		'TMZ',
+		'AAV',
+		'ELL'
+		);
+
+		$g4p_cal_gregorien=array(
+		1=>'JAN',
+		'FEB',
+		'MAR',
+		'APR',
+		'MAY',
+		'JUN',
+		'JUL',
+		'AUG',
+		'SEP',
+		'OCT',
+		'NOV',
+		'DEC'
+		);
+
+		$g4p_cal_ged_php=array(
+		'@#DHEBREW@'=>CAL_JEWISH,
+		'@#DFRENCH R@'=>CAL_FRENCH,
+		'@#DGREGORIAN@'=>CAL_GREGORIAN,
+		'@#DJULIAN@'=>CAL_JULIAN
+		);
         
         $liste_modificateur=array('EST','ABT','CAL','TO','AFT','FROM','BET','TO','AND');
         $g4p_cal_ged_php=array('@#DHEBREW@'=>1,'@#DFRENCH R@'=>1,'@#DGREGORIAN@'=>1,'@#DJULIAN@'=>1,'@#UNKOWN@'=>1);
