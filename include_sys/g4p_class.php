@@ -1563,7 +1563,7 @@ class g4p_date_value
             }
         }
 
-        if(!empty($this->calendar)) // still not set...
+        if(empty($this->calendar)) // still not set...
         {
             // using the year if present
             if(!empty($this->year))
