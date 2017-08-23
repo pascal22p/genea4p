@@ -1494,6 +1494,8 @@ class g4p_date_value
      */
     function load_from_ged($date_ged)
     {
+        require_once($g4p_chemin.'p_conf/g4p_calendar.php');
+        
         $liste_modificateur=array('EST','ABT','CAL','TO','AFT','FROM','BET','TO','AND');
         $g4p_cal_ged_php=array('@#DHEBREW@'=>1,'@#DFRENCH R@'=>1,'@#DGREGORIAN@'=>1,'@#DJULIAN@'=>1,'@#UNKOWN@'=>1);
         
@@ -1512,25 +1514,64 @@ class g4p_date_value
             $date_ged=str_replace($reg[1],'',$date_ged);
         }
 
+        //on verifie si il y a une date négative, BC n'est pas une valeur acceptable mais peut être rencontré
+        if(preg_match('/(B\.C\.|BC)/',$gedcom_date))
+            $g4p_sign=-1;
+        else
+            $g4p_sign=1;        
+
         if(preg_match('/([0-9]{1,2}) ([A-Z]{3,4}) ([0-9]{1,7})/',strtoupper($date_ged),$reg))
         {
                 
             $this->day=$reg[1];
             $this->month=$reg[2];
-            $this->year=$reg[3];
+            $this->year=$g4p_sign*intval($reg[3]);
+            $this->jd_precision=3
         }
         elseif(preg_match('/([A-Z]{3,4}) ([0-9]{1,7})/',strtoupper($date_ged),$reg))
         {
             $this->month=$reg[1];
-            $this->year=$reg[2];
+            $this->year=$g4p_sign*intval($reg[2]);
+            $this->jd_precision=2
         }
         elseif(preg_match('/([0-9]{1,7})/',strtoupper($date_ged),$reg))
         {
-            $this->year=$reg[1];
+            $this->year=$g4p_sign*intval($reg[1]);
+            $this->jd_precision=1
         }
         else
             return false;
+            
+        // Guess calendar
+        if(!empty($this->month) and empty($this->calendar) and !empty($this->year))
+        {
+            if(in_array(strtoupper($this->month),$g4p_cal_gregorien))
+            {
+                if($this->year>1582) // There is no clear cut but it is a best guess
+                    $this->calendar='@#DGREGORIAN@';
+                else
+                    $this->calendar='@#DJULIAN@';
+            }
+            elseif(in_array(strtoupper($this->month),$g4p_cal_mrev))
+            {
+                $this->calendar='@#DFRENCH R@';
+            }
+            elseif(in_array(strtoupper($this->month),$g4p_cal_mhebreux))
+            {
+                $this->calendar='@#DHEBREW@';
+            }
+        }
         
+        if(!empty($this->calendar))
+        {
+            $chiffre_mois=array_merge(array_flip($g4p_cal_mrev),array_flip($g4p_cal_mhebreux),array_flip($g4p_cal_gregorien));
+            if(!empty($this->month) and !empty($this->day) and !empty($this->year))
+                $this->jd_count=cal_to_jd($g4p_cal_ged_php[$this->calendar], $chiffre_mois[$this->month],$this->day,$this->year);
+            elseif(!empty($this->month) and !empty($this->year))
+                $this->jd_count=cal_to_jd($g4p_cal_ged_php[$this->calendar], $chiffre_mois[$this->month],1,$this->year);
+            elseif(!empty($this->year))
+                $this->jd_count=cal_to_jd($g4p_cal_ged_php[$this->calendar], 1,1,$this->year);
+        }
         return true;
     }
     
