@@ -36,7 +36,7 @@ require_once($g4p_chemin.'entete.php');
 
 if(!$_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
 {
-    echo "Not enouig right to do this";
+    echo "Not enough right to do this";
     require_once($g4p_chemin.'pied_de_page.php');
     exit;
 }
@@ -45,16 +45,35 @@ $sql='SELECT events_details_id, events_details_gedcom_date FROM genea_events_det
 $g4p_infos_req=$g4p_mysqli->g4p_query($sql);
 $g4p_liste_geddates=$g4p_mysqli->g4p_result($g4p_infos_req);
 
-echo "<textarea>";
 foreach($g4p_liste_geddates as $g4p_geddate)
 {
-    $g4p_date=new g4p_date();
+    $g4p_date=new g4p_date(Null);
     $g4p_date->set_gedcomdate($g4p_geddate['events_details_gedcom_date']);
     $g4p_date->g4p_gedom2date();
-    var_dump($g4p_date);
-    //$g4p_julians[]=array("id"=>, "jd_count"=>, "jd_precision"=>, "jd_calendar"=>);
+    if(!empty($g4p_date->date1->calendar) and !empty($g4p_date->date1->jd_count) and !empty($g4p_date->date1->jd_precision))
+        $g4p_julians[]=array("id"=>$g4p_geddate['events_details_id'], "jd_count"=>$g4p_date->date1->jd_count, "jd_precision"=>$g4p_date->date1->jd_precision, "jd_calendar"=>$g4p_date->date1->calendar);
 }
 
+$sql="CREATE TEMPORARY TABLE temp_table AS 
+          SELECT events_details_id, jd_count, jd_precision, jd_calendar
+          FROM genea_events_details
+          WHERE 1=0";
+$g4p_mysqli->g4p_query($sql);
+
+$sql=[];
+foreach($g4p_julians as	$value)
+{
+    $sql[]='('.$value['id'].','.$value['jd_count'].','.$value['jd_precision'].',"'.$value['jd_calendar'].'")';
+}
+$result=$g4p_mysqli->g4p_query("INSERT INTO temp_table VALUES ".implode($sql, ','));
+
+$sql="UPDATE genea_events_details, temp_table SET genea_events_details.jd_count=temp_table.jd_count,
+      genea_events_details.jd_precision=temp_table.jd_precision,
+      genea_events_details.jd_calendar=temp_table.jd_calendar
+      WHERE genea_events_details.events_details_id=temp_table.events_details_id";
+$g4p_mysqli->g4p_query($sql);
+
+echo '<H2>Update done</h2>';
 
 require_once($g4p_chemin.'pied_de_page.php');
 

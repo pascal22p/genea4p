@@ -617,9 +617,6 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
   $g4p_events=$g4p_events[0];
   
   $g4p_date=new g4p_date($g4p_events);
-  $g4p_date->date_value();
-  
-  var_dump($g4p_date);
 
   echo '<div class="menu_interne"><a href="'.$_SESSION['historic']['url'][0].'" class="retour">'.$g4p_langue['retour'].'</a></div><div class="cadre"><h2>',$g4p_langue['a_index_mod_event_titre'],'</h2><form class="formulaire" method="post" action="',g4p_make_url('admin','exec.php','g4p_opt=mod_event',0),'" name="mod_event">';
 
