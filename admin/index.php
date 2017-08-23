@@ -608,30 +608,29 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
   if(strstr($_SERVER['HTTP_REFERER'],'detail_event'))
     $_SESSION['historic']['url'][0]=$_SERVER['HTTP_REFERER'];
 
-  $sql="SELECT type, description, attestation, date_event, place_id, age, cause
-        FROM genea_events WHERE id=".$_GET['g4p_id'];
+  $sql="SELECT place_id, addr_id, events_details_descriptor, events_details_gedcom_date, events_details_age, 
+        events_details_cause, jd_count, jd_precision, jd_calendar, events_details_famc, events_details_adop, 
+        base, events_details_timestamp
+        FROM genea_events_details WHERE events_details_id=".$_GET['g4p_id'];
   $g4p_result_req=$g4p_mysqli->g4p_query($sql);
   $g4p_events=$g4p_mysqli->g4p_result($g4p_result_req);
   $g4p_events=$g4p_events[0];
   
-  $g4p_date=new g4p_date_read($g4p_events['date_event']);
+  $g4p_date=new g4p_date($g4p_events);
   $g4p_date->date_value();
+  
+  var_dump($g4p_date);
 
   echo '<div class="menu_interne"><a href="'.$_SESSION['historic']['url'][0].'" class="retour">'.$g4p_langue['retour'].'</a></div><div class="cadre"><h2>',$g4p_langue['a_index_mod_event_titre'],'</h2><form class="formulaire" method="post" action="',g4p_make_url('admin','exec.php','g4p_opt=mod_event',0),'" name="mod_event">';
 
-  if(!isset($_GET['g4p_type_event']))
-  {
-    if(isset($g4p_tag_iattributs[$g4p_events['type']]))
-      $g4p_select='iattribut';
-    elseif(isset($g4p_tag_ievents[$g4p_events['type']]))
-      $g4p_select='ievent';
-    elseif(isset($g4p_tag_fevents[$g4p_events['type']]))
-      $g4p_select='fevent';
-    else
-      $g4p_select=false;
-  }
+  if(isset($g4p_tag_iattributs[$g4p_events['events_details_descriptor']]))
+    $g4p_select='iattribut';
+  elseif(isset($g4p_tag_ievents[$g4p_events['events_details_descriptor']]))
+    $g4p_select='ievent';
+  elseif(isset($g4p_tag_fevents[$g4p_events['events_details_descriptor']]))
+    $g4p_select='fevent';
   else
-    $g4p_select=$_GET['g4p_type_event'];
+    $g4p_select=false;
   
   if(isset($_GET['g4p_type_date']))
     $g4p_type_date_url='&amp;g4p_type_date='.$_GET['g4p_type_date'];
