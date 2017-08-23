@@ -26,6 +26,9 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 // $Id: g4p_class.php 297 2007-02-17 20:32:20Z pascal $
 
+$g4p_chemin='../';
+require_once($g4p_chemin.'p_conf/g4p_calendar.php');
+
 /**
  * Contient les données temporaires extraits des tables sqls
  * @author Pascal Parois
@@ -1494,7 +1497,7 @@ class g4p_date_value
      */
     function load_from_ged($date_ged)
     {
-        require_once($g4p_chemin.'p_conf/g4p_calendar.php');
+        global $g4p_cal_gregorien, $g4p_cal_mrev, $g4p_cal_mhebreux;
         
         $liste_modificateur=array('EST','ABT','CAL','TO','AFT','FROM','BET','TO','AND');
         $g4p_cal_ged_php=array('@#DHEBREW@'=>1,'@#DFRENCH R@'=>1,'@#DGREGORIAN@'=>1,'@#DJULIAN@'=>1,'@#UNKOWN@'=>1);
@@ -1515,7 +1518,7 @@ class g4p_date_value
         }
 
         //on verifie si il y a une date négative, BC n'est pas une valeur acceptable mais peut être rencontré
-        if(preg_match('/(B\.C\.|BC)/',$gedcom_date))
+        if(preg_match('/(B\.C\.|BC)/',$date_ged))
             $g4p_sign=-1;
         else
             $g4p_sign=1;        
@@ -1526,18 +1529,18 @@ class g4p_date_value
             $this->day=$reg[1];
             $this->month=$reg[2];
             $this->year=$g4p_sign*intval($reg[3]);
-            $this->jd_precision=3
+            $this->jd_precision=3;
         }
         elseif(preg_match('/([A-Z]{3,4}) ([0-9]{1,7})/',strtoupper($date_ged),$reg))
         {
             $this->month=$reg[1];
             $this->year=$g4p_sign*intval($reg[2]);
-            $this->jd_precision=2
+            $this->jd_precision=2;
         }
         elseif(preg_match('/([0-9]{1,7})/',strtoupper($date_ged),$reg))
         {
             $this->year=$g4p_sign*intval($reg[1]);
-            $this->jd_precision=1
+            $this->jd_precision=1;
         }
         else
             return false;
