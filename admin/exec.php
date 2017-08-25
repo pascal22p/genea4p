@@ -477,7 +477,7 @@ else
         $sql="INSERT INTO genea_events_details
             (`place_id`, `events_details_descriptor`, `events_details_gedcom_date`,
              `jd_count`, `jd_calendar`, `jd_precision`, `base`, `events_details_timestamp`) 
-            VALUES (".$_POST['g4p_lieu'].",'".$g4p_mysqli->escape_string(trim($_POST['g4p_type']))."','".
+            VALUES (".$_POST['g4p_lieu'].",'".$g4p_mysqli->escape_string(trim($_POST['g4p_description']))."','".
             $g4p_date_gedcom."',".$g4p_jd['jd_count'].",'".$g4p_jd['calendrier']."',".$g4p_jd['precision'].",".
             $_SESSION['genea_db_id'].", NOW() )";
         if($g4p_tmp=$g4p_mysqli->g4p_query($sql))
