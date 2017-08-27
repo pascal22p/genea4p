@@ -6,7 +6,6 @@ require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 
-
 $g4p_date_modif=array(
   'EST',
   'ABT',
@@ -41,7 +40,7 @@ $sql="SELECT genea_events_details.*, rel_indi_events.indi_id as indi_id_e,
 	LEFT OUTER JOIN rel_indi_attributes USING (events_details_id)
 	LEFT OUTER JOIN rel_familles_events USING (events_details_id)
 	WHERE events_details_id = ".(int)$_REQUEST['id_event'];
-    
+
 $g4p_result_req=$g4p_mysqli->g4p_query($sql);
 $g4p_event=$g4p_mysqli->g4p_result($g4p_result_req);
 if(empty($g4p_event))
@@ -66,7 +65,6 @@ else if(empty($g4p_event['indi_id_e']) and empty($g4p_event['indi_id_a']) and !e
 else
 	die('event not linked to anything or linked more than once');
 	
-
 if($type_event=='indi_e')//évènement individuel
 {
     $select_type_event='<select name="g4p_type">';
@@ -132,6 +130,12 @@ if(!isset($_POST['g4p_exec']))
 	$body='onload="setdefault()"';	
 
     require_once($g4p_chemin.'entete.php');
+    if(!empty($_SESSION['message']))
+		echo '<div class="success">'.$_SESSION['message'].'</div>';
+	$_SESSION['message']='';
+    if(!empty($_SESSION['errormsg']))
+		echo '<div class="error">'.$_SESSION['errormsg'].'</div>';
+	$_SESSION['message']='';
     echo '<div class="box_title"><h2>Modification de l\'évènement</h2></div>'."\n";
 	echo '<form class="formulaire" method="post" action="'.$_SERVER['PHP_SELF'].'" id="mod_event">';
     echo '<dl class="mod_event">';
@@ -170,10 +174,10 @@ echo '<div id="Date" class="tabcontent">';
         echo '</div></li>';
     }
 
-    if(!empty($g4p_date->date2))
+    if(!empty($g4p_date->phrase))
     {
         echo '<li>';
-        echo 'Commentaire : <input type="text" name="g4p_phrase" style="width:55ex;" value="'.@$g4p_date->phrase.'" />';
+        echo 'Commentaire : <input type="text" name="g4p_phrase" style="width:55ex;" value="'.$g4p_date->phrase.'" />';
         echo "</li>\n";
     }
     else
@@ -212,18 +216,53 @@ else
 
 	$sql="START TRANSACTION";
 	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-
+	if(empty($g4p_result_req))
+	{
+		$sql="ROLLBACK";
+		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+		$_SESSION['errormsg']="Error while saving modification: ".$sql;
+		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+	}
+		
 	$sql="SELECT events_details_timestamp FROM genea_events_details FOR UPDATE";
 	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+	if(empty($g4p_result_req))
+	{
+		$sql="ROLLBACK";
+		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+		$_SESSION['errormsg']="Error while saving modification: ".$sql;
+		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+	}
 	
 	$sql="SELECT timestamp FROM rel_indi_events FOR UPDATE";
 	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+	if(empty($g4p_result_req))
+	{
+		$sql="ROLLBACK";
+		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+		$_SESSION['errormsg']="Error while saving modification: ".$sql;
+		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+	}
 
 	$sql="SELECT timestamp FROM rel_indi_attributes FOR UPDATE";
 	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+	if(empty($g4p_result_req))
+	{
+		$sql="ROLLBACK";
+		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+		$_SESSION['errormsg']="Error while saving modification: ".$sql;
+		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+	}
 
 	$sql="SELECT timestamp FROM rel_familles_events FOR UPDATE";
 	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+	if(empty($g4p_result_req))
+	{
+		$sql="ROLLBACK";
+		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+		$_SESSION['errormsg']="Error while saving modification: ".$sql;
+		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+	}
 
 	//check timestamp has not changed
 
@@ -241,17 +280,38 @@ else
 		{
 			$sql="UPDATE rel_indi_events SET events_tag='".$event_type."' WHERE events_details_id=".(int)$_POST['id_event'];
 			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+			if(empty($g4p_result_req))
+			{
+				$sql="ROLLBACK";
+				$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+				$_SESSION['errormsg']="Error while saving modification: ".$sql;
+				header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+			}
 		}
 		
 		if(isset($_POST['attestation']))
 		{
 			$sql="UPDATE rel_indi_events SET events_attestation='Y' WHERE events_details_id=".(int)$_POST['id_event'];
 			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+			if(empty($g4p_result_req))
+			{
+				$sql="ROLLBACK";
+				$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+				$_SESSION['errormsg']="Error while saving modification: ".$sql;
+				header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+			}
 		}
 		else
 		{
 			$sql="UPDATE rel_indi_events SET events_attestation=NULL WHERE events_details_id=".(int)$_POST['id_event'];
 			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+			if(empty($g4p_result_req))
+			{
+				$sql="ROLLBACK";
+				$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+				$_SESSION['errormsg']="Error while saving modification: ".$sql;
+				header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+			}
 		}
 
 		
@@ -270,6 +330,13 @@ else
 		{
 			$sql="UPDATE rel_indi_attributs SET events_tag='".$event_type."' WHERE events_details_id=".(int)$_POST['id_event'];
 			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+			if(empty($g4p_result_req))
+			{
+				$sql="ROLLBACK";
+				$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+				$_SESSION['errormsg']="Error while saving modification: ".$sql;
+				header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+			}
 		}
 		
 		// to be done
@@ -277,21 +344,52 @@ else
 	}
 
 	//events_details_descriptor
-	$sql="UPDATE genea_events_details SET events_details_descriptor='".$g4p_mysqli->escape_string(trim($_POST['events_details_descriptor']))."' WHERE events_details_id=".(int)$_POST['id_event'];
-	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-
+	if(isset($_POST['events_details_descriptor']))
+	{
+		$sql="UPDATE genea_events_details SET events_details_descriptor='".$g4p_mysqli->escape_string(trim($_POST['events_details_descriptor']))."' WHERE events_details_id=".(int)$_POST['id_event'];
+		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+		if(empty($g4p_result_req))
+		{
+			$sql="ROLLBACK";
+			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+			$_SESSION['errormsg']="Error while saving modification: ".$sql;
+			header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+		}
+	}
+	
 	//age
 	$sql="UPDATE genea_events_details SET events_details_age='".$g4p_mysqli->escape_string(trim($_POST['age']))."' WHERE events_details_id=".(int)$_POST['id_event'];
 	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+	if(empty($g4p_result_req))
+	{
+		$sql="ROLLBACK";
+		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+		$_SESSION['errormsg']="Error while saving modification: ".$sql;
+		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+	}
 
 	//cause
 	$sql="UPDATE genea_events_details SET events_details_cause='".$g4p_mysqli->escape_string(trim($_POST['cause']))."' WHERE events_details_id=".(int)$_POST['id_event'];
 	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+	if(empty($g4p_result_req))
+	{
+		$sql="ROLLBACK";
+		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+		$_SESSION['errormsg']="Error while saving modification: ".$sql;
+		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+	}
 
 	if($_POST['date_type']=='gedcom')
 	{
 		$sql="UPDATE genea_events_details SET events_details_gedcom_date='".$g4p_mysqli->escape_string(trim($_POST['events_details_gedcom_date']))."' WHERE events_details_id=".(int)$_POST['id_event'];
 		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+		if(empty($g4p_result_req))
+		{
+			$sql="ROLLBACK";
+			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+			$_SESSION['errormsg']="Error while saving modification: ".$sql;
+			header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+		}
 	}
 	else
 	{		
@@ -371,169 +469,115 @@ else
 		if(!empty($_POST['g4p_phrase']))
 			$date=$date.'('.$_POST['g4p_phrase'].')';
 			
-		$sql="UPDATE genea_events_details SET events_details_gedcom_date='".$date."' WHERE events_details_id=".(int)$_POST['id_event'];
+		$sql="UPDATE genea_events_details SET events_details_gedcom_date='".$g4p_mysqli->escape_string($date)."' WHERE events_details_id=".(int)$_POST['id_event'];
 		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+		if(empty($g4p_result_req))
+		{
+			$sql="ROLLBACK";
+			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+			$_SESSION['errormsg']="Error while saving modification: ".$sql;
+			header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+		}
 		
 	}
 	$sql="COMMIT";
 	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
- 
+	if(empty($g4p_result_req))
+	{
+		$sql="ROLLBACK";
+		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
+		$_SESSION['errormsg']="Error while saving modification: ".$sql;
+		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+	}
+
+	if($type_event=='indi_e')
+	{
+		$g4p_indi=g4p_destroy_cache($g4p_event['indi_id_e']);
+		foreach($g4p_indi->familles as $g4p_a_famille)
+			g4p_destroy_cache($g4p_a_famille->conjoint->indi_id);
+	}
+	
+    $_SESSION['message']='Modification enregistre';
     header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
 
 }
 
 function g4p_form_date($i, $date)
-
 {
-
     global $liste_mois_gregorien,$liste_mois_francais,$liste_mois_hebreux, $g4p_liste_calendrier;
-
     
-
     $liste_modificateur1=array(
-
     'EST'=>'Estimée', //EST
-
     'ABT'=>'Environ', //ABT
-
     'CAL'=>'Calculée', //CAL
-
     'TO'=>'Avant', //TO
-
     'AFT'=>'Après', //AFTER
-
     'FROM'=>'De', //FROM
-
     'BET'=>'Entre'); //BET
-
     /*
-
     'TO'=>'à', //TO
-
     'AND'=>'et'); //AND
-
     */
-
     
-
     if($i==0)
-
     {
-
         echo '<select name="date_mod['.$i.']" id="date_mod'.$i.'" style="width:12ex">'."\n";
-
         echo '<option value="" ></option>'."\n";
-
         if(empty($date->mod))
-
             $date->mod='';
-
         foreach($liste_modificateur1 as $key=>$val)
-
         {
-
             if($key==$date->mod)
-
                 $selected='selected="selected"';
-
             else
-
                 $selected='';
-
             echo '<option value="',$key,'" ',$selected,'>',$val,'</option>'."\n";
-
         }
-
         echo '</select> '."\n";
-
     }
-
     else
-
     {
-
         echo '<select name="date_mod['.$i.']" id="date_mod'.$i.'" style="width:12ex">'."\n";
-
         echo '<option value=""></option>'."\n";
-
         echo '<option value="TO">à</option>'."\n";
-
         echo '<option value="AND">et</option>'."\n";
-
         echo '</select> '."\n";
-
     }
-
     
-
     echo '<select name="date_calendrier['.$i.']" style="width:19ex">'."\n";
-
     echo '<option value="" ></option>'."\n";
-
     if(empty($date->calendar))
-
         $date->calendar='';
-
     foreach($g4p_liste_calendrier as $a_modif_key=>$a_modif_value)
-
     {
-
         if(!empty($date->calendar) and $a_modif_key==$date->calendar)
-
               $selected='selected="selected"';
-
             else
-
               $selected='';
-
         echo '<option value="',$a_modif_key,'" ',$selected,'>',$a_modif_value,'</option>'."\n";
-
     }
-
     echo '</select> '."\n";
-
     if(empty($date->day))
-
         $date->day='';   
-
     echo '<input type="text" name="date_jour['.$i.']" value="'.$date->day.'" style="width:3ex" /> '."\n";
-
     $tmp=array_merge($liste_mois_gregorien,$liste_mois_francais,$liste_mois_hebreux);
-
     echo '<select name="date_mois['.$i.']" style="width:26ex">'."\n";
-
     echo '<option value="" ></option>'."\n";
-
     if(empty($date->month))
-
         $date->month='';    
-
     foreach($tmp as $a_modif_key=>$a_modif_value)
-
     {
-
         if(!empty($date->month) and $a_modif_key==$date->month)
-
             $selected='selected="selected"';
-
         else
-
             $selected='';
-
         echo '<option value="',$a_modif_key,'" ',$selected,'>',$a_modif_value,'</option>'."\n";
-
     }
-
     echo '</select>'."\n";
-
     if(empty($date->year))
-
         $date->year='';   
-
     echo ' <input type="text" name="date_annee['.$i.']" value="'.$date->year.'" style="width:6ex" />'."\n";
-
 }
-
 
 ?>
 

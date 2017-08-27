@@ -1549,7 +1549,7 @@ class g4p_date_value
 		);
         
         $liste_modificateur=array('EST','ABT','CAL','TO','AFT','FROM','BET','TO','AND');
-        $g4p_cal_ged_php=array('@#DHEBREW@'=>1,'@#DFRENCH R@'=>1,'@#DGREGORIAN@'=>1,'@#DJULIAN@'=>1,'@#UNKOWN@'=>1);
+        $g4p_cal_ged_php=array('@#DHEBREW@'=>CAL_JEWISH,'@#DFRENCH R@'=>CAL_FRENCH,'@#DGREGORIAN@'=>CAL_GREGORIAN,'@#DJULIAN@'=>CAL_JULIAN,'@#UNKOWN@'=>CAL_GREGORIAN);
         
         if(preg_match('/^('.implode('|',$liste_modificateur).')/',trim($date_ged),$reg))
         {

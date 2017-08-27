@@ -117,7 +117,7 @@ if(!empty($g4p_indi->events))
         echo (isset($g4p_a_ievents->notes))?(' <span style="color:blue; font-size:x-small;">-N-</span> '):('');
         echo (isset($g4p_a_ievents->medias))?(' <span style="color:blue; font-size:x-small;">-M-</span> '):('');
         echo (isset($g4p_a_ievents->asso))?(' <span style="color:blue; font-size:x-small;">-T-</span> '):('');
-        echo (isset($g4p_a_ievents->id))?(' <a href="'.g4p_make_url('','detail_eventi.php','id='.$g4p_a_ievents->id.'&amp;id_parent='.$g4p_indi->indi_id,0).'" class="noprint">'.$g4p_langue['detail'].'</a>'):('');
+        echo (isset($g4p_a_ievents->id))?(' <a href="'.g4p_make_url('','detail_event.php','id_event='.$g4p_a_ievents->id,0).'" class="noprint">'.$g4p_langue['detail'].'</a>'):('');
         if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
             echo '<a href="'.g4p_make_url('','modification_event.php','type_event=indi&amp;id_event='.$g4p_a_ievents->id,0).'" class="admin">',$g4p_langue['menu_mod_event'],'</a>';
         echo '</dt>';
