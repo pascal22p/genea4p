@@ -321,6 +321,8 @@ function g4p_affiche_mariage()
                     echo (isset($g4p_a_event->medias))?('  <span style="color:blue; font-size:x-small;">-M-</span>  '):('');
                     echo (isset($g4p_a_event->assos))?('  <span style="color:blue; font-size:x-small;">-T-</span>  '):('');
                     echo ' <a href="',g4p_make_url('','detail_event.php','id_event='.$g4p_a_event->id,0),'" class="noprint">',$g4p_langue['detail'],'</a>';
+					if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
+						echo '<a href="'.g4p_make_url('','modification_event.php','id_event='.$g4p_a_event->id,0).'" class="admin">',$g4p_langue['menu_mod_event'],'</a>';
                     echo '</dt>';
                     
                     if($g4p_a_event->place->g4p_formated_place()!='')                    

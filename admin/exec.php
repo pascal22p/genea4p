@@ -1447,26 +1447,26 @@ exit;*/
     case 'mask_fich':
     if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     {
-      $sql="UPDATE genea_individuals SET resn='privacy' WHERE indi_id=".$_GET['g4p_id'];
+      $sql="UPDATE genea_individuals SET indi_resn='privacy' WHERE indi_id=".(int)$_GET['g4p_id'];
       if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message']=$g4p_langue['message_masque_indi'];
         
-     $g4p_indi=g4p_destroy_cache(); 
+     g4p_destroy_cache($_GET['g4p_id']); 
          
-      header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
+      header('location:'.g4p_make_url('','fiche_individuelle.php','id_pers='.$_GET['g4p_id'],0));
     }
     break;
 
     case 'demask_fich':
     if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     {
-      $sql="UPDATE genea_individuals SET resn=NULL WHERE indi_id=".$_GET['g4p_id'];
+      $sql="UPDATE genea_individuals SET indi_resn=NULL WHERE indi_id=".(int)$_GET['g4p_id'];
       if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message']=$g4p_langue['message_demasque_indi'];
         
-      $g4p_indi=g4p_destroy_cache();
+      g4p_destroy_cache($_GET['g4p_id']);
                
-      header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
+      header('location:'.g4p_make_url('','fiche_individuelle.php','id_pers='.$_GET['g4p_id'],0));
     }
     break;
 

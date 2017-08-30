@@ -104,7 +104,7 @@ elseif(!empty($_POST['g4p_note']))
 {
     $g4p_mysqli->autocommit(false);
     $sql="INSERT INTO genea_notes (notes_text, base) VALUES    
-        ('".mysql_escape_string($_POST['g4p_note'])."', ".(int)$_POST['g4p_base'].")";
+        ('".$g4p_mysqli->escape_string($_POST['g4p_note'])."', ".(int)$_POST['g4p_base'].")";
     if($g4p_mysqli->g4p_query($sql))
     {
         

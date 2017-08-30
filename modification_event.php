@@ -33,7 +33,8 @@ if(empty($_REQUEST['id_event']))
     
 $sql="SELECT genea_events_details.*, rel_indi_events.indi_id as indi_id_e, 
 	rel_indi_events.events_tag as events_tag_e, 
-	rel_indi_attributes.indi_id as indi_id_a, familles_id, events_details_timestamp, 
+	rel_indi_attributes.indi_id as indi_id_a, familles_id, 
+	rel_familles_events.events_tag as events_tag_f, events_details_timestamp, 
 	rel_indi_events.timestamp as timestamp_e, rel_indi_attributes.timestamp as timestamp_a,
 	rel_familles_events.timestamp as timestamp_f FROM genea_events_details
 	LEFT OUTER JOIN rel_indi_events USING (events_details_id)
@@ -57,13 +58,25 @@ $g4p_event=$g4p_event[0];
 
 // check if event only present in one table
 if(!empty($g4p_event['indi_id_e']) and empty($g4p_event['indi_id_a']) and empty($g4p_event['familles_id']))
+{
 	$type_event='indi_e';
+	$indi_id=$g4p_event['indi_id_e'];
+}
 else if(empty($g4p_event['indi_id_e']) and !empty($g4p_event['indi_id_a']) and empty($g4p_event['familles_id']))
+{
 	$type_event='indi_a';
+	$indi_id=$g4p_event['indi_id_a'];
+}
 else if(empty($g4p_event['indi_id_e']) and empty($g4p_event['indi_id_a']) and !empty($g4p_event['familles_id']))
+{
 	$type_event='famille';
+	$famille_id=$g4p_event['familles_id'];
+}
 else
 	die('event not linked to anything or linked more than once');
+
+If(!empty($indi_id))
+	$g4p_indi=g4p_load_indi_infos($indi_id);
 	
 if($type_event=='indi_e')//évènement individuel
 {
@@ -77,14 +90,14 @@ if($type_event=='indi_e')//évènement individuel
     }
     $select_type_event.='</select>';
 }
-elseif($g4p_select=='rel_familles_events')//évènement familiale
+elseif($type_event=='famille')//évènement familiale
 {
     $select_type_event='<select name="g4p_type">';
     $select_type_event.='<option value="">Choisissez</option>';
     reset($g4p_tag_fevents);
     while(list($g4p_key, $g4p_value)=each($g4p_tag_fevents))
     {
-      $g4p_selected=($g4p_event['events_tag']==$g4p_key)?('selected="SELECTED"'):('');
+      $g4p_selected=($g4p_event['events_tag_f']==$g4p_key)?('selected="SELECTED"'):('');
       $select_type_event.='<option value="'.$g4p_key.'" '.$g4p_selected.'>'.$g4p_value.'</option>';
     }
     $select_type_event.='</select>';
@@ -137,6 +150,21 @@ if(!isset($_POST['g4p_exec']))
 		echo '<div class="error">'.$_SESSION['errormsg'].'</div>';
 	$_SESSION['message']='';
     echo '<div class="box_title"><h2>Modification de l\'évènement</h2></div>'."\n";
+    if(!empty($indi_id))
+    {
+		echo '<div class="menu_interne">';
+		echo '<a href="'.g4p_make_url('','fiche_individuelle.php','id_pers='.$_REQUEST['id_event'],'fiche-'.$g4p_indi->base.'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id).'" class="retour">',$g4p_langue['retour'],'</a>';
+	}
+	else
+	{
+		echo '<div class="menu_interne">';
+		echo '<a href="'.g4p_make_url('','modification_famille.php','id_famille='.$famille_id,'').'" class="retour">',$g4p_langue['retour'],'</a>';
+	}
+	echo '<a href="',g4p_make_url('','new_note.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
+	<a href="',g4p_make_url('','new_source.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 
+	<a href="',g4p_make_url('','new_media.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> ';
+	echo '</div>';
+
 	echo '<form class="formulaire" method="post" action="'.$_SERVER['PHP_SELF'].'" id="mod_event">';
     echo '<dl class="mod_event">';
     echo '<dt>Type évènement : </dt><dd>'.$select_type_event.'</dd>';

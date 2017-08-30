@@ -76,7 +76,7 @@ echo '<div class="box_title"><h2>Détail de l\'évènement</h2></div>'."\n";
 
 echo '<div class="menu_interne"><a href="'.g4p_make_url('','fiche_individuelle.php','id_pers='.$g4p_indi->indi_id,'fiche-'.$g4p_indi->base.'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id).'" class="retour">',$g4p_langue['retour'],'</a>';
 if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
-    echo ' - <a href="'.g4p_make_url('','modification_event.php','type_event=indi&amp;id_event='.$g4p_event->id,0).'" class="admin">',$g4p_langue['menu_mod_event'],'</a>
+    echo ' - <a href="'.g4p_make_url('','modification_event.php','id_event='.$g4p_event->id,0).'" class="admin">',$g4p_langue['menu_mod_event'],'</a>
            - <a href="'.g4p_make_url('admin','exec.php','g4p_opt=del_event&amp;g4p_id='.(int)$_REQUEST['id_event'],0).'" class="admin">',$g4p_langue['menu_del_event'],'</a>
 		   - <a href="',g4p_make_url('','new_note.php','parent=EVENT&amp;id_parent='.(int)$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
 		   - <a href="',g4p_make_url('','new_source.php','parent=EVENT&amp;id_parent='.(int)$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 

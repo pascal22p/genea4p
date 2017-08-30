@@ -18,6 +18,12 @@ g4p_add_intohistoric($g4p_indi->indi_id,'indi');
 $g4p_titre_page=$g4p_indi->prenom.' '.$g4p_indi->nom;
 
 require_once($g4p_chemin.'entete.php');
+
+if(!empty($_SESSION['message']))
+	echo '<div class="success">'.$_SESSION['message'].'</div>';
+$_SESSION['message']='';
+
+
 echo '<div class="box_title"><h2>'.$g4p_indi->prenom,' ',$g4p_indi->nom.'</h2></div>'."\n";
 
 //menu edition
@@ -119,7 +125,7 @@ if(!empty($g4p_indi->events))
         echo (isset($g4p_a_ievents->asso))?(' <span style="color:blue; font-size:x-small;">-T-</span> '):('');
         echo (isset($g4p_a_ievents->id))?(' <a href="'.g4p_make_url('','detail_event.php','id_event='.$g4p_a_ievents->id,0).'" class="noprint">'.$g4p_langue['detail'].'</a>'):('');
         if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
-            echo '<a href="'.g4p_make_url('','modification_event.php','type_event=indi&amp;id_event='.$g4p_a_ievents->id,0).'" class="admin">',$g4p_langue['menu_mod_event'],'</a>';
+            echo '<a href="'.g4p_make_url('','modification_event.php','id_event='.$g4p_a_ievents->id,0).'" class="admin">',$g4p_langue['menu_mod_event'],'</a>';
         echo '</dt>';
                 
         //age

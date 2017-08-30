@@ -6,12 +6,25 @@ require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 
-if(!isset($_REQUEST['id_pers']))
-    die('id_pers is not defined');
-
 if(!isset($_REQUEST['id_famille']))
     die('id_famille is not defined');
 
+if(!isset($_REQUEST['id_pers']))
+{
+	$sql="SELECT familles_husb, familles_wife FROM genea_familles WHERE familles_id=".(int)$_REQUEST['id_famille'];
+    $g4p_result=$g4p_mysqli->g4p_query($sql);
+    $g4p_result=$g4p_mysqli->g4p_result($g4p_result);
+    if(!empty($g4p_result[0]))
+    {
+		if(!empty($g4p_result[0]['familles_husb']))
+			$_REQUEST['id_pers']=$g4p_result[0]['familles_husb'];
+		else if(!empty($g4p_result[0]['familles_wifw']))
+			$_REQUEST['id_pers']=$g4p_result[0]['familles_wife'];
+		else
+			die("Error getting husb or wife id");
+	}
+}	
+	
 if(!$_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     die('Unsufficient right to edit the file');
 
@@ -229,7 +242,7 @@ if(!empty($g4p_famille->events))
         echo (isset($g4p_a_ievents->notes))?(' <span style="color:blue; font-size:x-small;">-N-</span> '):('');
         echo (isset($g4p_a_ievents->medias))?(' <span style="color:blue; font-size:x-small;">-M-</span> '):('');
         echo (isset($g4p_a_ievents->asso))?(' <span style="color:blue; font-size:x-small;">-T-</span> '):('');
-        echo (isset($g4p_a_ievents->id))?(' <a href="'.g4p_make_url('','detail_event.php','parent=INDI&amp;id_parent='.$g4p_a_ievents->id,0).'" class="noprint">'.$g4p_langue['detail'].'</a><br />'):('<br />');
+        echo (isset($g4p_a_ievents->id))?(' <a href="'.g4p_make_url('','detail_event.php','id_event='.$g4p_a_ievents->id,0).'" class="noprint">'.$g4p_langue['detail'].'</a><br />'):('<br />');
         echo '</dt>';
                 
         //age
