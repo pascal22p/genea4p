@@ -10,14 +10,14 @@ if(!empty($_POST) and !empty($_POST['id_pers']))
 {
     if(!empty($_POST['nom']) and !empty($_POST['prenom']))
     {
-          $sql="UPDATE genea_individuals SET indi_nom='".mysql_escape_string($_POST['nom'])."', 
-            indi_prenom='".mysql_escape_string($_POST['prenom'])."', 
-            indi_sexe='".mysql_escape_string($_POST['sexe'])."', 
-            indi_timestamp=NOW(), indi_npfx='".mysql_escape_string($_POST['npfx'])."', 
-            indi_givn='".mysql_escape_string($_POST['givn'])."', 
-            indi_nick='".mysql_escape_string($_POST['nick'])."', 
-            indi_spfx='".mysql_escape_string($_POST['spfx'])."', 
-            indi_nsfx='".mysql_escape_string($_POST['nsfx'])."' 
+          $sql="UPDATE genea_individuals SET indi_nom='".$g4p_mysqli->escape_string($_POST['nom'])."', 
+            indi_prenom='".$g4p_mysqli->escape_string($_POST['prenom'])."', 
+            indi_sexe='".$g4p_mysqli->escape_string($_POST['sexe'])."', 
+            indi_timestamp=NOW(), indi_npfx='".$g4p_mysqli->escape_string($_POST['npfx'])."', 
+            indi_givn='".$g4p_mysqli->escape_string($_POST['givn'])."', 
+            indi_nick='".$g4p_mysqli->escape_string($_POST['nick'])."', 
+            indi_spfx='".$g4p_mysqli->escape_string($_POST['spfx'])."', 
+            indi_nsfx='".$g4p_mysqli->escape_string($_POST['nsfx'])."' 
             WHERE indi_id='".$_POST['id_pers']."'";
         if($g4p_mysqli->g4p_query($sql))
             $_SESSION['message']=$g4p_langue['message_req_succes'];
