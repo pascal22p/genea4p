@@ -150,14 +150,14 @@ elseif(!empty($_POST['newsource']))
 		$sql="INSERT INTO genea_sour_records (sour_records_auth, sour_records_title,
 			sour_records_abbr, sour_records_publ, sour_records_agnc, repo_id, repo_caln, 
 			repo_medi, base) VALUES 
-			('".mysql_escape_string($_POST['sour_records_auth'])."','".
-			mysql_escape_string($_POST['sour_records_title'])."','".
-			mysql_escape_string($_POST['sour_records_abbr'])."','".
-			mysql_escape_string($_POST['sour_records_publ'])."','".
-			mysql_escape_string($_POST['sour_records_agnc'])."','".
-			mysql_escape_string($_POST['repo_id'])."','".
-			mysql_escape_string($_POST['repo_caln'])."','".
-			mysql_escape_string($_POST['repo_medi'])."',".
+			('".$g4p_mysqli->escape_string($_POST['sour_records_auth'])."','".
+			$g4p_mysqli->escape_string($_POST['sour_records_title'])."','".
+			$g4p_mysqli->escape_string($_POST['sour_records_abbr'])."','".
+			$g4p_mysqli->escape_string($_POST['sour_records_publ'])."','".
+			$g4p_mysqli->escape_string($_POST['sour_records_agnc'])."','".
+			$g4p_mysqli->escape_string($_POST['repo_id'])."','".
+			$g4p_mysqli->escape_string($_POST['repo_caln'])."','".
+			$g4p_mysqli->escape_string($_POST['repo_medi'])."',".
 			(int)$g4p_base.")";
 		if($g4p_mysqli->g4p_query($sql))
 		{
@@ -178,13 +178,13 @@ elseif(!empty($_POST['newsource']))
 		$sql="INSERT INTO genea_sour_citations (sour_records_id, sour_citations_page, sour_citations_even,
 			sour_citations_even_role, sour_citations_data_dates, sour_citations_data_text, sour_citations_quay,
 			sour_citations_subm, base) VALUES 
-			(".$sour_records_id.",'".mysql_escape_string($_POST['sour_citations_page'])."','".
-			mysql_escape_string($_POST['sour_citations_even'])."','".
-			mysql_escape_string($_POST['sour_citations_even_role'])."','".
-			mysql_escape_string($_POST['sour_citations_data_dates'])."','".
-			mysql_escape_string($_POST['sour_citations_data_text'])."','".
-			mysql_escape_string($_POST['sour_citations_quay'])."','".
-			mysql_escape_string($_POST['sour_citations_subm'])."',".
+			(".$sour_records_id.",'".$g4p_mysqli->escape_string($_POST['sour_citations_page'])."','".
+			$g4p_mysqli->escape_string($_POST['sour_citations_even'])."','".
+			$g4p_mysqli->escape_string($_POST['sour_citations_even_role'])."','".
+			$g4p_mysqli->escape_string($_POST['sour_citations_data_dates'])."','".
+			$g4p_mysqli->escape_string($_POST['sour_citations_data_text'])."','".
+			$g4p_mysqli->escape_string($_POST['sour_citations_quay'])."','".
+			$g4p_mysqli->escape_string($_POST['sour_citations_subm'])."',".
 			(int)$g4p_base.")";
 		if($g4p_mysqli->g4p_query($sql))
 		{
@@ -277,6 +277,7 @@ echo '
 			<option value="TITL"  >TITL</option>
 			<option value="FACT"  >FACT</option>
 			</select>
+			<p style="margin-left:3em;max-width:800px;word-wrap:break-word;font-size:smaller;font-style:italic">A code that indicates the type of event which was responsible for the source entry being recorded. For example, if the entry was created to record a birth of a child, then the type would be BIRT regardless of the assertions made from that record, such as the mother\'s name or mother\'s birth date.</p>
 		</li>
 		<li>Even role : <select name="sour_citations_even_role" id="sour_citations_even_role" >
 			<option value="" > </option>
@@ -288,9 +289,17 @@ echo '
 			<option value="SPOU"  >SPOU</option>
 			</select> ou 
 			<input id="sour_citations_even_role_text" name="sour_citations_even_role_text" style="width:300px" type="text"  />
+		<p style="margin-left:3em;max-width:800px;word-wrap:break-word;font-size:smaller;font-style:italic">Indicates what role this person played in the event that is being cited in this context. 
+		For example, if you cite a child\'s birth record as the source of the mother\'s name, the value for this field is "MOTH." If you describe the groom of a marriage, the role is "HUSB." 
+		If the role is something different than one of the six relationship role tags listed above then used the text box on the right.</p>
 		</li>
+
 		<li>Original Date : <input id="sour_citations_data_dates" name="sour_citations_data_dates" style="width:300px" type="text"  /></li>
-		<li>Texte : <textarea rows="8" cols="50" name="sour_citations_data_text" ></textarea></li>
+		<li>Texte : <textarea rows="8" cols="50" name="sour_citations_data_text" ></textarea>
+		<p style="margin-left:3em;max-width:800px;word-wrap:break-word;font-size:smaller;font-style:italic">A verbatim copy of any description contained within the source. 
+		This indicates notes or text that are actually contained in the source document, not the submitter\'s opinion about the source. 
+		This should be, from the evidence point of view, "what the original record keeper said" as opposed tothe researcher\'s interpretation.</p></li>
+		
 		<li>Confidence : <select name="sour_citations_quay" id="sour_citations_quay">
 			<option value="" > </option>
 			<option value="0"  >Unreliable evidence or estimated data</option>
@@ -299,7 +308,9 @@ echo '
 			<option value="3"  >Direct and primary evidence used, or by dominance of the evidence</option>
 			</select>		
 		</li>
-		<li>Submiter (Not gedcom!) : <input id="sour_citations_subm" name="sour_citations_subm" style="width:300px" type="text"  /></li>
+		<li>Submiter: <input id="sour_citations_subm" name="sour_citations_subm" style="width:300px" type="text"  />
+		<p style="margin-left:3em;max-width:800px;word-wrap:break-word;font-size:smaller;font-style:italic">The person that submitted the information to the system.
+		This is NOT a valid GEDCOM tag.</p></li>
 		</ul></div>';
 
 	echo '<div class="box">
@@ -322,12 +333,27 @@ echo '
 	<div class="box" style="display:none" id="sourceb"></div>
 		
 		<ul id="newsourrecord">
-		<li>Auteur originel : <input id="sour_records_auth" name="sour_records_auth" style="width:300px" type="text"  /></li>
+		<li>Auteur originel : <input id="sour_records_auth" name="sour_records_auth" style="width:300px" type="text"  />
+		<p style="margin-left:3em;max-width:800px;word-wrap:break-word;font-size:smaller;font-style:italic">The person, agency, or entity who created the record. 
+		For a published work, this could be the author, compiler, transcriber, abstractor, or editor. For an unpublished source, this may be an individual, 
+		a government agency, church organization, or private organization, etc. </p>
+		</li>
 		<li>Titre : <input id="sour_records_title" name="sour_records_title" style="width:300px" type="text"  /></li>
-		<li>abbr : <input id="sour_records_abbr" name="sour_records_abbr" style="width:300px" type="text"  /></li>
-		<li>publ : <textarea rows="8" cols="50" name="sour_records_publ" ></textarea></li>
-		<li>agnc : <input id="sour_records_agnc" name="sour_records_agnc" style="width:300px" type="text"  /></li>
-		<li>caln : <input id="repo_caln" name="repo_caln" style="width:300px" type="text"  /></li>
+		<li>abbr : <input id="sour_records_abbr" name="sour_records_abbr" style="width:300px" type="text"  />
+		<p style="margin-left:3em;max-width:800px;word-wrap:break-word;font-size:smaller;font-style:italic">
+		This entry is to provide a short title used for sorting, filing, and retrieving source records. </p></li>
+		<li>publ : <input type="text" id="sour_records_publ" name="sour_records_publ" style="width:300px" />
+		<p style="margin-left:3em;max-width:800px;word-wrap:break-word;font-size:smaller;font-style:italic">
+		When and where the record was created. For published works, this includes information such as the city of publication, name of the publisher, and year of publication.
+		For an unpublished work, it includes the date the record was created and the place where it was created. 
+		For example, the county and state of residence of a person making a declaration for a pension or the city and state of residence of the writer of a letter. </p></li>
+		<li>agnc : <input id="sour_records_agnc" name="sour_records_agnc" style="width:300px" type="text"  />
+		<p style="margin-left:3em;max-width:800px;word-wrap:break-word;font-size:smaller;font-style:italic">
+		The organization, institution, corporation, person, or other entity that has authority or control interests in the associated context. 
+		For example, an employer of a person of an associated occupation, or a church that administered rites or events, or an organization responsible for creating and/or archiving records. </p></li>
+		<li>caln : <input id="repo_caln" name="repo_caln" style="width:300px" type="text"  />
+		<p style="margin-left:3em;max-width:800px;word-wrap:break-word;font-size:smaller;font-style:italic">
+		An identification or reference description used to file and retrieve items from the holdings of a repository. </p></li>
 		<li>medi : <select name="repo_medi" id="repo_medi">
 			<option value="" > </option>
 			<option value="audio"  >audio</option>
@@ -343,7 +369,9 @@ echo '
 			<option value="photo"  >photo</option>
 			<option value="tombstone"  >tombstone</option>
 			<option value="video"  >video</option>
-			</select></li>
+			</select>
+			<p style="margin-left:3em;max-width:800px;word-wrap:break-word;font-size:smaller;font-style:italic">
+			A code, selected from one of the media classifications choices above, that indicates the type of material in which the referenced source is stored. </p></li>
 		</ul>';
 
 	echo '<div class="box" id="newreporecord">

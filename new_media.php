@@ -130,7 +130,7 @@ elseif(!empty($_POST['newmedia']))
 	
 	if(!$error)
 	{
-		$uploaddir = 'cache/'.g4p_base_namefolder($g4p_base_nom).'/objets/';
+		$uploaddir = 'cache/'.$g4p_base_nom.'/objets/';
 		$uploadfile = dirname(__FILE__).'/'.$uploaddir . $fileinfo['basename'];
 
 		if(file_exists($uploadfile))
@@ -148,15 +148,14 @@ elseif(!empty($_POST['newmedia']))
 		if(!$error)
 		{
 			$sql="INSERT INTO genea_multimedia (media_title, media_format, media_file, base) VALUES 
-					('".mysql_escape_string($_GET['g4p_title'])."','".
-					mysql_escape_string($fileinfo['extension'])."','".
-					mysql_escape_string($fileinfo['basename'])."',".
+					('".$g4p_mysqli->escape_string($_GET['g4p_title'])."','".
+					$g4p_mysqli->escape_string($fileinfo['extension'])."','".
+					$g4p_mysqli->escape_string($fileinfo['basename'])."',".
 					(int)$g4p_base.")";
 			if($g4p_mysqli->g4p_query($sql))
 			{
 				$sql="INSERT INTO ".$table." (media_id, ".$parentcol.") VALUES 
 					(".$g4p_mysqli->insert_id.",".$id_parent.")";
-				echo $sql;
 				if($g4p_mysqli->g4p_query($sql))
 				{
 					$g4p_mysqli->commit();

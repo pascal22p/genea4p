@@ -124,7 +124,9 @@ function g4p_affiche_sources($sources, $lien, $type)
         {
             if (isset($_SESSION['permission']) and $_SESSION['permission']->permission[_PERM_EDIT_FILES_])
             {
-                echo '<div class="menu_interne"><a href="'.g4p_make_url('admin','index.php','g4p_opt=mod_source&amp;g4p_id='.$g4p_a_source->id,0).'" class="admin">',$g4p_langue['menu_mod_source'],'</a>';
+                echo '<div class="menu_interne">';
+                echo '<a href="'.g4p_make_url('admin','index.php','g4p_opt=mod_source&amp;g4p_id='.$g4p_a_source->id,0).'" class="admin">',$g4p_langue['menu_mod_source'],'</a>';
+                echo ' - <a href="'.g4p_make_url('','new_media.php','parent=SOUR&amp;id_parent='.$g4p_a_source->id,0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a>';
                 if(isset($_SESSION['permission']) and ($_SESSION['permission']->permission[_PERM_SUPPR_FILES_]))
                     echo ' - <a href="'.g4p_make_url('admin','exec.php','g4p_opt=suppr_source&amp;g4p_id='.$g4p_a_source->id.'&amp;g4p_lien='.$lien.'&amp;g4p_type='.$type,0),'" onclick=" return confirme(this, \'',$g4p_langue['menu_sppr_confirme'],'\')" class="admin">',$g4p_langue['menu_suppr_source'],'</a>';
                 echo '</div>';
@@ -218,6 +220,8 @@ function g4p_affiche_sources($sources, $lien, $type)
             echo '</div>';
         }
     }
+    else
+		echo 'Source hidden';
 }
 
 function g4p_affiche_asso($asso,$lien,$type)

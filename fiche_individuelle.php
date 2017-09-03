@@ -133,11 +133,11 @@ if(!empty($g4p_indi->events))
 
         //place
         if($g4p_a_ievents->place->g4p_formated_place()!='')
-            echo '<dd><em>Lieu : </em>'.$g4p_a_ievents->place->g4p_formated_place(),' [détail]</dd>';
+            echo '<dd><em>Lieu : </em>'.$g4p_a_ievents->place->g4p_formated_place(),'</dd>';
         
         //adresse
         if(!empty($g4p_a_ievents->address))
-            echo '<dd><em>Adresse : </em>'.$g4p_a_ievents->address->g4p_formated_addr(),' [détail]</dd>';
+            echo '<dd><em>Adresse : </em>'.$g4p_a_ievents->address->g4p_formated_addr(),'</dd>';
     }
     echo '</dl></div>';
 }
