@@ -1289,7 +1289,7 @@ function g4p_relations_avancees($id)
     {
       $frere=$frere['indi'];
       if($_SESSION['permission']->permission[_PERM_MASK_INDI_] or $frere->resn!='privacy')
-        echo '<br /><a href="',g4p_make_url('','index.php','g4p_action=fiche_indi&amp;id_pers='.$frere->indi_id.'&amp;genea_db_id='.$frere->base,
+        echo '<br /><a href="',g4p_make_url('','fiche_individuelle.php','id_pers='.$frere->indi_id,
         'fiche-'.$frere->base.'-'.g4p_prepare_varurl($frere->nom).'-'.g4p_prepare_varurl($frere->prenom).'-'.$frere->indi_id),'">',
         $frere->nom,' ',$frere->prenom,' ',g4p_date($frere->date_rapide()),'</a>';
       else
@@ -1306,7 +1306,7 @@ function g4p_relations_avancees($id)
     {
       $tata=$tata['indi'];
       if($_SESSION['permission']->permission[_PERM_MASK_INDI_] or $tata->resn!='privacy')
-        echo '<br /><a href="',g4p_make_url('','index.php','g4p_action=fiche_indi&amp;id_pers='.$tata->indi_id.'&amp;genea_db_id='.$tata->base,'fiche-'.$tata->base.'-'.g4p_prepare_varurl($tata->nom).'-'.g4p_prepare_varurl($tata->prenom).'-'.$tata->indi_id),'">',$tata->nom,' ',$tata->prenom,' ',g4p_date($tata->date_rapide()),'</a>';
+        echo '<br /><a href="',g4p_make_url('','fiche_individuelle.php','id_pers='.$tata->indi_id,'fiche-'.$tata->base.'-'.g4p_prepare_varurl($tata->nom).'-'.g4p_prepare_varurl($tata->prenom).'-'.$tata->indi_id),'">',$tata->nom,' ',$tata->prenom,' ',g4p_date($tata->date_rapide()),'</a>';
       else
         echo '<br />Caché';
     }
