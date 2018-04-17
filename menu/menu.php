@@ -6,7 +6,7 @@ echo '
     <li class="menu">',$g4p_langue['menu_sommaire'],'
     <ul class="ssmenu">
         <li class="ssmenu"><a href="',g4p_make_url('','index.php','base',0),'">',$g4p_langue['menu_liste_base'],'</a></li>
-        <li class="ssmenu"><a href="',g4p_make_url('','liste_patronymes.php','test='.urlencode('a&b?c'),0),'">',$g4p_langue['menu_patronyme'],'</a></li>';
+        <li class="ssmenu"><a href="',g4p_make_url('','liste_patronymes.php','',0),'">',$g4p_langue['menu_patronyme'],'</a></li>';
       		
 if(!isset($_SESSION['g4p_id_membre']) or $_SESSION['g4p_id_membre']==1)
     echo '
