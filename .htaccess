@@ -1,17 +1,12 @@
-<IfModule mod_rewrite.c>
-Options +FollowSymlinks
-RewriteEngine on
-RewriteRule test_mod_rewrite-([a-f0-9]+)$ install.php?g4p_action=test_mod_rewrite&id=$1
-RewriteRule fiche-([0-9]+)-(.*)-([0-9]+)$ index.php?g4p_action=fiche_indi&id_pers=$3&genea_db_id=$1
-RewriteRule fiche-(.*)-([0-9]+)$ index.php?g4p_action=fiche_indi&id_pers=$2
-RewriteRule patronymes-([0-9]+)-(.*)-([0-9]+)$ index.php?g4p_action=liste_patronyme&genea_db_id=$1&patronyme=$2&g4p_cpt=$3
-RewriteRule patronymes-([0-9]+)$ index.php?g4p_action=liste_patronyme&genea_db_id=$1
-RewriteRule prenoms-([0-9]+)-(.*)-([0-9]+)-([0-9]+)$ index.php?g4p_action=liste_prenom&genea_db_id=$1&nom=$2&g4p_nbre=$3&g4p_page=$4
-RewriteRule prenoms-([0-9]+)-(.*)-([0-9]+)$ index.php?g4p_action=liste_prenom&genea_db_id=$1&nom=$2&g4p_nbre=$3
-RewriteRule arbre_ascendant-([0-9]+)-(.*)-([0-9]+)$ arbre_ascendant.php?g4p_id=$3&genea_db_id=$1
-RewriteRule liste_descendance-([0-9]+)-(.*)-([0-9]+)-([0-9]+)$ liste_descendance.php?genea_db_id=$1&g4p_id=$3&g4p_generation=$4
-RewriteRule liste_descendance-([0-9]+)-(.*)-([0-9]+)$ liste_descendance.php?genea_db_id=$1&g4p_id=$3
-RewriteRule liste_ascendance-([0-9]+)-(.*)-([0-9]+)-([0-9]+)-implexe$ liste_ascendance.php?genea_db_id=$1&g4p_id=$3&g4p_generation=$4&implexe=1
-RewriteRule liste_ascendance-([0-9]+)-(.*)-([0-9]+)-([0-9]+)$ liste_ascendance.php?genea_db_id=$1&g4p_id=$3&g4p_generation=$4&implexe=0
-RewriteRule liste_ascendance-([0-9]+)-(.*)-([0-9]+)$ liste_ascendance.php?genea_db_id=$1&g4p_id=$3&implexe=0
-</ifModule>
+#Initialize mod_rewrite
+RewriteEngine On
+<FilesMatch "\.(html|htm|js|css)$">
+  FileETag None
+  <IfModule mod_headers.c>
+    Header unset ETag
+    Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "Wed, 12 Jan 1980 05:00:00 GMT"
+  </IfModule>
+</FilesMatch>
+

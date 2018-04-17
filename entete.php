@@ -58,15 +58,15 @@ if(!isset($g4p_html_direction))
 
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?=$g4p_langue['entete_content_language']?>" <?=$g4p_html_direction?>>
+<!DOCTYPE html> 
+<html lang="<?=$g4p_langue['entete_content_language']?>" <?=$g4p_html_direction?>>
 <head>
 <title><?=$g4p_langue['entete_titre']?></title>
 <meta name="Description" content="<?=$g4p_langue['entete_description']?>" />
 <meta name="Keywords" content="<?=$g4p_langue['entete_mots_cles']?>" />
 <meta name="Author" content="PAROIS Pascal" />
 <meta http-equiv="Content-language" content="<?=$g4p_langue['entete_content_language']?>" />
-<meta http-equiv="Content-Type" content="<?echo $accept_xml?'application/xhtml+xml':'text/html'?> charset=<?=$g4p_langue['entete_charset']?>" />
+<meta charset=<?=$g4p_langue['entete_charset']?>" />
 
 <?php
 

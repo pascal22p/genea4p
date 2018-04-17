@@ -673,6 +673,64 @@ $g4p_tag_def=array(
 );
 array_multisort($g4p_tag_def);
 
+$g4p_tag_ievents=array(
+  'ADOP'=>'Adoption',
+  'BAPL'=>'Baptème mormons',
+  'BAPM'=>'Baptème',
+  'BIRT'=>'Naissance',
+  'BURI'=>'Inhumation',
+  'CHR'=>'Baptème religieux',
+  'CHRA'=>'Baptème religieux (Adulte)',
+  'CONF'=>'Confirmation',
+  'FCOM'=>'Première communion',
+  'CREM'=>'Incinération',
+  'DEAT'=>'Décès',
+  'ORDN'=>'Ordination',
+  'NATU'=>'Naturalisation',
+  'EMIG'=>'Emigration',
+  'IMMI'=>'Immigration',
+  'CENS'=>'Resencement',
+  'PROB'=>'Validation d\'un testament',
+  'WILL'=>'Testament',
+  'BLES'=>'Bénédiction',
+  'BARM'=>'BAR MITZVAH (garçon)',
+  'BASM'=>'BAR MITZVAH (fille)',
+  'RETI'=>'Retraite',
+  'EVEN'=>'Evènement',
+  'BAPL'=>'Baptème mormons',
+  'GRAD'=>'Diplôme'
+);
+array_multisort($g4p_tag_ievents);
+
+$g4p_tag_iattributs=array(
+  'CAST'=>'Rang ou status',
+  'DSCR'=>'Description',
+  'EDUC'=>'Niveau d\'instruction',
+  'IDNO'=>'Matricule/numéro',
+  'NATI'=>'Nationalité',
+  'PROP'=>'Possession',
+  'OCCU'=>'Profession',
+  'RELI'=>'Religion',
+  'RESI'=>'Résidence',//syl
+  'TITL'=>'Titre'
+);
+array_multisort($g4p_tag_iattributs);
+
+$g4p_tag_fevents=array(
+  'ANUL'=>'Déclaration de nullité d\'un mariage',
+  'CENS'=>'Resencement',
+  'DIV'=>'Divorce',
+  'DIVF'=>'Dossier de divorce',
+  'ENGA'=>'Fiançaille',
+  'MARB'=>'Publication des bans de mariage',
+  'MARC'=>'Contrat de mariage',
+  'MARL'=>'Autorisation de mariage',
+  'MARS'=>'Contrat avant mariage',
+  'MARR'=>'Mariage',
+  'EVEN'=>'Evènement'
+);
+array_multisort($g4p_tag_fevents);
+
 $g4p_date_modif=array(
   '/EST /i'=>'estimée ',
   '/ABT /i'=>'environ ',

@@ -27,56 +27,71 @@ $g4p_months=array(
 'JUL',	'AUG',	'SEP',	'OCT',	'NOV',	'DEC'
 );
 
-if(empty($_REQUEST['id_event']))
-    die('Erreur de paramètre');
+$famille_id=-1;
+$indi_id=-1;
 
+
+if(!empty($_REQUEST['id_event']))
+{    
+    # Modification of an existing event
+    $sql="SELECT genea_events_details.*, rel_indi_events.indi_id as indi_id_e, 
+        rel_indi_events.events_tag as events_tag_e, 
+        rel_indi_attributes.indi_id as indi_id_a, familles_id, 
+        rel_familles_events.events_tag as events_tag_f, events_details_timestamp, 
+        rel_indi_events.timestamp as timestamp_e, rel_indi_attributes.timestamp as timestamp_a,
+        rel_familles_events.timestamp as timestamp_f FROM genea_events_details
+        LEFT OUTER JOIN rel_indi_events USING (events_details_id)
+        LEFT OUTER JOIN rel_indi_attributes USING (events_details_id)
+        LEFT OUTER JOIN rel_familles_events USING (events_details_id)
+        WHERE events_details_id = ".(int)$_REQUEST['id_event'];
+
+    $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+    $g4p_event=$g4p_mysqli->g4p_result($g4p_result_req);
+    if(empty($g4p_event))
+        die('No event with id '.(int)$_REQUEST['id_event']);
+
+    // check if result is unique
+    if(count($g4p_event)>1)
+    {
+        var_dump($g4p_event);
+        die('Integrity error, more than results');
+    }
+        
+    $g4p_event=$g4p_event[0];
     
-$sql="SELECT genea_events_details.*, rel_indi_events.indi_id as indi_id_e, 
-	rel_indi_events.events_tag as events_tag_e, 
-	rel_indi_attributes.indi_id as indi_id_a, familles_id, 
-	rel_familles_events.events_tag as events_tag_f, events_details_timestamp, 
-	rel_indi_events.timestamp as timestamp_e, rel_indi_attributes.timestamp as timestamp_a,
-	rel_familles_events.timestamp as timestamp_f FROM genea_events_details
-	LEFT OUTER JOIN rel_indi_events USING (events_details_id)
-	LEFT OUTER JOIN rel_indi_attributes USING (events_details_id)
-	LEFT OUTER JOIN rel_familles_events USING (events_details_id)
-	WHERE events_details_id = ".(int)$_REQUEST['id_event'];
-
-$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-$g4p_event=$g4p_mysqli->g4p_result($g4p_result_req);
-if(empty($g4p_event))
-    die('No event with id '.(int)$_REQUEST['id_event']);
-
-// check if result is unique
-if(count($g4p_event)>1)
-{
-    var_dump($g4p_event);
-    die('Integrity error, more than results');
-}
-    
-$g4p_event=$g4p_event[0];
-
-// check if event only present in one table
-if(!empty($g4p_event['indi_id_e']) and empty($g4p_event['indi_id_a']) and empty($g4p_event['familles_id']))
-{
-	$type_event='indi_e';
-	$indi_id=$g4p_event['indi_id_e'];
-}
-else if(empty($g4p_event['indi_id_e']) and !empty($g4p_event['indi_id_a']) and empty($g4p_event['familles_id']))
-{
-	$type_event='indi_a';
-	$indi_id=$g4p_event['indi_id_a'];
-}
-else if(empty($g4p_event['indi_id_e']) and empty($g4p_event['indi_id_a']) and !empty($g4p_event['familles_id']))
-{
-	$type_event='famille';
-	$famille_id=$g4p_event['familles_id'];
+    // check if event only present in one table
+    if(!empty($g4p_event['indi_id_e']) and empty($g4p_event['indi_id_a']) and empty($g4p_event['familles_id']))
+    {
+        $type_event='indi_e';
+        $indi_id=$g4p_event['indi_id_e'];
+    }
+    else if(empty($g4p_event['indi_id_e']) and !empty($g4p_event['indi_id_a']) and empty($g4p_event['familles_id']))
+    {
+        $type_event='indi_a';
+        $indi_id=$g4p_event['indi_id_a'];
+    }
+    else if(empty($g4p_event['indi_id_e']) and empty($g4p_event['indi_id_a']) and !empty($g4p_event['familles_id']))
+    {
+        $type_event='famille';
+        $famille_id=$g4p_event['familles_id'];
+    }
+    else
+        die('event not linked to anything or linked more than once');
 }
 else
-	die('event not linked to anything or linked more than once');
-
-If(!empty($indi_id))
-	$g4p_indi=g4p_load_indi_infos($indi_id);
+{
+    #creating a new event
+    if(!empty($_REQUEST['id_pers']))
+    {
+        $indi_id=(int)$_REQUEST['id_pers'];
+        $type_event='indi_e';
+    }
+    if(!empty($_REQUEST['id_famille']))
+    {
+        $famille_id=(int)$_REQUEST['id_famille'];
+        $type_event='famille';        
+    }
+}
 	
 if($type_event=='indi_e')//évènement individuel
 {
@@ -85,8 +100,11 @@ if($type_event=='indi_e')//évènement individuel
     reset($g4p_tag_ievents);
     while(list($g4p_key, $g4p_value)=each($g4p_tag_ievents))
     {
-      $g4p_selected=($g4p_event['events_tag_e']==$g4p_key)?('selected="SELECTED"'):('');
-      $select_type_event.='<option value="'.$g4p_key.'" '.$g4p_selected.'>'.$g4p_value.'</option>';
+        if(empty($g4p_event['events_tag_e']))
+            $g4p_selected='';
+        else
+            $g4p_selected=($g4p_event['events_tag_e']==$g4p_key)?('selected="SELECTED"'):('');
+        $select_type_event.='<option value="'.$g4p_key.'" '.$g4p_selected.'>'.$g4p_value.'</option>';
     }
     $select_type_event.='</select>';
 }
@@ -97,8 +115,11 @@ elseif($type_event=='famille')//évènement familiale
     reset($g4p_tag_fevents);
     while(list($g4p_key, $g4p_value)=each($g4p_tag_fevents))
     {
-      $g4p_selected=($g4p_event['events_tag_f']==$g4p_key)?('selected="SELECTED"'):('');
-      $select_type_event.='<option value="'.$g4p_key.'" '.$g4p_selected.'>'.$g4p_value.'</option>';
+        if(empty($g4p_event['events_tag_f']))
+            $g4p_selected='';
+        else
+            $g4p_selected=($g4p_event['events_tag_f']==$g4p_key)?('selected="SELECTED"'):('');
+        $select_type_event.='<option value="'.$g4p_key.'" '.$g4p_selected.'>'.$g4p_value.'</option>';
     }
     $select_type_event.='</select>';
 }
@@ -106,10 +127,15 @@ elseif($type_event=='famille')//évènement familiale
 if(!isset($_POST['g4p_exec']))
 {
     $g4p_date=new g4p_date('');
-    $g4p_date->set_gedcomdate($g4p_event['events_details_gedcom_date']);
-    //$g4p_date->set_gedcomdate('FROM @#DFRENCH R@ 12 DEC 1898');
-    $g4p_date->g4p_gedom2date();
-
+    if(!empty($g4p_event['events_details_gedcom_date']))
+    {
+        $g4p_date->set_gedcomdate($g4p_event['events_details_gedcom_date']);
+        //$g4p_date->set_gedcomdate('FROM @#DFRENCH R@ 12 DEC 1898');
+        $g4p_date->g4p_gedom2date();
+    }
+    else
+        $g4p_date->gedcom_date='';
+    
 	$g4p_javascript='<script language="JavaScript" type="text/javascript">
 	function openCity(evt, cityName) {
     // Declare all variables
@@ -149,20 +175,28 @@ if(!isset($_POST['g4p_exec']))
     if(!empty($_SESSION['errormsg']))
 		echo '<div class="error">'.$_SESSION['errormsg'].'</div>';
 	$_SESSION['message']='';
-    echo '<div class="box_title"><h2>Modification de l\'évènement</h2></div>'."\n";
-    if(!empty($indi_id))
+    
+    if(!empty($_REQUEST['id_pers']))
+        echo '<div class="box_title"><h2>Ajout d\'un nouvel évènement individuel</h2></div>'."\n";
+    else if(!empty($_REQUEST['id_famille']))
+        echo '<div class="box_title"><h2>Ajout d\'un nouvel évènement familial</h2></div>'."\n";
+    else
+        echo '<div class="box_title"><h2>Modification de l\'évènement</h2></div>'."\n";
+    
+    if($indi_id!=-1)
     {
 		echo '<div class="menu_interne">';
-		echo '<a href="'.g4p_make_url('','fiche_individuelle.php','id_pers='.$_REQUEST['id_event'],'fiche-'.$g4p_indi->base.'-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id).'" class="retour">',$g4p_langue['retour'],'</a>';
+		echo '<a href="'.g4p_make_url('','fiche_individuelle.php','id_pers='.$indi_id,'').'" class="retour">',$g4p_langue['retour'],'</a>';
 	}
-	else
+	else if($famille_id!=-1)
 	{
 		echo '<div class="menu_interne">';
 		echo '<a href="'.g4p_make_url('','modification_famille.php','id_famille='.$famille_id,'').'" class="retour">',$g4p_langue['retour'],'</a>';
 	}
-	echo '<a href="',g4p_make_url('','new_note.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
-	<a href="',g4p_make_url('','new_source.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 
-	<a href="',g4p_make_url('','new_media.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> ';
+    if(!empty($_REQUEST['id_event']))
+        echo '<a href="',g4p_make_url('','new_note.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
+            <a href="',g4p_make_url('','new_source.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 
+            <a href="',g4p_make_url('','new_media.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> ';
 	echo '</div>';
 
 	echo '<form class="formulaire" method="post" action="'.$_SERVER['PHP_SELF'].'" id="mod_event">';
@@ -174,13 +208,13 @@ if(!isset($_POST['g4p_exec']))
     echo '</dl>';
 
 
-echo '
-<div class="tab">
-  <button type="button" class="tablinks" onclick="openCity(event, \'Date\')" id="defaultOpen">Date</button>
-  <button type="button" class="tablinks" onclick="openCity(event, \'Gedcom\')">Format Gedcom</button>
-</div>';
+    echo '
+        <div class="tab">
+            <button type="button" class="tablinks" onclick="openCity(event, \'Date\')" id="defaultOpen">Date</button>
+            <button type="button" class="tablinks" onclick="openCity(event, \'Gedcom\')">Format Gedcom</button>
+        </div>';
 
-echo '<div id="Date" class="tabcontent">';
+    echo '<div id="Date" class="tabcontent">';
     echo '<ul>';
     echo '<li>';
     if(!empty($g4p_date->date1))
@@ -216,316 +250,444 @@ echo '<div id="Date" class="tabcontent">';
     }
 
     echo '</ul>';
-echo '</div>';
 
-echo '
-<div id="Gedcom" class="tabcontent">
-        <input type="text" name="g4p_gedcom_date" style="width:70ex;" value="'.$g4p_date->gedcom_date.'" />
-</div>';
+    echo '</div>';
+
+    echo '
+    <div id="Gedcom" class="tabcontent">
+            <input type="text" name="g4p_gedcom_date" style="width:70ex;" value="'.$g4p_date->gedcom_date.'" />
+    </div>';
+
+    # Place
+    $sql="SELECT genea_place.* FROM genea_place
+        ORDER BY place_lieudit, place_ville";
+    $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+    $g4p_place=$g4p_mysqli->g4p_result($g4p_result_req);
 
     echo '<dl class="mod_event">';
+    echo '<dt>Lieu de l\'évènement : </dt>';
+    echo '<dd></dd><select name="g4p_place">';
+    echo '<option value="">Choisissez</option>';
+    reset($g4p_place);
+    while(list($g4p_key, $g4p_value)=each($g4p_place))
+    {
+        $g4p_value_txt=$g4p_value['place_lieudit'].' '.$g4p_value['place_ville'].' '.$g4p_value['place_cp'].' '.$g4p_value['place_pays'];
+        $g4p_selected='';
+        if(isset($g4p_event) and !empty((int)$g4p_event['place_id']))
+        {
+            if((int)$g4p_event['place_id']==$g4p_value['place_id'])
+                $g4p_selected='selected="SELECTED"';
+        }
+        echo '<option value="'.$g4p_value['place_id'].'" '.$g4p_selected.'>'.$g4p_value_txt."</option>\n";
+    }
+    echo '</select></dd></dl>';
+    
+    echo '<dl class="mod_event">';
     echo '<input type="hidden" name="g4p_exec" value="" />';
-    echo '<input type="hidden" name="events_details_timestamp" value="'.$g4p_event['events_details_timestamp'].'" />';
-    echo '<input type="hidden" name="timestamp_e" value="'.$g4p_event['timestamp_e'].'" />';
-    echo '<input type="hidden" name="timestamp_a" value="'.$g4p_event['timestamp_a'].'" />';
-    echo '<input type="hidden" name="timestamp_f" value="'.$g4p_event['timestamp_f'].'" />';    
+    if(!empty($g4p_event))
+    {
+        echo '<input type="hidden" name="events_details_timestamp" value="'.$g4p_event['events_details_timestamp'].'" />';
+        echo '<input type="hidden" name="timestamp_e" value="'.$g4p_event['timestamp_e'].'" />';
+        echo '<input type="hidden" name="timestamp_a" value="'.$g4p_event['timestamp_a'].'" />';
+        echo '<input type="hidden" name="timestamp_f" value="'.$g4p_event['timestamp_f'].'" />';    
+        echo '<input type="hidden" name="id_event" value="'.$_REQUEST['id_event'].'" />';
+    }
+    if(!empty($_REQUEST['id_pers']))
+        echo '<input type="hidden" name="id_pers" value="'.$_REQUEST['id_pers'].'" />';
+    if(!empty($_REQUEST['id_famille']))
+        echo '<input type="hidden" name="id_famille" value="'.$_REQUEST['id_famille'].'" />';
     echo '<input type="hidden" id="date_type" name="date_type" value="date" />';
-    echo '<input type="hidden" name="id_event" value="'.$_REQUEST['id_event'].'" />';
     echo '<input type="submit" value="Valider" />';
     echo '</dl>';
 
     echo '</div>';
     require_once($g4p_chemin.'pied_de_page.php');
 }
-else
+else # form submitted, saving data
 {
-	if((int)$_POST['id_event']===0)
-		die("Wrong id event");
+    $sql="START TRANSACTION";
+    $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+    if(empty($g4p_result_req))
+    {
+        $sql="ROLLBACK";
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        $_SESSION['errormsg']="Error while saving modification: ".$sql;
+        header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+    }
 
-	$sql="START TRANSACTION";
-	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-	if(empty($g4p_result_req))
-	{
-		$sql="ROLLBACK";
-		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-		$_SESSION['errormsg']="Error while saving modification: ".$sql;
-		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-	}
-		
-	$sql="SELECT events_details_timestamp FROM genea_events_details FOR UPDATE";
-	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-	if(empty($g4p_result_req))
-	{
-		$sql="ROLLBACK";
-		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-		$_SESSION['errormsg']="Error while saving modification: ".$sql;
-		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-	}
-	
-	$sql="SELECT timestamp FROM rel_indi_events FOR UPDATE";
-	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-	if(empty($g4p_result_req))
-	{
-		$sql="ROLLBACK";
-		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-		$_SESSION['errormsg']="Error while saving modification: ".$sql;
-		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-	}
+	if(!isset($_POST['id_event']))
+    {
+        if(!empty($_POST['id_pers']))
+        {
+            $sql="SELECT base FROM genea_individuals WHERE indi_id=".(int)$_POST['id_pers'];
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            $g4p_result=$g4p_mysqli->g4p_result($g4p_result_req);
+            $base=$g4p_result[0]['base'];
+            
+            $sql="INSERT INTO genea_events_details (base) VALUES (".$base.")";
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            if(empty($g4p_result_req))
+            {
+                $sql="ROLLBACK";
+                $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+                $_SESSION['errormsg']="Error while saving modification: ".$sql;
+                header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_pers='.$_POST['id_pers'],0,0));
+            }
+            $_POST['id_event']=$g4p_mysqli->insert_id;
+            $sql="INSERT INTO rel_indi_events (events_details_id, indi_id) VALUES (".$_POST['id_event'].",".(int)$_POST['id_pers'].")";
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            if(empty($g4p_result_req))
+            {
+                $sql="ROLLBACK";
+                $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+                $_SESSION['errormsg']="Error while saving modification: ".$sql;
+                header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_pers='.$_POST['id_pers'],0,0));
+            }
+        }
+        if(!empty($_POST['id_famille']))
+        {
+            $sql="SELECT base FROM genea_familles WHERE familles_id=".(int)$_POST['id_famille'];
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            $g4p_result=$g4p_mysqli->g4p_result($g4p_result_req);
+            $base=$g4p_result[0]['base'];
+            
+            $sql="INSERT INTO genea_events_details (base) VALUES (".$base.")";
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            if(empty($g4p_result_req))
+            {
+                $sql="ROLLBACK";
+                $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+                $_SESSION['errormsg']="Error while saving modification: ".$sql;
+                header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_pers='.$_POST['id_pers'],0,0));
+            }
+            $_POST['id_event']=$g4p_mysqli->insert_id;
+            $sql="INSERT INTO rel_familles_events (events_details_id, familles_id) VALUES (".$_POST['id_event'].",".(int)$_POST['id_famille'].")";
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            if(empty($g4p_result_req))
+            {
+                $sql="ROLLBACK";
+                $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+                $_SESSION['errormsg']="Error while saving modification: ".$sql;
+                header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_pers='.$_POST['id_pers'],0,0));
+            }
+        }
+    }
+        
+        
+    $sql="SELECT events_details_timestamp FROM genea_events_details WHERE events_details_id=".(int)$_POST['id_event']." FOR UPDATE";
+    $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+    if(empty($g4p_result_req))
+    {
+        $sql="ROLLBACK";
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        $_SESSION['errormsg']="Error while saving modification: ".$sql;
+        header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+    }
+    
+    $sql="SELECT timestamp FROM rel_indi_events WHERE events_details_id=".(int)$_POST['id_event']." FOR UPDATE";
+    $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+    if(empty($g4p_result_req))
+    {
+        $sql="ROLLBACK";
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        $_SESSION['errormsg']="Error while saving modification: ".$sql;
+        header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+    }
 
-	$sql="SELECT timestamp FROM rel_indi_attributes FOR UPDATE";
-	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-	if(empty($g4p_result_req))
-	{
-		$sql="ROLLBACK";
-		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-		$_SESSION['errormsg']="Error while saving modification: ".$sql;
-		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-	}
+    $sql="SELECT timestamp FROM rel_indi_attributes WHERE events_details_id=".(int)$_POST['id_event']." FOR UPDATE";
+    $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+    if(empty($g4p_result_req))
+    {
+        $sql="ROLLBACK";
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        $_SESSION['errormsg']="Error while saving modification: ".$sql;
+        header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+    }
 
-	$sql="SELECT timestamp FROM rel_familles_events FOR UPDATE";
-	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-	if(empty($g4p_result_req))
-	{
-		$sql="ROLLBACK";
-		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-		$_SESSION['errormsg']="Error while saving modification: ".$sql;
-		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-	}
+    $sql="SELECT timestamp FROM rel_familles_events FOR UPDATE";
+    $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+    if(empty($g4p_result_req))
+    {
+        $sql="ROLLBACK";
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        $_SESSION['errormsg']="Error while saving modification: ".$sql;
+        header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+    }
 
-	//check timestamp has not changed
+    //check timestamp has not changed
+    // tobe done
+    
+    
+    if($type_event=='indi_e')
+    {
+        $event_type='';
+        foreach(array_keys($g4p_tag_ievents) as $value)
+        {
+            if($value==$_POST['g4p_type'])
+            {
+                $event_type=$value;
+                break;
+            }
+        }
 
-	if($type_event=='indi_e')
-	{
-		$event_type='';
-		foreach(array_keys($g4p_tag_ievents) as $value)
-		{
-			if($value==$_POST['g4p_type'])
-				$event_type=$value;
-				break;
-		}
+        if($event_type!='')
+        {
+            $sql="UPDATE rel_indi_events SET events_tag='".$event_type."' WHERE events_details_id=".(int)$_POST['id_event'];
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            if(empty($g4p_result_req))
+            {
+                $sql="ROLLBACK";
+                $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+                $_SESSION['errormsg']="Error while saving modification: ".$sql;
+                header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+            }
+        }
+        
+        if(isset($_POST['attestation']))
+        {
+            $sql="UPDATE rel_indi_events SET events_attestation='Y' WHERE events_details_id=".(int)$_POST['id_event'];
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            if(empty($g4p_result_req))
+            {
+                $sql="ROLLBACK";
+                $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+                $_SESSION['errormsg']="Error while saving modification: ".$sql;
+                header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+            }
+        }
+        else
+        {
+            $sql="UPDATE rel_indi_events SET events_attestation=NULL WHERE events_details_id=".(int)$_POST['id_event'];
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            if(empty($g4p_result_req))
+            {
+                $sql="ROLLBACK";
+                $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+                $_SESSION['errormsg']="Error while saving modification: ".$sql;
+                header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+            }
+        }
 
-		if($event_type!='')
-		{
-			$sql="UPDATE rel_indi_events SET events_tag='".$event_type."' WHERE events_details_id=".(int)$_POST['id_event'];
-			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-			if(empty($g4p_result_req))
-			{
-				$sql="ROLLBACK";
-				$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-				$_SESSION['errormsg']="Error while saving modification: ".$sql;
-				header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-			}
-		}
-		
-		if(isset($_POST['attestation']))
-		{
-			$sql="UPDATE rel_indi_events SET events_attestation='Y' WHERE events_details_id=".(int)$_POST['id_event'];
-			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-			if(empty($g4p_result_req))
-			{
-				$sql="ROLLBACK";
-				$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-				$_SESSION['errormsg']="Error while saving modification: ".$sql;
-				header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-			}
-		}
-		else
-		{
-			$sql="UPDATE rel_indi_events SET events_attestation=NULL WHERE events_details_id=".(int)$_POST['id_event'];
-			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-			if(empty($g4p_result_req))
-			{
-				$sql="ROLLBACK";
-				$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-				$_SESSION['errormsg']="Error while saving modification: ".$sql;
-				header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-			}
-		}
+        
+    }
+    else if($type_event=='famille')
+    {
+        $event_type='';
+        foreach(array_keys($g4p_tag_fevents) as $value)
+        {
+            if($value==$_POST['g4p_type'])
+            {
+                $event_type=$value;
+                break;
+            }
+        }
 
-		
-	}
-	else if($type_event=='indi_a')
-	{
-		$event_type='';
-		foreach(array_keys($g4p_tag_iattributs) as $value)
-		{
-			if($value==$_POST['g4p_type'])
-				$event_type=$value;
-				break;
-		}
+        if($event_type!='')
+        {
+            $sql="UPDATE rel_familles_events SET events_tag='".$event_type."' WHERE events_details_id=".(int)$_POST['id_event'];
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            if(empty($g4p_result_req))
+            {
+                $sql="ROLLBACK";
+                $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+                $_SESSION['errormsg']="Error while saving modification: ".$sql;
+                header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+            }
+        }
+        
+        if(isset($_POST['attestation']))
+        {
+            $sql="UPDATE rel_familles_events SET events_attestation='Y' WHERE events_details_id=".(int)$_POST['id_event'];
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            if(empty($g4p_result_req))
+            {
+                $sql="ROLLBACK";
+                $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+                $_SESSION['errormsg']="Error while saving modification: ".$sql;
+                header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+            }
+        }
+        else
+        {
+            $sql="UPDATE rel_familles_events SET events_attestation=NULL WHERE events_details_id=".(int)$_POST['id_event'];
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            if(empty($g4p_result_req))
+            {
+                $sql="ROLLBACK";
+                $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+                $_SESSION['errormsg']="Error while saving modification: ".$sql;
+                header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+            }
+        }        
+    }
 
-		if($event_type!='')
-		{
-			$sql="UPDATE rel_indi_attributs SET events_tag='".$event_type."' WHERE events_details_id=".(int)$_POST['id_event'];
-			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-			if(empty($g4p_result_req))
-			{
-				$sql="ROLLBACK";
-				$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-				$_SESSION['errormsg']="Error while saving modification: ".$sql;
-				header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-			}
-		}
-		
-		// to be done
-		
-	}
+    //events_details_descriptor
+    if(isset($_POST['events_details_descriptor']))
+    {
+        $sql="UPDATE genea_events_details SET events_details_descriptor='".$g4p_mysqli->escape_string(trim($_POST['events_details_descriptor']))."' WHERE events_details_id=".(int)$_POST['id_event'];
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        if(empty($g4p_result_req))
+        {
+            $sql="ROLLBACK";
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            $_SESSION['errormsg']="Error while saving modification: ".$sql;
+            header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+        }
+    }
+    
+    //age
+    $sql="UPDATE genea_events_details SET events_details_age='".$g4p_mysqli->escape_string(trim($_POST['age']))."' WHERE events_details_id=".(int)$_POST['id_event'];
+    $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+    if(empty($g4p_result_req))
+    {
+        $sql="ROLLBACK";
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        $_SESSION['errormsg']="Error while saving modification: ".$sql;
+        header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+    }
 
-	//events_details_descriptor
-	if(isset($_POST['events_details_descriptor']))
-	{
-		$sql="UPDATE genea_events_details SET events_details_descriptor='".$g4p_mysqli->escape_string(trim($_POST['events_details_descriptor']))."' WHERE events_details_id=".(int)$_POST['id_event'];
-		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-		if(empty($g4p_result_req))
-		{
-			$sql="ROLLBACK";
-			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-			$_SESSION['errormsg']="Error while saving modification: ".$sql;
-			header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-		}
-	}
-	
-	//age
-	$sql="UPDATE genea_events_details SET events_details_age='".$g4p_mysqli->escape_string(trim($_POST['age']))."' WHERE events_details_id=".(int)$_POST['id_event'];
-	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-	if(empty($g4p_result_req))
-	{
-		$sql="ROLLBACK";
-		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-		$_SESSION['errormsg']="Error while saving modification: ".$sql;
-		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-	}
+    //cause
+    $sql="UPDATE genea_events_details SET events_details_cause='".$g4p_mysqli->escape_string(trim($_POST['cause']))."' WHERE events_details_id=".(int)$_POST['id_event'];
+    $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+    if(empty($g4p_result_req))
+    {
+        $sql="ROLLBACK";
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        $_SESSION['errormsg']="Error while saving modification: ".$sql;
+        header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+    }
 
-	//cause
-	$sql="UPDATE genea_events_details SET events_details_cause='".$g4p_mysqli->escape_string(trim($_POST['cause']))."' WHERE events_details_id=".(int)$_POST['id_event'];
-	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-	if(empty($g4p_result_req))
-	{
-		$sql="ROLLBACK";
-		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-		$_SESSION['errormsg']="Error while saving modification: ".$sql;
-		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-	}
+    if($_POST['date_type']=='gedcom')
+    {
+        $sql="UPDATE genea_events_details SET events_details_gedcom_date='".$g4p_mysqli->escape_string(trim($_POST['events_details_gedcom_date']))."' WHERE events_details_id=".(int)$_POST['id_event'];
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        if(empty($g4p_result_req))
+        {
+            $sql="ROLLBACK";
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            $_SESSION['errormsg']="Error while saving modification: ".$sql;
+            header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+        }
+    }
+    else
+    {		
+        $date='';
+        if(!empty($_POST['g4p_phrase']))
+            $date.='INT ';
+            
+        $mod=array('', '');
+        for($i=0; $i<2; $i++)
+        {
+            if(!empty($_POST['date_mod'][$i]))
+            {
+                //checking value
+                $mod[$i]='';
+                foreach($g4p_date_modif as $value)
+                {
+                    if($_POST['date_mod'][$i]==$value)
+                    {
+                        $mod[$i]=$value.' ';
+                        break;
+                    }
+                }	
+                $date.=$mod[$i];
+            }
+            
+            if(!empty($_POST['date_calendrier'][$i]))
+            {
+                //checking value
+                $checked='';
+                foreach($g4p_liste_calendrier as $value)
+                {
+                    if($_POST['date_calendrier'][$i]==$value and $_POST['date_calendrier'][$i]!='@#DGREGORIAN@' )
+                    {
+                        $checked=$value.' ';
+                        break;
+                    }
+                }
+                $date.=$checked;
+            }
+            
+            if(!empty($_POST['date_jour'][$i]))
+            {
+                //checking value
+                if((int)$_POST['date_jour'][$i]!==0)
+                    $date.=strval((int)$_POST['date_jour'][$i]).' ';
+            }
 
-	if($_POST['date_type']=='gedcom')
-	{
-		$sql="UPDATE genea_events_details SET events_details_gedcom_date='".$g4p_mysqli->escape_string(trim($_POST['events_details_gedcom_date']))."' WHERE events_details_id=".(int)$_POST['id_event'];
-		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-		if(empty($g4p_result_req))
-		{
-			$sql="ROLLBACK";
-			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-			$_SESSION['errormsg']="Error while saving modification: ".$sql;
-			header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-		}
-	}
-	else
-	{		
-		$date='';
-		if(!empty($_POST['g4p_phrase']))
-			$date.='INT ';
-			
-		$mod=array('', '');
-		for($i=0; $i<2; $i++)
-		{
-			if(!empty($_POST['date_mod'][$i]))
-			{
-				//checking value
-				$mod[$i]='';
-				foreach($g4p_date_modif as $value)
-				{
-					if($_POST['date_mod'][$i]==$value)
-					{
-						$mod[$i]=$value.' ';
-						break;
-					}
-				}	
-				$date.=$mod[$i];
-			}
-			
-			if(!empty($_POST['date_calendrier'][$i]))
-			{
-				//checking value
-				$checked='';
-				foreach($g4p_liste_calendrier as $value)
-				{
-					if($_POST['date_calendrier'][$i]==$value and $_POST['date_calendrier'][$i]!='@#DGREGORIAN@' )
-					{
-						$checked=$value.' ';
-						break;
-					}
-				}
-				$date.=$checked;
-			}
-			
-			if(!empty($_POST['date_jour'][$i]))
-			{
-				//checking value
-				if((int)$_POST['date_jour'][$i]!==0)
-					$date.=strval((int)$_POST['date_jour'][$i]).' ';
-			}
+            if(!empty($_POST['date_mois'][$i]))
+            {
+                //checking value
+                $checked='';
+                foreach($g4p_months as $value)
+                {
+                    if($_POST['date_mois'][$i]==$value)
+                    {
+                        $checked=$value.' ';
+                        break;
+                    }
+                }
+                $date.=$checked;
+            }
 
-			if(!empty($_POST['date_mois'][$i]))
-			{
-				//checking value
-				$checked='';
-				foreach($g4p_months as $value)
-				{
-					if($_POST['date_mois'][$i]==$value)
-					{
-						$checked=$value.' ';
-						break;
-					}
-				}
-				$date.=$checked;
-			}
+            if(!empty($_POST['date_annee'][$i]))
+            {
+                //checking value
+                if((int)$_POST['date_annee'][$i]!==0)
+                    $date.=strval((int)$_POST['date_annee'][$i]).' ';
+            }
+        }
 
-			if(!empty($_POST['date_annee'][$i]))
-			{
-				//checking value
-				if((int)$_POST['date_annee'][$i]!==0)
-					$date.=strval((int)$_POST['date_annee'][$i]).' ';
-			}
-		}
+        //check date modifier
+        if(trim($mod[0])=='FROM' and trim($mod[1])!='TO')
+            die("wrong combination, FROM must be followed by TO");
+        if(trim($mod[0])=='BET' and trim($mod[1])!='AND')
+            die("wrong combination, BET must be followed by AND");
+        
+        if(!empty($_POST['g4p_phrase']))
+            $date=$date.'('.$_POST['g4p_phrase'].')';
+            
+        $sql="UPDATE genea_events_details SET events_details_gedcom_date='".$g4p_mysqli->escape_string($date)."' WHERE events_details_id=".(int)$_POST['id_event'];
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        if(empty($g4p_result_req))
+        {
+            $sql="ROLLBACK";
+            $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+            $_SESSION['errormsg']="Error while saving modification: ".$sql;
+            header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+        }
+        
+    }
+    $sql="COMMIT";
+    $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+    if(empty($g4p_result_req))
+    {
+        $sql="ROLLBACK";
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        $_SESSION['errormsg']="Error while saving modification: ".$sql;
+        header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
+    }
+    
+    if(isset($_POST['id_pers']))
+        g4p_destroy_cache($_POST['id_pers']);
+        
+    if(isset($g4p_event['indi_id_e']))
+        g4p_destroy_cache($g4p_event['indi_id_e']);
+        
+    if(isset($g4p_event['indi_id_a']))
+        g4p_destroy_cache($g4p_event['indi_id_a']);
 
-		//check date modifier
-		if(trim($mod[0])=='FROM' and trim($mod[1])!='TO')
-			die("wrong combination, FROM must be followed by TO");
-		if(trim($mod[0])=='BET' and trim($mod[1])!='AND')
-			die("wrong combination, BET must be followed by AND");
-		
-		if(!empty($_POST['g4p_phrase']))
-			$date=$date.'('.$_POST['g4p_phrase'].')';
-			
-		$sql="UPDATE genea_events_details SET events_details_gedcom_date='".$g4p_mysqli->escape_string($date)."' WHERE events_details_id=".(int)$_POST['id_event'];
-		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-		if(empty($g4p_result_req))
-		{
-			$sql="ROLLBACK";
-			$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-			$_SESSION['errormsg']="Error while saving modification: ".$sql;
-			header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-		}
-		
-	}
-	$sql="COMMIT";
-	$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-	if(empty($g4p_result_req))
-	{
-		$sql="ROLLBACK";
-		$g4p_result_req=$g4p_mysqli->g4p_query($sql);
-		$_SESSION['errormsg']="Error while saving modification: ".$sql;
-		header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
-	}
-
-	if($type_event=='indi_e')
-	{
-		$g4p_indi=g4p_destroy_cache($g4p_event['indi_id_e']);
-		foreach($g4p_indi->familles as $g4p_a_famille)
-			g4p_destroy_cache($g4p_a_famille->conjoint->indi_id);
-	}
-	
-    $_SESSION['message']='Modification enregistre';
+    if(isset($_POST['id_famille']))
+    {
+        $sql="SELECT familles_wife, familles_husb FROM  genea_familles WHERE familles_id=".(int)$_POST['id_famille'];
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        $g4p_result=$g4p_mysqli->g4p_result($g4p_result_req);        
+        g4p_destroy_cache($g4p_result[0]['familles_wife']);
+        g4p_destroy_cache($g4p_result[0]['familles_husb']);
+    }
+        
+    
+    $_SESSION['message']='Modification enregistrée';
     header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
 
 }

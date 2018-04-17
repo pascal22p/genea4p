@@ -831,6 +831,7 @@ array_multisort($g4p_tag_def);
 
 $g4p_tag_ievents=array(
   'ADOP'=>'Adoption',
+  'BAPL'=>'Baptème mormons',
   'BAPM'=>'Baptème',
   'BIRT'=>'Naissance',
   'BURI'=>'Inhumation',

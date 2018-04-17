@@ -116,17 +116,47 @@ else
     $_POST['mari']=explode(' ',$_POST['mari']);
     $_POST['mari']=(int)$_POST['mari'][0];
     
+    
     if(!$_POST['femme'])
+    {
         $_POST['femme']='NULL';
+        $base_femme=-1;
+    }
+    else
+    {
+        $sql="SELECT base FROM genea_individuals WHERE indi_id=".$_POST['femme'];
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        $g4p_result=$g4p_mysqli->g4p_result($g4p_result_req);
+        $base_femme=$g4p_result[0]['base'];
+    }
+        
     if(!$_POST['mari'])
+    {
         $_POST['mari']='NULL';
+        $base_mari==-1;
+    }
+    else
+    {
+        $sql="SELECT base FROM genea_individuals WHERE indi_id=".$_POST['mari'];
+        $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+        $g4p_result=$g4p_mysqli->g4p_result($g4p_result_req);
+        $base_mari=$g4p_result[0]['base'];
+    }
+
     if($_POST['mari']=='NULL' and $_POST['femme']=='NULL')
     {
         echo 'Veuillez remplir au moins un des champs';
         exit;
     }
+    
+    if($base_mari==-1)
+        $base=$base_femme;
+    else if($base_feme==-1)
+        $base=$base_mari;
+    else
+        $base=$base_mari;
 
-    $sql="INSERT INTO genea_familles (familles_husb , familles_wife) VALUES (".$_POST['mari'].", ".$_POST['femme'].")";
+    $sql="INSERT INTO genea_familles (base, familles_husb , familles_wife) VALUES (".$base.",".$_POST['mari'].", ".$_POST['femme'].")";
     if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message']='Requète éffectuée avec succès';
     else

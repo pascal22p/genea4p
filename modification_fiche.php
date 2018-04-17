@@ -74,16 +74,7 @@ if(empty($g4p_indi))
 if(!$_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     die('Unsufficient right to edit the file');
 
-$g4p_javascript='<script src="javascript/jquery/jquery-1.3.1.min.js"></script>
-  <script type="text/javascript" src="javascript/jquery/lib/jquery.bgiframe.min.js"></script>
-  <script type="text/javascript" src="javascript/jquery/lib/jquery.dimensions.js"></script>
-  <script type="text/javascript" src="javascript/jquery/jquery.autocomplete.min.js"></script>
-  <script>
-  $(document).ready(function(){
-    $("#alia").autocomplete(\'ajax/autocomplete.php\', {max:40});
-  });
-  </script>
-';
+$g4p_javascript='';
 
 require_once($g4p_chemin.'entete.php');
 echo '<div class="box_title"><h2>'.$g4p_indi->prenom,' ',$g4p_indi->nom.'</h2></div>'."\n";
@@ -134,7 +125,7 @@ if(!empty($g4p_indi->alias))
 //evenements individuels
 echo '<div class="box">';
 echo '<div class="box_title">Évènements</div>';        
-echo '<a class="admin" href="',g4p_make_url('admin','index.php','g4p_opt=ajout_event&amp;g4p_id=i|'.$g4p_indi->indi_id),'">',$g4p_langue['a_index_ajout_ievent'],'</a>';
+echo '<a class="admin" href="',g4p_make_url('','modification_event.php','id_pers='.(int)$g4p_indi->indi_id, ''),'">',$g4p_langue['a_index_ajout_ievent'],'</a>';
 if(!empty($g4p_indi->events))
 {               
     echo '<dl class="evenements">';
@@ -174,7 +165,7 @@ echo '</div>';
 //attributs individuels
 echo '<div class="box">';
 echo '<div class="box_title">Attributs</div>';        
-echo '<a class="admin" href="',g4p_make_url('admin','index.php','g4p_opt=ajout_event&amp;g4p_id=i|'.$g4p_indi->indi_id),'">Ajouter un nouvel attribut</a>';
+echo '<a class="admin" href="',g4p_make_url('admin','modification_event.php','id_pers='.(int)$g4p_indi->indi_id),'">Ajouter un nouvel attribut</a>';
 if(!empty($g4p_indi->attributes))
 {
     echo '<dl class="evenements">';
