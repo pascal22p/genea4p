@@ -62,12 +62,12 @@ if($g4p_langue['entete_charset']!='UTF-8')
 ob_end_flush();    
 
 
-echo '<div style="width:auto;height:500px;overflow:auto;font-size:xx-small;text-align:left;padding:5px;background-color:white">';
+/*echo '<div style="width:auto;height:500px;overflow:auto;font-size:xx-small;text-align:left;padding:5px;background-color:white">';
 foreach($g4p_mysqli->requetes as $arequete)
 {
     echo $arequete,'<br />';
 }
-echo '</div>';
+echo '</div>';*/
 
 echo '</body></html>';
 ?>
