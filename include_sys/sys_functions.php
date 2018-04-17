@@ -447,8 +447,8 @@ function g4p_affiche_liste_nom($lettre, $cpt)
 
             $_SESSION['patronyme'][strlen($lettre)]=$g4p_result;
             
-            if(empty($lettre))
-                $lettre=$g4p_result[0]['lettre'];
+//            if(empty($lettre))
+//                $lettre=$g4p_result[0]['lettre'];
             $g4p_affiche=1;
 /*
             if($g4p_total_nom<_AFF_NBRE_NOM_)
@@ -499,6 +499,9 @@ function g4p_affiche_liste_nom($lettre, $cpt)
         $longueur_lettre=strlen($lettre);
 
         echo '<ul class="lettre">';
+		echo '<li>';
+        echo '-<a href="',g4p_make_url('','liste_patronymes.php',''),'">All</a>-';
+		echo '</li>';
         foreach($_SESSION['patronyme'] as $a_niveau)
         {
 		echo '<li>';
