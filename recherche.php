@@ -74,8 +74,8 @@ switch($_GET['type'])
     case 'indi_1':
     $sql="SELECT indi_id
         FROM `genea_individuals` 
-        WHERE base =".$_SESSION['genea_db_id']." AND indi_nom LIKE '%".mysql_escape_string($_POST['g4p_nom'])."%' 
-            AND indi_prenom LIKE '%".mysql_escape_string($_POST['g4p_prenom'])."%'";
+        WHERE base =".$_SESSION['genea_db_id']." AND indi_nom LIKE '%".$g4p_mysqli->escape_string($_POST['g4p_nom'])."%' 
+            AND indi_prenom LIKE '%".$g4p_mysqli->escape_string($_POST['g4p_prenom'])."%'";
     if($_SESSION['permission']->permission[_PERM_MASK_INDI_])
         $sql.=" AND (indi_resn IS NULL OR indi_resn<>'privacy')";
     $sql.=" ORDER BY indi_nom, indi_prenom
