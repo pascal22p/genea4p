@@ -1358,8 +1358,7 @@ function & strip_slashes(&$str)
   global $g4p_langue;
   if(is_array($str))
   {
-    while(list($key, $val) = each($str))
-      $str[$key] = strip_slashes($val);
+    $str = array_map('strip_slashes', $str);
   }
   else
   {
