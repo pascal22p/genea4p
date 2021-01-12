@@ -19,7 +19,7 @@ if(empty($g4p_indi))
 
 $g4p_event=$g4p_indi->familles[$_GET['id_famille']]->events[(int)$_GET['id']];
 
-$g4p_javascript2='<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAMe86qX804-6hOkmbFiJGnhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTN0WwgJOmI-QsJ6XCnMj6Ja5mBw"
+$g4p_javascript2='<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key="'.$g4p_config['cartographie']['google_map_key'].'
             type="text/javascript"></script>
     <script type="text/javascript">
 

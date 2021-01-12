@@ -224,6 +224,7 @@ $g4p_config['lieu_separateur']=', ';
 //cartographie
 $g4p_config['cartographie']['cartes']=array('france','europe','russie');
 $g4p_config['cartographie']['taille']=array(480,600,768,1024,1200);
+$g4p_config['cartographie']['google_map_key'] = '';
 
 //GNS
 //R�gion du monde par d�fault pour la recherche GNS

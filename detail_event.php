@@ -191,7 +191,7 @@ echo '</dl>';
 
 if(!empty($latitude) and !empty($longitude) )
 {
-    echo '<iframe width="600px" height="400px" style="border:2px solid black;margin-bottom:1em;margin-left:10em;" src="https://www.google.com/maps/embed/v1/place?q='.$latitude.','.$longitude.'&amp;zoom=10&amp;key=AIzaSyBimqSKc5tF3KpJLFprP5wO-BkxDLr-TH8"></iframe>';
+    echo '<iframe width="600px" height="400px" style="border:2px solid black;margin-bottom:1em;margin-left:10em;" src="https://www.google.com/maps/embed/v1/place?q='.$latitude.','.$longitude.'&amp;zoom=10&amp;key="'.$g4p_config['cartographie']['google_map_key'].'></iframe>';
 }
 echo '</div>';
 
