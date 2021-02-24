@@ -49,9 +49,9 @@ echo '<h2>',$g4p_langue['download_titre'],'</h2>';
 echo '<div class="cadre">';
 if($_SESSION['permission']->permission[_PERM_DOWNLOAD_])
 {
-  $sql="SELECT fichier, titre, description FROM genea_download WHERE base=".$_SESSION['genea_db_id'];
-  $g4p_result_req=g4p_db_query($sql);
-  if($g4p_result=g4p_db_result($g4p_result_req))
+  $sql="SELECT download_fichier, download_titre, download_description FROM genea_download WHERE base=".$_SESSION['genea_db_id'];
+  $g4p_result_req=$g4p_mysqli->g4p_query($sql);
+  if($g4p_result=$g4p_mysqli->g4p_result($g4p_result_req))
   {
     foreach($g4p_result as $g4p_a_download)
     {

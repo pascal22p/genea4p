@@ -1,11 +1,9 @@
 <?php
 $g4p_chemin='';
 // $g4p_chemin='modules/genea4p/';
-
 require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
-
 if(isset($_GET['id_pers']))
   $g4p_indi=g4p_load_indi_infos($_GET['id_pers']);
 else
@@ -57,16 +55,16 @@ define('_origine_',$_GET['id_pers']);
 if(!$_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
 {
     if($output!='dot')
-        define('_MAX_NODES_',30);
+        define('_MAX_NODES_',800);
     else
         define('_MAX_NODES_',4000);
 }
 else
 {
     if($output!='dot')
-        define('_MAX_NODES_',400);
+        define('_MAX_NODES_',800);
     else
-        define('_MAX_NODES_',2000);
+        define('_MAX_NODES_',4000);
 }
     
 $dot_filename=uniqid();
@@ -366,9 +364,7 @@ function g4p_load_enfants($g4p_indi, $generation)
 }
 
 g4p_load_enfants($g4p_indi,0);
-
 //fwrite($dot, 'sql [label="Nbre requètes sql: '.$g4p_mysqli->nb_requetes."\"]\n");
-
 if(count($liste_nodes)>_MAX_NODES_)
 {
     fwrite($dot,'maxnode [style="filled", fillcolor="#ffaaff"] [label=<<TABLE BORDER="0" 
@@ -380,7 +376,6 @@ if(count($liste_nodes)>_MAX_NODES_)
 
 fwrite($dot, "}\n");
 fclose($dot);
-
 if($output!='dot')
 {
     header($output_headers[$output]);
@@ -391,7 +386,6 @@ else
     header('Content-Type: text/plain; charset=utf-8');
     shell_exec('cp /tmp/'.$dot_filename.' /tmp/'.$dot_filename.'.'.$output);
 }
-
 if($output=='svg')
 {
     //shell_exec('sed -i \'s/font-size:\([0-9.]*\);/font-size:\1px;/g\' /tmp/'.$dot_filename.'.'.$output);

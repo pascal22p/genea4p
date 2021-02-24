@@ -54,6 +54,9 @@ function g4p_write_parents($mon_indi,$generation=0)
                     //conserve uniquement le premier prénom
                     $g4p_nom_aff=$pere->prenom.' '.$pere->nom;
                     $date=$pere->date_rapide('array');
+    		    if ($date == NULL) {
+        	        $date = Array('naissance' => '', 'deces' => '');
+    		    }
                     if(!empty($date['naissance']))
                         $date['naissance']=' \\\\ '.$date['naissance'];
                     if(!empty($date['deces']))
@@ -78,6 +81,9 @@ function g4p_write_parents($mon_indi,$generation=0)
                     //conserve uniquement le premier prénom
                     $g4p_nom_aff=$mere->prenom.' '.$mere->nom;
                     $date=$mere->date_rapide('array');
+               	    if ($date == NULL) {
+                        $date = Array('naissance' => '', 'deces' => '');
+                    }
                     if(!empty($date['naissance']))
                         $date['naissance']=' \\\\ '.$date['naissance'];
                     if(!empty($date['deces']))
@@ -112,6 +118,9 @@ function g4p_ascendance($mon_indi)
     //conserve uniquement le premier prénom
     $g4p_nom_aff=$mon_indi->prenom.' '.$mon_indi->nom;
     $date=$mon_indi->date_rapide('array');
+    if ($date == NULL) {
+        $date = Array('naissance' => '-', 'deces' => '-');
+    }
     
     if($mon_indi->sexe=='M')
         fwrite($latex,'\node[leaf, fill=blue!5] {\limitbox{3.9cm}{2cm}{'.g4p_latex_link('I'.$mon_indi->indi_id,$g4p_nom_aff).'} \\\\ '.$date['naissance'].' \\\\ '.$date['deces'].'}');
@@ -128,13 +137,14 @@ function g4p_ascendance($mon_indi)
 if(isset($_GET['id_pers']))
     $g4p_indi=g4p_load_indi_infos($_GET['id_pers']);
 else
-    die('Ausun id défini');
+    die('Aucun id défini');
 
 g4p_forbidden_access($g4p_indi);
 
 $file=uniqid();
 //$file='test';
 $latex=fopen('/tmp/'.$file.'.tex','w');
+
 fwrite($latex,g4p_latex_write_header());
 
 fwrite($latex,'\section*{Ascendance '.$g4p_indi->prenom.' '.$g4p_indi->nom.'}
@@ -179,6 +189,7 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 $output=shell_exec('export PATH=/usr/local/texlive/2017/bin/x86_64-linux/:/bin/:/usr/bin/ && nice -n 10 xelatex -interaction=nonstopmode -output-directory=/tmp/ /tmp/'.$file.'.tex');
 if(file_exists('/tmp/'.$file.'.pdf'))
 {
+    //echo '/tmp/'.$file.'.pdf';
     header('Content-type: application/pdf');
     readfile('/tmp/'.$file.'.pdf');
 }

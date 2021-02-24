@@ -235,8 +235,8 @@ function g4p_latex_write_source($a_source)
         fwrite($latex, '\item[Data text] '.$a_source->data_text."\n");
     if(!empty($a_source->quay))
         fwrite($latex, '\item[Quay] '.$a_source->quay."\n");
-    if(!empty($a_source->subm))
-        fwrite($latex, '\item[Subm] '.$a_source->Subm."\n");
+    //if(!empty($a_source->subm))
+    //    fwrite($latex, '\item[Subm] '.$a_source->Subm."\n");
     if(!empty($a_source->timestamp))
         fwrite($latex, '\item[Dernière modification] '.$a_source->timestamp."\n");
     if(!empty($a_source->record))

@@ -15,6 +15,14 @@ $_SESSION['message']='';
 //Chargement des données de la personne
 $g4p_indi=g4p_load_indi_infos((int)$_REQUEST['id_pers']);
 
+if(!$_SESSION['permission']->permission[_PERM_MASK_INDI_] and $g4p_indi->resn=='privacy') {
+    include($g4p_chemin.'entete.php');
+    echo '<div class="box_title"><h2>Arbre ascendant</h2></div>'."\n";
+    echo 'Accès non autorisé';
+    include($g4p_chemin.'pied_de_page.php');
+    return;
+}
+
 function recursive_ascendance($g4p_id, $generation=1, $sosa=1)
 {
   global $g4p_liste_personnes2, $g4p_liste_personnes, $g4p_couleur

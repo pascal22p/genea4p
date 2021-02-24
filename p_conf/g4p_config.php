@@ -29,16 +29,12 @@
 
 //PERMISSIONS
 require_once($g4p_chemin.'p_conf/g4p_permissions.php');
-
 //CALENDAR
 require_once($g4p_chemin.'p_conf/g4p_calendar.php');
-
 //GLOBAL CONFIG
 require_once($g4p_chemin.'p_conf/g4p_config_global.php');
-
 //LOCAL CONFIG (écrase les données de config_global)
 require_once($g4p_chemin.'p_conf/g4p_config_local.php');
-
 //Data
 require_once($g4p_chemin.'p_conf/g4p_data.php');
 
