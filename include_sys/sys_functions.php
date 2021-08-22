@@ -1358,7 +1358,7 @@ function & strip_slashes(&$str)
   global $g4p_langue;
   if(is_array($str))
   {
-    $str = array_map('strip_slashes', $str);
+    $str = array_map('stripslashes', $str);
   }
   else
   {
