@@ -1,7 +1,7 @@
 <?php
 
 function g4p_permission()
-{   
+{
   if(!isset($_SESSION['g4p_permission']))
   {
     unset($_SESSION);
@@ -48,7 +48,7 @@ function g4p_db_numrows($g4p_result)//OK
 
 function g4p_date($g4p_date, $date='date1', $cache=0)
 {
-    global $g4p_date_modif,$g4p_langue, $date1, $date1short;
+    global $g4p_langue, $date1, $date1short;
     static $date1keys, $date1values;
     //date1 affichage long (12 janvier 2005...)
     //date1short affichage abrege (12 janv. 2005...)
@@ -58,6 +58,18 @@ function g4p_date($g4p_date, $date='date1', $cache=0)
     $date4=$date2=array('` JAN `'=>'/01/', '` FEB `'=>'/02/', '` MAR `'=>'/03/', '` APR `'=>'/04/', '` MAY `'=>'/05/', '` JUN `'=>'/06/', '` JUL `'=>'/07/', '` AUG `'=>'/08/', '` SEP `'=>'/09/', '` OCT `'=>'/10/', '` NOV `'=>'/11/', '` DEC `'=>'/12/');
     $date3=array('`/01/`'=>' JAN ', '`/02/`'=>' FEB ', '`/03/`'=>' MAR ', '`/04/`'=>' APR ', '`/05/`'=>' MAY ', '`/06/`'=>' JUN ', '`/07/`'=>' JUL ', '`/08/`'=>' AUG ',
         '`/09/`'=>' SEP ', '`/10/`'=>' OCT ', '`/11/`'=>' NOV ', '`/12/`'=>' DEC ');
+    $g4p_date_modif=array(
+      '/EST /i'=>'estimée ',
+      '/ABT /i'=>'environ ',
+      '/BEF /i'=>'avant ',
+      '/AFT /i'=>'après ',
+      '/BET /i'=>'entre ',
+      '/ AND /i'=>' et ',
+      '/ TO /i'=>' à ',
+      '/FROM /i'=>'depuis ',
+      '/CAL /i'=>'calculée ',
+      '/INT /i'=>''
+    );
 
     $g4p_date=preg_replace ('/(@#DHEBREW@|@#DROMAN@|@#DFRENCH R@|@#DGREGORIAN@|@#DJULIAN@|@#DUNKNOWN@)/','',$g4p_date);
 
@@ -139,7 +151,7 @@ function g4p_affiche_sources($sources, $lien, $type)
             else
                 $g4p_chan=$g4p_langue['class_chan'];
             echo '<span class="petit">',$g4p_langue['sys_function_sour_chan'],$g4p_chan,'</span><br />';
-            
+
             echo '<dl class="collapsed">';
             if(!empty($g4p_a_source->record->auth))
             {
@@ -179,42 +191,42 @@ function g4p_affiche_sources($sources, $lien, $type)
                 echo '<dl class="collapsed">';
                 if(!empty($a_repo->name))
                     echo '<dt>',$g4p_langue['sys_function_sour_depot'],'</dt><dd>',$a_repo->name,'</dd>';
-                if(!empty($a_repo->addr->addr))               
+                if(!empty($a_repo->addr->addr))
                     echo '<dt>',$g4p_langue['sys_function_sour_depot_addr'],'</dt><dd>',$a_repo->addr->addr,'</dd>';
-                if(!empty($a_repo->addr->city))                                   
+                if(!empty($a_repo->addr->city))
                     echo '<dt>',$g4p_langue['sys_function_sour_depot_ville'],'</dt><dd>',$a_repo->addr->city,'</dd>';
-                if(!empty($a_repo->addr->post))               
+                if(!empty($a_repo->addr->post))
                     echo '<dt>',$g4p_langue['sys_function_sour_depot_cp'],'</dt><dd>',$a_repo->addr->post,'</dd>';
-                if(!empty($a_repo->addr->stae))               
+                if(!empty($a_repo->addr->stae))
                     echo '<dt>stae</dt><dd>',$a_repo->addr->stae,'</dd>';
-                if(!empty($a_repo->addr->ctry))               
+                if(!empty($a_repo->addr->ctry))
                     echo '<dt>',$g4p_langue['sys_function_sour_depot_pays'],'</dt><dd>',$a_repo->addr->ctry,'</dd>';
-                if(!empty($a_repo->phon1))               
+                if(!empty($a_repo->phon1))
                     echo '<dt>',$g4p_langue['sys_function_sour_depot_tel'],' 1 :</dt><dd>',$a_repo->phon1,'</dd>';
-                if(!empty($a_repo->phon2))               
+                if(!empty($a_repo->phon2))
                     echo '<dt>',$g4p_langue['sys_function_sour_depot_tel'],' 2 :</dt><dd>',$a_repo->phon2,'</dd>';
-                if(!empty($a_repo->phon3))               
+                if(!empty($a_repo->phon3))
                     echo '<dt>',$g4p_langue['sys_function_sour_depot_tel'],' 3 :</dt><dd>',$a_repo->phon3,'</dd>';
-                if(!empty($a_repo->email1))               
+                if(!empty($a_repo->email1))
                     echo '<dt>email 1 :</dt><dd>',$a_repo->email1,'</dd>';
-                if(!empty($a_repo->email2))               
+                if(!empty($a_repo->email2))
                     echo '<dt>email 2 :</dt><dd>',$a_repo->email2,'</dd>';
-                if(!empty($a_repo->email3))               
+                if(!empty($a_repo->email3))
                     echo '<dt>email 3 :</dt><dd>',$a_repo->email3,'</dd>';
-                if(!empty($a_repo->fax1))               
+                if(!empty($a_repo->fax1))
                     echo '<dt>fax 1 :</dt><dd>',$a_repo->fax1,'</dd>';
-                if(!empty($a_repo->fax2))               
+                if(!empty($a_repo->fax2))
                     echo '<dt>fax 2 :</dt><dd>',$a_repo->fax2,'</dd>';
-                if(!empty($a_repo->fax3))               
+                if(!empty($a_repo->fax3))
                     echo '<dt>fax 3 :</dt><dd>',$a_repo->fax3,'</dd>';
-                if(!empty($a_repo->www1))               
+                if(!empty($a_repo->www1))
                     echo '<dt>www 1 :</dt><dd>',$a_repo->www1,'</dd>';
-                if(!empty($a_repo->www2))               
+                if(!empty($a_repo->www2))
                     echo '<dt>www 2 :</dt><dd>',$a_repo->www2,'</dd>';
-                if(!empty($a_repo->www3))               
+                if(!empty($a_repo->www3))
                     echo '<dt>www 3 :</dt><dd>',$a_repo->www3,'</dd>';
                 echo '</dl>';
-                
+
                 g4p_affiche_multimedia(@$g4p_a_source->medias, $g4p_a_source->id, 'sources');
             }
             echo '</div>';
@@ -270,16 +282,16 @@ function g4p_affiche_mariage()
             if ($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
             {
                 echo '<div class="menu_interne">
-					<a href="',g4p_make_url('','new_note.php','parent=FAMILLE&amp;id_parent='.$g4p_a_famille->id,0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
-				    <a href="',g4p_make_url('','new_source.php','parent=FAMILLE&amp;id_parent='.$g4p_a_famille->id,0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 
-                    <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_media&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> 
+					<a href="',g4p_make_url('','new_note.php','parent=FAMILLE&amp;id_parent='.$g4p_a_famille->id,0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a>
+				    <a href="',g4p_make_url('','new_source.php','parent=FAMILLE&amp;id_parent='.$g4p_a_famille->id,0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a>
+                    <a href="',g4p_make_url('admin','index.php','g4p_opt=ajout_media&amp;g4p_id='.$g4p_a_famille->id.'&amp;g4p_type=familles',0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a>
                     <a href="',g4p_make_url('','modification_famille.php','id_pers='.$g4p_indi->indi_id.'&id_famille='.$g4p_a_famille->id,0),'" class="admin">',$g4p_langue['menu_mod_famille'],'</a>';
                 if(isset($_SESSION['permission']) and ($_SESSION['permission']->permission[_PERM_SUPPR_FILES_]))
                     echo ' <a href="',g4p_make_url('admin','exec.php','g4p_opt=suppr_fams&amp;g4p_id='.$g4p_a_famille->id,0),'" class="admin" onclick=" return confirme(this, \'',$g4p_langue['menu_sppr_confirme'],'\')">',$g4p_langue['menu_sppr_fam'],'</a>';
                 echo '</div>';
             }
             echo '<div class="box">';
-            
+
             if(!empty($g4p_a_famille->husb->nom) and !empty($g4p_a_famille->wife->nom))
                 $tmp='Famille '.$g4p_a_famille->husb->nom.' &mdash; '.$g4p_a_famille->wife->nom;
             elseif(!empty($g4p_a_famille->husb->nom))
@@ -288,18 +300,18 @@ function g4p_affiche_mariage()
                 $tmp='Famille '.$g4p_a_famille->wife->nom;
             else
                 $tmp='Famille';
-            
+
             echo '<div class="box_title"><h3>'.$tmp.'</h3></div>';
             if(!empty($g4p_a_famille->timestamp))
                 echo '<span class="petit">'.sprintf($g4p_langue['sys_function_mariage_chan'],g4p_strftime($g4p_langue['date_complete'], strtotime($g4p_a_famille->timestamp))),'</span><br />';
-                
+
             if(!empty($g4p_a_famille->husb->indi_id) and $g4p_indi->indi_id!=$g4p_a_famille->husb->indi_id)
                 $conjoint='husb';
             elseif(!empty($g4p_a_famille->wife) and $g4p_indi->indi_id!=$g4p_a_famille->wife->indi_id)
                 $conjoint='wife';
             else
                 $conjoint=false;
-      
+
             if($conjoint!==false)
             {
                 echo '<dl class="collapsed"><dt>',$g4p_langue['sys_function_conjoint'],'</dt><dd>';
@@ -328,8 +340,8 @@ function g4p_affiche_mariage()
 					if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
 						echo '<a href="'.g4p_make_url('','modification_event.php','id_event='.$g4p_a_event->id,0).'" class="admin">',$g4p_langue['menu_mod_event'],'</a>';
                     echo '</dt>';
-                    
-                    if($g4p_a_event->place->g4p_formated_place()!='')                    
+
+                    if($g4p_a_event->place->g4p_formated_place()!='')
                         echo '<dd><em>Lieu : </em>',$g4p_a_event->place->g4p_formated_place(),'</dd>';
                     echo '</dl>';
                 }
@@ -367,7 +379,7 @@ function g4p_affiche_mariage()
 function g4p_destroy_cache(&$id_pers)
 {
     global $g4p_mysqli, $g4p_chemin;
-    
+
 	// fichier, permet de choisir le cache à detruire
     $dep_array=array();
     $sql="SELECT indi_id, indi_dep FROM genea_cache_deps WHERE indi_id=".(int)$id_pers." OR indi_dep=".(int)$id_pers;
@@ -381,13 +393,13 @@ function g4p_destroy_cache(&$id_pers)
         }
         $dep_array=array_unique($dep_array);
     }
-    
+
     if(!empty($dep_array))
     {
         foreach($dep_array as $a_indi)
         {
             @unlink($g4p_chemin.'cache/indis/indi_'.$a_indi.'.txt');
-        }    
+        }
         $sql="DELETE FROM genea_cache_deps WHERE indi_id IN (".implode(',',$dep_array).") OR indi_dep IN (".implode(',',$dep_array).")";
         $g4p_mysqli->g4p_query($sql);
     }
@@ -409,7 +421,7 @@ function g4p_load_indi_infos($id, $debug=false)
 	$g4p_mon_indi=new g4p_individu($id);
 	//$g4p_mon_indi->ignore_cache($debug);
 	$g4p_mon_indi->g4p_load();
-	
+
     if(empty($_SESSION['permission']->permission[_PERM_MASK_INDI_]) and ($g4p_mon_indi->resn=='privacy'))
     {
         $indi=new g4p_individu($g4p_mon_indi->indi_id);
@@ -421,9 +433,9 @@ function g4p_load_indi_infos($id, $debug=false)
         $indi->sexe=$g4p_mon_indi->sexe;
         return $indi;
     }
-    else  
+    else
         return $g4p_mon_indi;
-	
+
 }
 
 function g4p_affiche_liste_nom($lettre, $cpt)
@@ -446,7 +458,7 @@ function g4p_affiche_liste_nom($lettre, $cpt)
                 $g4p_total_nom+=$a_g4p_result['nombre'];
 
             $_SESSION['patronyme'][strlen($lettre)]=$g4p_result;
-            
+
 //            if(empty($lettre))
 //                $lettre=$g4p_result[0]['lettre'];
             $g4p_affiche=1;
@@ -466,7 +478,7 @@ function g4p_affiche_liste_nom($lettre, $cpt)
             return 0;
         }
     }
-    
+
     if(!empty($lettre) and $cpt>_AFF_NBRE_NOM_)
     {
 
@@ -514,7 +526,7 @@ function g4p_affiche_liste_nom($lettre, $cpt)
 		echo '</li>';
         }
 	echo '</ul>';
-        
+
         if(!empty($lettre))
             $sql="SELECT indi_nom, count(*) as cpt FROM genea_individuals
                 WHERE base=".$_SESSION['genea_db_id']." AND indi_nom LIKE'".$g4p_mysqli->escape_string($lettre)."%' GROUP BY indi_nom ORDER BY indi_nom";
@@ -1145,17 +1157,17 @@ function g4p_liste_membres()
 function g4p_relations_avancees($id)
 {
   global $g4p_chemin, $g4p_langue, $g4p_config;
-  
+
   $debug=false;
 
   $mon_indi=g4p_load_indi_infos($id);
-  
+
   if($debug)
   {
     echo '<textarea>';
 	echo $mon_indi->prenom.' '.$mon_indi->nom;
   }
-	
+
 
   $tatas=array();
   $cousins=array();
@@ -1181,7 +1193,7 @@ function g4p_relations_avancees($id)
 
         $pere=g4p_load_indi_infos($pere);
         $mere=g4p_load_indi_infos($mere);
-        
+
         if($debug)
         {
 		  print 'Pere: '.$pere->prenom.' '.$pere->nom;
@@ -1278,7 +1290,7 @@ function g4p_relations_avancees($id)
 
     }
   }
-  
+
   if($debug)
     echo '</textarea>';
 
@@ -1330,7 +1342,7 @@ function g4p_relations_avancees($id)
     }
     echo '</div>';
   }
- 
+
   echo '</div>';
 
 }
@@ -1353,12 +1365,12 @@ function vide_repertoire($base)
   return 1;
 }
 
-function & strip_slashes(&$str)
+function strip_slashes($str)
 {
   global $g4p_langue;
   if(is_array($str))
   {
-    $str = array_map('stripslashes', $str);
+    $str = array_map('strip_slashes', $str);
   }
   else
   {
@@ -1422,17 +1434,17 @@ function g4p_add_intohistoric($id,$type='indi')
 			if($value['id']==$mon_indi->indi_id)
 				unset($_SESSION['historic']['indi'][$key]);
 		}
-    
+
 		//on l'ajoute à la fin de la liste
-		$_SESSION['historic']['indi'][] = array('id'=>$mon_indi->indi_id, 
+		$_SESSION['historic']['indi'][] = array('id'=>$mon_indi->indi_id,
 			'text'=>$mon_indi->nom.' '.$mon_indi->prenom);
 
 		break;
 	}
-  
+
 	if(count($_SESSION['historic'][$type])>$g4p_config['historic_count'])
 		unset($_SESSION['historic'][$type][0]);
-  
+
 	//on ré-indice le tableau
 	$_SESSION['historic'][$type] = array_values($_SESSION['historic'][$type]);
 }
@@ -1444,7 +1456,7 @@ function g4p_show_alias($alias,$admin=0)
     if(!empty($alias))
     {
         echo '<div class="box">';
-        echo '<div class="box_title">Alias</div>';  
+        echo '<div class="box_title">Alias</div>';
         echo '<ul>';
         foreach($alias as $a_alias)
         {
@@ -1695,7 +1707,7 @@ function g4p_formulaire_date_event($g4p_date,$g4p_ajout='mod_event')
 
     //fin date
   }
-  
+
 function g4p_error($a)
 {
 	echo $a;
@@ -1726,7 +1738,7 @@ function g4p_show_events($events)
 function g4p_http_not_modifed()
 {
     global $g4p_chemin;
-    
+
     // On économise le serveur, pas la peine de renvoyer la page si celle en cache dans le navigateur est la bonne
     header('Date: ' . gmdate("D, d M Y H:i:s") . ' GMT');
     header('Cache-Control: Public, must-revalidate');
@@ -1741,9 +1753,9 @@ function g4p_http_not_modifed()
         // on vérifie si le contenu a changé
         //Je compare la date de génération du cache et de la page
         if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) and (strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'],0,29)))>=gmdate('U', filemtime($g4p_chemin.'cache/'.$_SESSION['genea_db_nom'].'/indi_'.$_GET['id_pers'].'.txt')))
-        {		
-            //Je compare un hash du membre et du etag de la page, 
-            if(isset($_SERVER['HTTP_IF_NONE_MATCH']) and 
+        {
+            //Je compare un hash du membre et du etag de la page,
+            if(isset($_SERVER['HTTP_IF_NONE_MATCH']) and
                 $_SERVER['HTTP_IF_NONE_MATCH']==md5($_SESSION['g4p_id_membre'].$_SESSION['langue'].$_SESSION['theme'].serialize($_SESSION['place'])))
             {
                 //Rien à chnagé, un petit 304, si la config est ok...
@@ -1766,10 +1778,10 @@ function g4p_link_nom($indi)
 {
     //echo '<pre>'; print_r($indi);
     //var_dump($indi);
-    
+
     if(!is_object($indi))
 	$indi=g4p_load_indi_infos($indi);
-       
+
     $return='<a class="link_nom" href="'.g4p_make_url('','fiche_individuelle.php','id_pers='.$indi->indi_id,'fiche-'.$indi->base.'-'.g4p_prepare_varurl($indi->nom).'-'
         .g4p_prepare_varurl($indi->prenom).'-'.$indi->indi_id).'">'
         .$indi->nom.' '
@@ -1785,19 +1797,19 @@ function g4p_link_nom($indi)
 // if NeedleKey is given, return only for this key
 // mixed ArraySearchRecursive(mixed Needle,array Haystack
 //                            [,NeedleKey[,bool Strict[,array Path]]])
-function ArraySearchRecursive($Needle,$Haystack,$NeedleKey="", $Strict=false,$Path=array()) 
+function ArraySearchRecursive($Needle,$Haystack,$NeedleKey="", $Strict=false,$Path=array())
 {
     if(!is_array($Haystack))
         return false;
-    foreach($Haystack as $Key => $Val) 
+    foreach($Haystack as $Key => $Val)
     {
-        if(is_array($Val) && $SubPath=ArraySearchRecursive($Needle,$Val,$NeedleKey, $Strict,$Path)) 
+        if(is_array($Val) && $SubPath=ArraySearchRecursive($Needle,$Val,$NeedleKey, $Strict,$Path))
         {
             $Path=array_merge($Path,Array($Key),$SubPath);
             return $Path;
         }
         elseif((!$Strict&&$Val==$Needle && $Key==(strlen($NeedleKey)>0?$NeedleKey:$Key)) ||
-            ($Strict&&$Val===$Needle && $Key==(strlen($NeedleKey)>0?$NeedleKey:$Key))) 
+            ($Strict&&$Val===$Needle && $Key==(strlen($NeedleKey)>0?$NeedleKey:$Key)))
         {
             $Path[]=$Key;
             return $Path;
@@ -1809,12 +1821,12 @@ function ArraySearchRecursive($Needle,$Haystack,$NeedleKey="", $Strict=false,$Pa
 
 // http://codeigniter.com/forums/viewthread/51788/P30/
 function word_limiter($str, $limit = 100, $end_char = '&#8230;') {
-    
+
     // Don't bother about empty strings.
     // Get rid of them here because the regex below would match them too.
     if (trim($str) == '')
         return $str;
-    
+
     // Added the initial \s* in order to make the regex work in case $str starts with whitespace.
     // Without it a string like " test" would be counted for two words instead of one.
 
@@ -1828,20 +1840,20 @@ function word_limiter($str, $limit = 100, $end_char = '&#8230;') {
     // and look for at least one non-space char followed by 0 or 1 space char "\S+\s*"
     // there must be at least 1 and not more than $limit
     // repetitions of this non-capturing sub-pattern "{1,x}"
-    preg_match('/^\s*+(?:\S++\s*+){1,'. (int) $limit .'}/', $str, $matches); 
-    
+    preg_match('/^\s*+(?:\S++\s*+){1,'. (int) $limit .'}/', $str, $matches);
+
     // Only add end character if the string got chopped off.
     if (strlen($matches[0]) == strlen($str))
         $end_char = '';
-    
+
     // Chop off trailing whitespace and add the end character.
     return rtrim($matches[0]) . $end_char;
-} 
+}
 
 function g4p_timestamp($timestamp)
 {
     global $g4p_langue;
-    
+
     if(!empty($timestamp))
         return '<span class="petit">'.g4p_strftime($g4p_langue['date_complete'], strtotime($timestamp)).'</span>';
 }
@@ -1909,7 +1921,7 @@ function g4p_base_namefolder($base)
 //http://us2.php.net/manual/en/function.rmdir.php
     function deleteDirectory($dir) {
         //if (!file_exists($dir)) return true;
-        if (!is_dir($dir)) 
+        if (!is_dir($dir))
         {
             if(is_file($dir))
                 return unlink($dir);

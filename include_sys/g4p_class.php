@@ -57,11 +57,11 @@ class g4p_sql_datas
         if($this->debug)
             echo 'Charge indi : '.$indi_id.'<br />';
 
-        $sql="SELECT base, nom AS basename, indi_nom , indi_prenom , 
-            indi_sexe, indi_timestamp, indi_npfx, indi_givn, indi_nick, 
-            indi_spfx, indi_nsfx, indi_resn 
-            FROM genea_individuals 
-            LEFT JOIN genea_infos ON genea_individuals.base=genea_infos.id 
+        $sql="SELECT base, nom AS basename, indi_nom , indi_prenom ,
+            indi_sexe, indi_timestamp, indi_npfx, indi_givn, indi_nick,
+            indi_spfx, indi_nsfx, indi_resn
+            FROM genea_individuals
+            LEFT JOIN genea_infos ON genea_individuals.base=genea_infos.id
             WHERE indi_id=".$indi_id;
         $g4p_infos_req=$g4p_mysqli->g4p_query($sql);
         if($g4p_infos=$g4p_mysqli->g4p_result($g4p_infos_req))
@@ -77,7 +77,7 @@ class g4p_sql_datas
         }
 
         // Récupération des alias de la personne
-        $g4p_infos_req=$g4p_mysqli->g4p_query("SELECT alias1,alias2 FROM rel_alias 
+        $g4p_infos_req=$g4p_mysqli->g4p_query("SELECT alias1,alias2 FROM rel_alias
             WHERE alias1=".$indi_id." OR alias2=".$indi_id);
         if($this->g4p_alias=$g4p_mysqli->g4p_result($g4p_infos_req))
         {
@@ -93,7 +93,7 @@ class g4p_sql_datas
         //Récupération des ids des sources de l'individu
         $sql="SELECT sour_citations_id, indi_id
             FROM rel_indi_sources
-            WHERE indi_id=".$indi_id; 
+            WHERE indi_id=".$indi_id;
         $g4p_result_req=$g4p_mysqli->g4p_query($sql);
         while($ligne=$g4p_result_req->fetch_assoc())
         {
@@ -141,8 +141,8 @@ class g4p_sql_datas
         if(count($liste_familles)>0)
         {
             //Récupération des ids des sources des familles
-            $sql="SELECT sour_citations_id, familles_id 
-                FROM rel_familles_sources 
+            $sql="SELECT sour_citations_id, familles_id
+                FROM rel_familles_sources
                 WHERE familles_id IN (".implode(',',$liste_familles).")";
             $g4p_result_req=$g4p_mysqli->g4p_query($sql);
             while($ligne=$g4p_result_req->fetch_assoc())
@@ -161,7 +161,7 @@ class g4p_sql_datas
                 $liste_notes[]=$ligne['notes_id'];
                 $this->rel_familles_notes[$ligne['familles_id']][]=$ligne;
             }
-        
+
             //Récupération des ids des médias des familles
             $sql="SELECT media_id, familles_id " .
                 " FROM rel_familles_multimedia" .
@@ -172,7 +172,7 @@ class g4p_sql_datas
                 $liste_medias[]=$ligne['media_id'];
                 $this->rel_familles_media[$ligne['familles_id']][]=$ligne;
             }
-    
+
             //Récupération des évènements familiaux
             $sql="SELECT events_details_id,familles_id,events_tag,events_attestation ".
                 " FROM rel_familles_events" .
@@ -183,10 +183,10 @@ class g4p_sql_datas
                 $liste_events[]=$ligne['events_details_id'];
                 $this->g4p_rel_familles_events[$ligne['familles_id']][]=$ligne;
             }
-    
+
             //Récupération des attributs familiaux
             //ça existe pas.... grrrr....
-            
+
             //récupération des enfants
             $sql = "SELECT DISTINCT f.familles_id, f.indi_id, rela_type, rela_stat FROM rel_familles_indi f".
                 " LEFT JOIN rel_indi_events i ON f.indi_id=i.indi_id" .
@@ -201,12 +201,12 @@ class g4p_sql_datas
                 {
                     $this->g4p_familles_enfants[$g4p_a_enfant['familles_id']][]=$g4p_a_enfant;
                     $liste_indi[]=$g4p_a_enfant['indi_id'];
-                }   
+                }
             }
         }
-            
+
         //Récupérations des parents
-        $sql="SELECT genea_familles.familles_id as familles_id, indi_id, 
+        $sql="SELECT genea_familles.familles_id as familles_id, indi_id,
             rela_type, familles_husb, familles_wife FROM rel_familles_indi
             LEFT JOIN genea_familles USING (familles_id)
             WHERE indi_id=".$indi_id;
@@ -219,21 +219,21 @@ class g4p_sql_datas
                 $liste_indi[]=$g4p_a_parent['familles_wife'];
             }
         }
-    
+
         //récupérations des ids des évènements individuels
         $liste_indi=array_unique($liste_indi);
         $liste_indi=array_diff($liste_indi, array(''));
         $sql="SELECT events_details_id, indi_id, events_tag, events_attestation ".
             " FROM rel_indi_events" .
             " WHERE indi_id IN (".implode(',',$liste_indi).")";
-    
+
         $g4p_result_req=$g4p_mysqli->g4p_query($sql);
         while($ligne=$g4p_result_req->fetch_assoc())
         {
             $liste_events[]=$ligne['events_details_id'];
             $this->g4p_rel_indi_events[$ligne['indi_id']][]=$ligne;
         }
-    
+
         //récupérations des attributs individuels
         $sql="SELECT events_details_id,indi_id,events_tag,events_descr ".
             " FROM rel_indi_attributes" .
@@ -244,7 +244,7 @@ class g4p_sql_datas
             $liste_events[]=$ligne['events_details_id'];
             $this->g4p_rel_indi_attributes[$ligne['indi_id']][]=$ligne;
         }
-    
+
         //Chargements des évènements
         if(!empty($liste_events))
         {
@@ -265,7 +265,7 @@ class g4p_sql_datas
                         $liste_addr[]=$g4p_a_place['addr_id'];
                 }
             }
-                    
+
             //Chargements des lieux
             if(!empty($liste_place))
             {
@@ -277,7 +277,7 @@ class g4p_sql_datas
                 $g4p_result_req=$g4p_mysqli->g4p_query($sql);
                 $this->g4p_places=$g4p_mysqli->g4p_result($g4p_result_req, 'place_id');
             }
-            
+
             //Récupération des ids des sources des sévènements
             $sql="SELECT sour_citations_id, events_details_id
                 FROM rel_events_sources
@@ -288,7 +288,7 @@ class g4p_sql_datas
                 $liste_sources[]=$ligne['sour_citations_id'];
                 $this->rel_events_sources[$ligne['events_details_id']][]=$ligne;
             }
-    
+
             //Récupération des ids des notes des évènements
             $sql="SELECT notes_id, events_details_id
                 FROM rel_events_notes
@@ -299,7 +299,7 @@ class g4p_sql_datas
                 $liste_notes[]=$ligne['notes_id'];
                 $this->rel_events_notes[$ligne['events_details_id']][]=$ligne;
             }
-    
+
             //Récupération des ids des médias des évènements
             $sql="SELECT media_id, events_details_id" .
                 " FROM rel_events_multimedia" .
@@ -311,7 +311,7 @@ class g4p_sql_datas
                 $this->rel_events_medias[$ligne['events_details_id']][]=$ligne;
             }
         }
-    
+
         //Chargement des sour_citations
         $liste_sources=array_diff($liste_sources, array(''));
         $liste_sources=array_unique($liste_sources);
@@ -325,8 +325,8 @@ class g4p_sql_datas
             $g4p_result_req=$g4p_mysqli->g4p_query($sql);
             if($this->g4p_sour_citations=$g4p_mysqli->g4p_result($g4p_result_req,'sour_citations_id'))
                 foreach($this->g4p_sour_citations as $g4p_a_source)
-                    $liste_sour_records[]=$g4p_a_source['sour_records_id']; 
-    
+                    $liste_sour_records[]=$g4p_a_source['sour_records_id'];
+
             //Récupération des ids des notes des sour_citations
             $sql="SELECT notes_id, sour_citations_id
                 FROM rel_sour_citations_notes
@@ -349,10 +349,10 @@ class g4p_sql_datas
                 $this->rel_sour_citations_medias[$ligne['sour_citations_id']][]=$ligne;
             }
         }
-    
+
         $liste_sour_records=array_diff($liste_sour_records, array(''));
         if(!empty($liste_sour_records))
-        {   
+        {
             $liste_sour_records=array_unique($liste_sour_records);
             //Chargement des sour_records
             $sql="SELECT sour_records_id,sour_records_auth,sour_records_title,sour_records_abbr," .
@@ -366,7 +366,7 @@ class g4p_sql_datas
                     if(!empty($g4p_a_source['repo_id']))
                         $liste_repo[]=$g4p_a_source['repo_id'];
         }
-        
+
         $liste_repo=array_diff($liste_repo, array(''));
         $liste_repo=array_unique($liste_repo);
         if(!empty($liste_repo))
@@ -405,7 +405,7 @@ class g4p_sql_datas
                 " WHERE media_id IN (".implode(',',$liste_medias).")";
             $g4p_infos_req=$g4p_mysqli->g4p_query($sql);
             $this->g4p_medias=$g4p_mysqli->g4p_result($g4p_infos_req,'media_id');
-        
+
             //Récupération des ids des notes des medias
             $sql="SELECT notes_id, media_id
                 FROM rel_multimedia_notes
@@ -417,7 +417,7 @@ class g4p_sql_datas
                 $this->rel_medias_notes[$ligne['media_id']][]=$ligne;
             }
         }
-        
+
         $liste_notes=array_diff($liste_notes, array(''));
         if(!empty($liste_notes))
         {
@@ -427,11 +427,11 @@ class g4p_sql_datas
             $g4p_result_req=$g4p_mysqli->g4p_query($sql);
             $this->g4p_notes=$g4p_mysqli->g4p_result($g4p_result_req,'notes_id');
         }
-        
+
         //chargement des individus
-        $g4p_infos_req=$g4p_mysqli->g4p_query("SELECT indi_id, base, nom AS basename, indi_nom , indi_prenom , 
+        $g4p_infos_req=$g4p_mysqli->g4p_query("SELECT indi_id, base, nom AS basename, indi_nom , indi_prenom ,
             indi_sexe, indi_timestamp, indi_npfx, indi_givn, indi_nick, indi_spfx, indi_nsfx, indi_resn
-            FROM genea_individuals 
+            FROM genea_individuals
             LEFT JOIN genea_infos ON genea_individuals.base=genea_infos.id
             WHERE indi_id IN (".implode(',',$liste_indi).")");
         $this->g4p_infos_indi=$g4p_mysqli->g4p_result($g4p_infos_req, 'indi_id');
@@ -461,7 +461,7 @@ class g4p_individu
         $this->filiation=true;
         $this->ignorecache=false;
     }
-    
+
     function set_debug($debug)
     {
         if($debug===true)
@@ -472,7 +472,7 @@ class g4p_individu
         else
             $this->debug=false;
     }
-    
+
     function set_filiation($filiation)
     {
         if($filiation===true)
@@ -480,7 +480,7 @@ class g4p_individu
         else
             $this->filiation=false;
     }
-    
+
     function ignore_cache($cache)
     {
         if($cache===true)
@@ -501,17 +501,17 @@ class g4p_individu
             $this->indi_id=-1;
         }
     }
-    
+
     function g4p_write_cache(&$g4p_sql_datas)
     {
         global $g4p_chemin, $g4p_mysqli;
-        
+
         //dépendances
         $deps=array();
         foreach($g4p_sql_datas->liste_indi as $a_indi)
             if($this->indi_id!=$a_indi)
                 $deps[]='('.$this->indi_id.','.$a_indi.')';
-        
+
         $g4p_mysqli->autocommit(false);
         $sql="DELETE FROM genea_cache_deps WHERE indi_id=".$this->indi_id;
         $g4p_mysqli->query($sql);
@@ -525,30 +525,30 @@ class g4p_individu
                 else
                 {
                     die('impossible d\'écrire le fichier de cache');
-                    $g4p_mysqli->rollback();        
+                    $g4p_mysqli->rollback();
                 }
             }
             else
             {
                 die('impossible d\'insérer les deps de cache en base '.$g4p_mysqli->error.' <br> '.$sql);
-                $g4p_mysqli->rollback();        
+                $g4p_mysqli->rollback();
             }
         }
         else
             $g4p_mysqli->commit();
     }
-    
-    function __SLEEP()  
+
+    function __SLEEP()
     {
         if(isset($this->g4p_sql_datas))
             unset($this->g4p_sql_datas);
         return( array_keys( get_object_vars( $this ) ) );
     }
-    
+
     function g4p_load()
     {
         global $g4p_chemin;
-    
+
         if($this->ignorecache)
         {
             $this->g4p_load_from_db();
@@ -573,7 +573,7 @@ class g4p_individu
             }
         }
     }
-    
+
     private function g4p_load_from_cache()
     {
         global $g4p_chemin;
@@ -592,7 +592,7 @@ class g4p_individu
         }
         return false;
     }
-    
+
     /**
      * Rempli l'objet
      * @author Pascal Parois
@@ -623,31 +623,31 @@ class g4p_individu
                 }
             }
         }
-        
+
         //les familles
         if(!empty($g4p_sql_datas->g4p_familles))
             foreach($g4p_sql_datas->g4p_familles as $g4p_a_famille)
-                $this->familles[$g4p_a_famille['familles_id']]=new g4p_famille($g4p_a_famille,$g4p_sql_datas, $this->debug);    
+                $this->familles[$g4p_a_famille['familles_id']]=new g4p_famille($g4p_a_famille,$g4p_sql_datas, $this->debug);
         if($this->debug)
             var_dump($this->familles);
-        
+
         //les parents
         if(!empty($g4p_sql_datas->g4p_parents))
             foreach($g4p_sql_datas->g4p_parents as $g4p_a_parent)
-                $this->parents[$g4p_a_parent['familles_id']]=new g4p_parents($g4p_a_parent,$g4p_sql_datas, $this->debug);   
-        
+                $this->parents[$g4p_a_parent['familles_id']]=new g4p_parents($g4p_a_parent,$g4p_sql_datas, $this->debug);
+
         //notes, sources, medias
         if(!empty($g4p_sql_datas->rel_indi_notes[$this->indi_id]))
             foreach($g4p_sql_datas->rel_indi_notes[$this->indi_id] as $g4p_a_note)
-                $this->notes[$g4p_a_note['notes_id']]=new g4p_note($g4p_sql_datas->g4p_notes[$g4p_a_note['notes_id']],$g4p_sql_datas);  
+                $this->notes[$g4p_a_note['notes_id']]=new g4p_note($g4p_sql_datas->g4p_notes[$g4p_a_note['notes_id']],$g4p_sql_datas);
         if(!empty($g4p_sql_datas->rel_indi_sources[$this->indi_id]))
             foreach($g4p_sql_datas->rel_indi_sources[$this->indi_id] as $g4p_a_source)
-                $this->sources[$g4p_a_source['sour_citations_id']]=new g4p_source_citation($g4p_sql_datas->g4p_sour_citations[$g4p_a_source['sour_citations_id']],$g4p_sql_datas);  
+                $this->sources[$g4p_a_source['sour_citations_id']]=new g4p_source_citation($g4p_sql_datas->g4p_sour_citations[$g4p_a_source['sour_citations_id']],$g4p_sql_datas);
         if(!empty($g4p_sql_datas->rel_indi_medias[$this->indi_id]))
             foreach($g4p_sql_datas->rel_indi_medias[$this->indi_id] as $g4p_a_media)
-                $this->medias[$g4p_a_media['media_id']]=new g4p_media($g4p_sql_datas->g4p_medias[$g4p_a_media['media_id']],$g4p_sql_datas); 
+                $this->medias[$g4p_a_media['media_id']]=new g4p_media($g4p_sql_datas->g4p_medias[$g4p_a_media['media_id']],$g4p_sql_datas);
     }
-    
+
     /**
      * Rempli l'état civil
      * @author Pascal Parois
@@ -671,13 +671,13 @@ class g4p_individu
         else
             $this->sexe='I';
         $this->timestamp=$g4p_sql_datas->g4p_infos_indi[$this->indi_id]['indi_timestamp'];
-        $this->resn=$g4p_sql_datas->g4p_infos_indi[$this->indi_id]['indi_resn'];    
+        $this->resn=$g4p_sql_datas->g4p_infos_indi[$this->indi_id]['indi_resn'];
 
         //évènements individuels
         if(!empty($g4p_sql_datas->g4p_rel_indi_events[$this->indi_id]))
             foreach($g4p_sql_datas->g4p_rel_indi_events[$this->indi_id] as $g4p_a_indi_events)
                 $this->events[$g4p_a_indi_events['events_details_id']]=new g4p_event($g4p_a_indi_events,$g4p_sql_datas);
-                
+
         //attributs inidviduels
         if(!empty($g4p_sql_datas->g4p_rel_indi_attributes[$this->indi_id]))
             foreach($g4p_sql_datas->g4p_rel_indi_attributes[$this->indi_id] as $g4p_a_indi_attribut)
@@ -701,7 +701,7 @@ class g4p_individu
             $format2='date1short';
         else
             $format2='date1';
-        
+
         if(!empty($this->events))
         {
             foreach($this->events as $a_event)
@@ -715,7 +715,7 @@ class g4p_individu
                 elseif($a_event->tag=='BURI')
                     $date['BURI']=g4p_date($a_event->gedcom_date, $format2);
             }
-    
+
             if(!empty($date['BIRT']))
                 if($format=='short')
                     $naissance=$date['BIRT'];
@@ -741,15 +741,15 @@ class g4p_individu
                     $deces='†'.$date['BURI'];
             else
                 $deces='';
-            
+
             if(empty($naissance) and empty($deces))
                 return NULL;
-            
+
             if(!empty($deces) and !empty($naissance))
                 $sep=' &ndash; ';
             else
                 $sep='';
-            
+
             if($format=='array')
                 return array('naissance'=>$naissance,'deces'=>$deces);
             else
@@ -758,7 +758,7 @@ class g4p_individu
         else
             return NULL;
     }
-    
+
 }
 
 /**
@@ -774,23 +774,23 @@ class g4p_famille
             $this->debug=true;
         else
             $this->debug=false;
-    
+
         $this->id=$famille['familles_id'];
         $this->timestamp=$famille['familles_timestamp'];
-        
+
         if(!empty($famille['familles_husb']))
         {
             $this->husb=new g4p_individu($famille['familles_husb']);
             $this->husb->set_filiation(false);
             $this->husb->set_debug($this->debug);
-            $this->husb->g4p_etat_civil($g4p_sql_datas);                
+            $this->husb->g4p_etat_civil($g4p_sql_datas);
         }
         if(!empty($famille['familles_wife']))
         {
             $this->wife=new g4p_individu($famille['familles_wife']);
             $this->wife->set_filiation(false);
             $this->wife->set_debug($this->debug);
-            $this->wife->g4p_etat_civil($g4p_sql_datas);                
+            $this->wife->g4p_etat_civil($g4p_sql_datas);
         }
         if(!empty($g4p_sql_datas->g4p_familles_enfants[$this->id]))
         {
@@ -799,29 +799,29 @@ class g4p_famille
                 $this->enfants[$a_enfant['indi_id']]['indi']=new g4p_individu($a_enfant['indi_id']);
                 $this->enfants[$a_enfant['indi_id']]['indi']->set_filiation(false);
                 $this->enfants[$a_enfant['indi_id']]['indi']->set_debug($this->debug);
-                $this->enfants[$a_enfant['indi_id']]['indi']->g4p_etat_civil($g4p_sql_datas);               
-                
+                $this->enfants[$a_enfant['indi_id']]['indi']->g4p_etat_civil($g4p_sql_datas);
+
                 $this->enfants[$a_enfant['indi_id']]['rela_type']=$a_enfant['rela_type'];
-                $this->enfants[$a_enfant['indi_id']]['rela_stat']=$a_enfant['rela_stat'];   
+                $this->enfants[$a_enfant['indi_id']]['rela_stat']=$a_enfant['rela_stat'];
             }
         }
-                
+
         if(!empty($g4p_sql_datas->g4p_rel_familles_events[$this->id]))
             foreach($g4p_sql_datas->g4p_rel_familles_events[$this->id] as $a_fevent)
                 $this->events[$a_fevent['events_details_id']]=new g4p_event($a_fevent,$g4p_sql_datas);
 
         if(!empty($g4p_sql_datas->rel_familles_notes[$this->id]))
             foreach($g4p_sql_datas->rel_familles_notes[$this->id] as $g4p_a_note)
-                $this->notes[$g4p_a_note['notes_id']]=new g4p_note($g4p_sql_datas->g4p_notes[$g4p_a_note['notes_id']],$g4p_sql_datas);  
+                $this->notes[$g4p_a_note['notes_id']]=new g4p_note($g4p_sql_datas->g4p_notes[$g4p_a_note['notes_id']],$g4p_sql_datas);
         if(!empty($g4p_sql_datas->rel_familles_sour_details[$this->id]))
             foreach($g4p_sql_datas->rel_familles_sour_details[$this->id] as $g4p_a_source)
-                $this->sources[$g4p_a_source['sour_citations_id']]=new g4p_source_citation($g4p_sql_datas->g4p_sour_citations[$g4p_a_source['sour_citations_id']],$g4p_sql_datas);  
+                $this->sources[$g4p_a_source['sour_citations_id']]=new g4p_source_citation($g4p_sql_datas->g4p_sour_citations[$g4p_a_source['sour_citations_id']],$g4p_sql_datas);
         if(!empty($g4p_sql_datas->rel_familles_media[$this->id]))
             foreach($g4p_sql_datas->rel_familles_media[$this->id] as $g4p_a_media)
-                $this->medias[$g4p_a_media['media_id']]=new g4p_media($g4p_sql_datas->g4p_medias[$g4p_a_media['media_id']],$g4p_sql_datas); 
-    }   
+                $this->medias[$g4p_a_media['media_id']]=new g4p_media($g4p_sql_datas->g4p_medias[$g4p_a_media['media_id']],$g4p_sql_datas);
+    }
 }
-     
+
 /**
  * Objet contenant un évènement
  * @author Pascal Parois
@@ -830,14 +830,14 @@ class g4p_famille
 class g4p_event
 {
     //public $id, $tag, $attestation, $place, $details_descriptor, $gedcom_date, $date, $age, $cause, $address, $timestamp, $notes, $sources, $medias;
-    
+
     /**
      * Constructeur de l'objet évènement
      * @author Pascal Parois
      * @param g4p_event Tableau contenant les détails de l'évènement
      */
     function __construct($g4p_event,&$g4p_sql_datas)
-    {       
+    {
         $g4p_events_details=$g4p_sql_datas->g4p_events_details[$g4p_event['events_details_id']];
         $this->id=$g4p_event['events_details_id'];
         $this->tag=$g4p_event['events_tag'];
@@ -852,14 +852,14 @@ class g4p_event
         if(!empty($g4p_sql_datas->g4p_adresses[$g4p_events_details['addr_id']]))
             $this->address=new g4p_address($g4p_sql_datas->g4p_adresses[$g4p_events_details['addr_id']],$g4p_sql_datas);
         $this->timestamp=$g4p_events_details['events_details_timestamp'];
-    
+
         if(!empty($g4p_sql_datas->rel_events_notes[$this->id]))
             $this->g4p_event_notes($g4p_sql_datas->rel_events_notes[$this->id],$g4p_sql_datas);
         if(!empty($g4p_sql_datas->rel_events_sources[$this->id]))
             $this->g4p_event_sources($g4p_sql_datas->rel_events_sources[$this->id],$g4p_sql_datas);
         if(!empty($g4p_sql_datas->rel_events_medias[$this->id]))
             $this->g4p_event_medias($g4p_sql_datas->rel_events_medias[$this->id],$g4p_sql_datas);
-        
+
     }
 
     private function g4p_event_notes($g4p_event_notes,&$g4p_sql_datas)
@@ -878,7 +878,7 @@ class g4p_event
     {
         foreach ($g4p_event_medias as $g4p_a_media)
             $this->medias[$g4p_a_media['media_id']]=new g4p_media($g4p_sql_datas->g4p_medias[$g4p_a_media['media_id']],$g4p_sql_datas);
-    }   
+    }
 }
 
 /**
@@ -889,7 +889,7 @@ class g4p_event
 class g4p_attribute
 {
     //public $id, $tag, $description, $place, $detail_escriptor, $gedcom_date, $age, $cause, $address, $timestamp, $g4p_event_notes, $g4p_event_sources, $g4p_event_medias;
-    
+
     /**
      * Constructeur de l'objet attribut
      * @author Pascal Parois
@@ -901,7 +901,7 @@ class g4p_attribute
         //print_r($g4p_sql_datas->g4p_events_details);
         //echo '<hr>';
         //print_r($g4p_sql_datas->g4p_rel_indi_attributes);
-    
+
         $g4p_events_details=$g4p_sql_datas->g4p_events_details[$g4p_attribute['events_details_id']];
         $this->id=$g4p_attribute['events_details_id'];
         $this->tag=$g4p_attribute['events_tag'];
@@ -914,13 +914,13 @@ class g4p_attribute
         if(!empty($g4p_sql_datas->g4p_adresses[$g4p_events_details['addr_id']]))
             $this->address=new g4p_address($g4p_sql_datas->g4p_adresses[$g4p_events_details['addr_id']],$g4p_sql_datas);
         $this->timestamp=$g4p_events_details['events_details_timestamp'];
-    
+
         if(!empty($g4p_sql_datas->rel_events_notes[$this->id]))
             $this->g4p_event_notes($g4p_sql_datas->rel_events_notes[$this->id], $g4p_sql_datas);
         if(!empty($g4p_sql_datas->rel_events_sources[$this->id]))
             $this->g4p_event_sources($g4p_sql_datas->rel_events_sources[$this->id], $g4p_sql_datas);
         if(!empty($g4p_sql_datas->rel_events_medias[$this->id]))
-            $this->g4p_event_medias($g4p_sql_datas->rel_events_medias[$this->id]);  
+            $this->g4p_event_medias($g4p_sql_datas->rel_events_medias[$this->id]);
     }
 
     private function g4p_event_notes($g4p_event_notes, &$g4p_sql_datas)
@@ -932,14 +932,14 @@ class g4p_attribute
     private function g4p_event_sources($g4p_event_sources, &$g4p_sql_datas)
     {
         foreach ($g4p_event_sources as $g4p_a_source)
-            $this->sources[$g4p_a_source['sour_citations_id']]=new g4p_source_citation($g4p_sql_datas->g4p_sour_citations[$g4p_a_source['sour_citations_id']], $g4p_sql_datas); 
+            $this->sources[$g4p_a_source['sour_citations_id']]=new g4p_source_citation($g4p_sql_datas->g4p_sour_citations[$g4p_a_source['sour_citations_id']], $g4p_sql_datas);
     }
 
     private function g4p_event_medias($g4p_event_medias)
     {
         foreach ($g4p_event_medias as $g4p_a_media)
             $this->medias[$g4p_a_media['media_id']]=new g4p_media($g4p_sql_datas->g4p_medias[$g4p_a_media['media_id']]);
-    }   
+    }
 }
 
 /**
@@ -1028,7 +1028,7 @@ class g4p_repo
         $this->name=$g4p_repo['repo_name'];
         if(!empty($g4p_repo['addr_id']))
             $this->addr=new g4p_address($g4p_sql_datas->g4p_adresses[$g4p_repo['addr_id']], $g4p_sql_datas);
-        $this->timestamp=$g4p_repo['repo_timestamp'];       
+        $this->timestamp=$g4p_repo['repo_timestamp'];
     }
 }
 
@@ -1205,7 +1205,7 @@ class g4p_address
         $this->www2=$g4p_address['addr_www2'];
         $this->www3=$g4p_address['addr_www3'];
     }
-    
+
     /**
      * Construit une chaine formatée de l'adresse
      * @author Pascal Parois
@@ -1229,7 +1229,7 @@ class g4p_address
                 return $tmp;
             }
         }
-    }    
+    }
 }
 
 /**
@@ -1290,17 +1290,24 @@ class g4p_date
             $this->jd_count=$g4p_date['jd_count'];
             $this->jd_precision=$g4p_date['jd_precision'];
             $this->jd_calendar=$g4p_date['jd_calendar'];
-        
+
             $this->gedcom_date=$g4p_date['events_details_gedcom_date'];
             $this->g4p_gedom2date();
+        } else {
+          $this->jd_count=0;
+          $this->jd_precision=0;
+          $this->jd_calendar=CAL_GREGORIAN;
+
+          $this->gedcom_date='';
+          $this->g4p_gedom2date();
         }
     }
-    
+
     function set_gedcomdate($g4p_date)
     {
         $this->gedcom_date=$g4p_date;
     }
-    
+
     /**
      * Objet date
      * @author Pascal Parois
@@ -1309,7 +1316,7 @@ class g4p_date
     function g4p_gedom2date()
     {
         $gedcom=$this->gedcom_date;
-        
+
         //texte dans la date
         if(preg_match ('/^\(.*\)$/u',trim($gedcom),$reg))
         {
@@ -1319,7 +1326,7 @@ class g4p_date
                 return true;
             }
         }
-        
+
         if(preg_match ('/^INT (.*)\(([^)]+)\)/u',trim($gedcom),$reg))
         {
             if(!empty($reg[1]))
@@ -1330,12 +1337,12 @@ class g4p_date
         }
 
         if(preg_match ('/(BET|FROM) (.*) (AND|TO) (.*)/u',$this->gedcom_date,$reg))
-        {       
+        {
             if(empty($reg[2]) or empty($reg[4]))
                 return false;
             if($reg[1]=='BET' and $reg [3]!='AND')
                 return false;
-        
+
             if(!empty($reg[2]))
             {
                 $date1=new g4p_date_value();
@@ -1343,7 +1350,7 @@ class g4p_date
             }
             else
                 $date1='';
-            
+
             if(!empty($reg[4]))
             {
                 $date2=new g4p_date_value();
@@ -1351,9 +1358,9 @@ class g4p_date
             }
             else
                 $date2='';
-        
+
             //$this->date_range=new g4p_date_range();
-            //$this->date_range->set_date($date1,$date2);       
+            //$this->date_range->set_date($date1,$date2);
             $this->date1=$date1;
             $this->date2=$date2;
         }
@@ -1363,13 +1370,13 @@ class g4p_date
             {
                 $date=new g4p_date_value();
                 $date->load_from_ged($reg[1].' '.$reg[2]);
-                
+
                 //$this->date_approximated=new g4p_date_approximated();
                 //$this->date_approximated->set_date($date);
                 $this->date1=$date;
             }
-            else 
-                return false;   
+            else
+                return false;
         }
         else
         {
@@ -1378,10 +1385,10 @@ class g4p_date
                 //$this->date_exact=$date;
                 $this->date1=$date;
         }
-            
+
             return true;
     }
-    
+
     /**
      * Crée une chaine gedcom à partir d'un tableau
      * A faire et définir le fameux tableau
@@ -1390,17 +1397,17 @@ class g4p_date
      */
     function g4p_date2gedom($table)
     {
-    
+
         if(!empty($this->date_approximated))
             $gedcom=$this->date_approximated->get_gedcom();
         elseif(!empty($this->date_range))
             $gedcom=$this->date_range->get_gedcom();
         elseif(!empty($this->date_exact))
             $gedcom=$this->date_exact->get_gedcom();
-            
+
         if(!empty($this->date_phrase))
             $phrase=$this->date_phrase->get_gedcom();
-            
+
         if(!empty($gedcom) and !empty($phrase))
             return 'INT '.$gedcom.' '.$phrase;
         elseif(!empty($gedcom))
@@ -1410,7 +1417,7 @@ class g4p_date
         else
             return false;
     }
-    
+
 }
 
 /************
@@ -1446,14 +1453,14 @@ class g4p_date_value
     function __construct()
     {
     }
-    
+
     function set_date($day, $month, $year, $calendar='@#DGREGORIAN@')
     {
         global $g4p_cal_mrev;
         $fren_cal=array_flip($g4p_cal_mrev);
         $greg_cal=array_flip($g4p_cal_gregorien);
         $hebr_cal=array_flip($g4p_cal_mrev);
-    
+
         if(!empty($year) and (int)$year==$year)
         {
             $this->year=$year;
@@ -1475,17 +1482,17 @@ class g4p_date_value
                     if(!isset($hebr_cal[$month]))
                         return false;
                     break;
-                }   
+                }
                 $this->year=$month;
                 if(!empty($day) and (int)$day==$day and $day>0 and $day<32)
                     $this->day=$day;
             }
         }
         else
-            return false;   
+            return false;
 
     }
-    
+
     /**
      * Extrait une date exacte
      * @author Pascal Parois
@@ -1547,10 +1554,10 @@ class g4p_date_value
 		'@#DGREGORIAN@'=>CAL_GREGORIAN,
 		'@#DJULIAN@'=>CAL_JULIAN
 		);
-        
+
         $liste_modificateur=array('EST','ABT','CAL','TO','AFT','FROM','BET','TO','AND');
         $g4p_cal_ged_php=array('@#DHEBREW@'=>CAL_JEWISH,'@#DFRENCH R@'=>CAL_FRENCH,'@#DGREGORIAN@'=>CAL_GREGORIAN,'@#DJULIAN@'=>CAL_JULIAN,'@#UNKOWN@'=>CAL_GREGORIAN);
-        
+
         if(preg_match('/^('.implode('|',$liste_modificateur).')/',trim($date_ged),$reg))
         {
             $this->mod=$reg[1];
@@ -1570,11 +1577,11 @@ class g4p_date_value
         if(preg_match('/(B\.C\.|BC)/',$date_ged))
             $g4p_sign=-1;
         else
-            $g4p_sign=1;        
+            $g4p_sign=1;
 
         if(preg_match('/([0-9]{1,2}) ([A-Z]{3,4}) ([0-9]{1,7})/',strtoupper($date_ged),$reg))
         {
-                
+
             $this->day=$reg[1];
             $this->month=$reg[2];
             $this->year=$g4p_sign*intval($reg[3]);
@@ -1593,7 +1600,7 @@ class g4p_date_value
         }
         else
             return false;
-            
+
         // Guess calendar using months name
         if(!empty($this->month) and empty($this->calendar) and !empty($this->year))
         {
@@ -1623,7 +1630,7 @@ class g4p_date_value
                     $this->calendar='@#DHEBREW@';
             }
         }
-        
+
         if(!empty($this->calendar))
         {
             $chiffre_mois=array_merge(array_flip($g4p_cal_mrev),array_flip($g4p_cal_mhebreux),array_flip($g4p_cal_gregorien));
@@ -1636,7 +1643,7 @@ class g4p_date_value
         }
         return true;
     }
-    
+
     function get_gedcom()
     {
         $gedcom='';
@@ -1648,10 +1655,10 @@ class g4p_date_value
             $gedcom.=' '.$this->date_approximated->date->month;
         if(!empty($this->date_approximated->date->year))
             $gedcom.=' '.$this->date_approximated->date->year;
-            
+
         return trim($gedcom);
     }
-    
+
 }
 
 
@@ -1672,7 +1679,7 @@ class g4p_permission
     function g4p_load_permission($g4p_id_membre)
     {
         global $g4p_mysqli;
-        
+
         // Permissions générales
         $sql="SELECT permission_type, permission_value FROM genea_permissions WHERE membre_id=$g4p_id_membre AND base=0";
         if($g4p_result_req=$g4p_mysqli->g4p_query($sql))
@@ -1697,38 +1704,38 @@ class g4p_permission
                             $this->permission[$g4p_a_permission['permission_type']]=$g4p_a_permission['permission_value'];
                     }
         }
-    
+
         //echo '<pre>';
         //print_r($this->permission);
-    
+
     }
 }
 
 
 class g4p_mysqli extends mysqli
-{ 
+{
     function __construct()
     {
         global $g4p_config;
         $this->init();
         $this->nb_requetes=0;
-        
+
         $this->real_connect($g4p_config['g4p_db_host'],$g4p_config['g4p_db_login'],$g4p_config['g4p_db_mdp'],$g4p_config['g4p_db_base']);
-  
-        if (mysqli_connect_errno()) 
+
+        if (mysqli_connect_errno())
         {
             printf("Connect failed: %s\n", mysqli_connect_error());
             exit();
         }
 
         /* change character set to utf8 */
-        if (!$this->set_charset("utf8")) 
+        if (!$this->set_charset("utf8"))
             printf("Error loading character set utf8: %s\n", $this->error);
-        //else 
+        //else
             //printf("Current character set: %s\n", $this->character_set_name());
     }
-    
-    
+
+
     function g4p_query($g4p_db_request)
     {
         global $g4p_config, $g4p_chemin, $g4p_db_connect,$sql_count, $g4p_langue;
@@ -1736,7 +1743,7 @@ class g4p_mysqli extends mysqli
         $result = parent::query($g4p_db_request);
         $this->nb_requetes++;
         $this->requetes[]=$g4p_db_request;
-        
+
         if(mysqli_error($this))
         {
             if(mysqli_errno($this)==1062)
@@ -1747,13 +1754,13 @@ class g4p_mysqli extends mysqli
                 throw new exception(mysqli_error($this), mysqli_errno($this));
             }
         }
-        return $result; 
+        return $result;
     }
-    
+
     function g4p_result($result, $cle=0, $uniq=true)
     {
         $table=array();
-        
+
         while($ligne=$result->fetch_assoc())
         {
             if($cle===0)
@@ -1779,7 +1786,7 @@ class g4p_mysqli extends mysqli
     {
         return parent::real_escape_string($string);
     }
-    
+
 }
 
 

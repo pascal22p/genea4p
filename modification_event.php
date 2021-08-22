@@ -32,12 +32,12 @@ $indi_id=-1;
 
 
 if(!empty($_REQUEST['id_event']))
-{    
+{
     # Modification of an existing event
-    $sql="SELECT genea_events_details.*, rel_indi_events.indi_id as indi_id_e, 
-        rel_indi_events.events_tag as events_tag_e, 
-        rel_indi_attributes.indi_id as indi_id_a, familles_id, 
-        rel_familles_events.events_tag as events_tag_f, events_details_timestamp, 
+    $sql="SELECT genea_events_details.*, rel_indi_events.indi_id as indi_id_e,
+        rel_indi_events.events_tag as events_tag_e,
+        rel_indi_attributes.indi_id as indi_id_a, familles_id,
+        rel_familles_events.events_tag as events_tag_f, events_details_timestamp,
         rel_indi_events.timestamp as timestamp_e, rel_indi_attributes.timestamp as timestamp_a,
         rel_familles_events.timestamp as timestamp_f FROM genea_events_details
         LEFT OUTER JOIN rel_indi_events USING (events_details_id)
@@ -56,9 +56,9 @@ if(!empty($_REQUEST['id_event']))
         var_dump($g4p_event);
         die('Integrity error, more than results');
     }
-        
+
     $g4p_event=$g4p_event[0];
-    
+
     // check if event only present in one table
     if(!empty($g4p_event['indi_id_e']) and empty($g4p_event['indi_id_a']) and empty($g4p_event['familles_id']))
     {
@@ -89,22 +89,20 @@ else
     if(!empty($_REQUEST['id_famille']))
     {
         $famille_id=(int)$_REQUEST['id_famille'];
-        $type_event='famille';        
+        $type_event='famille';
     }
 }
-	
+
 if($type_event=='indi_e')//évènement individuel
 {
     $select_type_event='<select name="g4p_type">';
     $select_type_event.='<option value="">Choisissez</option>';
-    reset($g4p_tag_ievents);
-    while(list($g4p_key, $g4p_value)=each($g4p_tag_ievents))
-    {
-        if(empty($g4p_event['events_tag_e']))
-            $g4p_selected='';
-        else
-            $g4p_selected=($g4p_event['events_tag_e']==$g4p_key)?('selected="SELECTED"'):('');
-        $select_type_event.='<option value="'.$g4p_key.'" '.$g4p_selected.'>'.$g4p_value.'</option>';
+    foreach($g4p_tag_ievents as $g4p_key => $g4p_value) {
+      if(empty($g4p_event['events_tag_e']))
+          $g4p_selected='';
+      else
+          $g4p_selected=($g4p_event['events_tag_e']==$g4p_key)?('selected="SELECTED"'):('');
+      $select_type_event.='<option value="'.$g4p_key.'" '.$g4p_selected.'>'.$g4p_value.'</option>';
     }
     $select_type_event.='</select>';
 }
@@ -112,18 +110,16 @@ elseif($type_event=='famille')//évènement familiale
 {
     $select_type_event='<select name="g4p_type">';
     $select_type_event.='<option value="">Choisissez</option>';
-    reset($g4p_tag_fevents);
-    while(list($g4p_key, $g4p_value)=each($g4p_tag_fevents))
-    {
-        if(empty($g4p_event['events_tag_f']))
-            $g4p_selected='';
-        else
-            $g4p_selected=($g4p_event['events_tag_f']==$g4p_key)?('selected="SELECTED"'):('');
-        $select_type_event.='<option value="'.$g4p_key.'" '.$g4p_selected.'>'.$g4p_value.'</option>';
+    foreach($g4p_tag_fevents as $g4p_key => $g4p_value) {
+      if(empty($g4p_event['events_tag_f']))
+          $g4p_selected='';
+      else
+          $g4p_selected=($g4p_event['events_tag_f']==$g4p_key)?('selected="SELECTED"'):('');
+      $select_type_event.='<option value="'.$g4p_key.'" '.$g4p_selected.'>'.$g4p_value.'</option>';
     }
     $select_type_event.='</select>';
 }
-  
+
 if(!isset($_POST['g4p_exec']))
 {
     $g4p_date=new g4p_date('');
@@ -135,12 +131,12 @@ if(!isset($_POST['g4p_exec']))
     }
     else
         $g4p_date->gedcom_date='';
-    
+
 	$g4p_javascript='<script language="JavaScript" type="text/javascript">
 	function openCity(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;
-    
+
     document.getElementById("date_type").value = cityName;
 
     // Get all elements with class="tabcontent" and hide them
@@ -158,15 +154,15 @@ if(!isset($_POST['g4p_exec']))
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
-	} 
+	}
 
 	function setdefault() {
 	// Get the element with id="defaultOpen" and click on it
 	document.getElementById("defaultOpen").click();
 	}
 	</script>';
-	
-	$body='onload="setdefault()"';	
+
+	$body='onload="setdefault()"';
 
     require_once($g4p_chemin.'entete.php');
     if(!empty($_SESSION['message']))
@@ -175,14 +171,14 @@ if(!isset($_POST['g4p_exec']))
     if(!empty($_SESSION['errormsg']))
 		echo '<div class="error">'.$_SESSION['errormsg'].'</div>';
 	$_SESSION['message']='';
-    
+
     if(!empty($_REQUEST['id_pers']))
         echo '<div class="box_title"><h2>Ajout d\'un nouvel évènement individuel</h2></div>'."\n";
     else if(!empty($_REQUEST['id_famille']))
         echo '<div class="box_title"><h2>Ajout d\'un nouvel évènement familial</h2></div>'."\n";
     else
         echo '<div class="box_title"><h2>Modification de l\'évènement</h2></div>'."\n";
-    
+
     if($indi_id!=-1)
     {
 		echo '<div class="menu_interne">';
@@ -194,8 +190,8 @@ if(!isset($_POST['g4p_exec']))
 		echo '<a href="'.g4p_make_url('','modification_famille.php','id_famille='.$famille_id,'').'" class="retour">',$g4p_langue['retour'],'</a>';
 	}
     if(!empty($_REQUEST['id_event']))
-        echo '<a href="',g4p_make_url('','new_note.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a> 
-            <a href="',g4p_make_url('','new_source.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a> 
+        echo '<a href="',g4p_make_url('','new_note.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_note'],'</a>
+            <a href="',g4p_make_url('','new_source.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_source'],'</a>
             <a href="',g4p_make_url('','new_media.php','parent=EVENT&amp;id_parent='.$_REQUEST['id_event'],0),'" class="admin">',$g4p_langue['menu_ajout_media'],'</a> ';
 	echo '</div>';
 
@@ -281,7 +277,7 @@ if(!isset($_POST['g4p_exec']))
         echo '<option value="'.$g4p_value['place_id'].'" '.$g4p_selected.'>'.$g4p_value_txt."</option>\n";
     }
     echo '</select></dd></dl>';
-    
+
     echo '<dl class="mod_event">';
     echo '<input type="hidden" name="g4p_exec" value="" />';
     if(!empty($g4p_event))
@@ -289,7 +285,7 @@ if(!isset($_POST['g4p_exec']))
         echo '<input type="hidden" name="events_details_timestamp" value="'.$g4p_event['events_details_timestamp'].'" />';
         echo '<input type="hidden" name="timestamp_e" value="'.$g4p_event['timestamp_e'].'" />';
         echo '<input type="hidden" name="timestamp_a" value="'.$g4p_event['timestamp_a'].'" />';
-        echo '<input type="hidden" name="timestamp_f" value="'.$g4p_event['timestamp_f'].'" />';    
+        echo '<input type="hidden" name="timestamp_f" value="'.$g4p_event['timestamp_f'].'" />';
         echo '<input type="hidden" name="id_event" value="'.$_REQUEST['id_event'].'" />';
     }
     if(!empty($_REQUEST['id_pers']))
@@ -323,7 +319,7 @@ else # form submitted, saving data
             $g4p_result_req=$g4p_mysqli->g4p_query($sql);
             $g4p_result=$g4p_mysqli->g4p_result($g4p_result_req);
             $base=$g4p_result[0]['base'];
-            
+
             $sql="INSERT INTO genea_events_details (base) VALUES (".$base.")";
             $g4p_result_req=$g4p_mysqli->g4p_query($sql);
             if(empty($g4p_result_req))
@@ -350,7 +346,7 @@ else # form submitted, saving data
             $g4p_result_req=$g4p_mysqli->g4p_query($sql);
             $g4p_result=$g4p_mysqli->g4p_result($g4p_result_req);
             $base=$g4p_result[0]['base'];
-            
+
             $sql="INSERT INTO genea_events_details (base) VALUES (".$base.")";
             $g4p_result_req=$g4p_mysqli->g4p_query($sql);
             if(empty($g4p_result_req))
@@ -372,8 +368,8 @@ else # form submitted, saving data
             }
         }
     }
-        
-        
+
+
     $sql="SELECT events_details_timestamp FROM genea_events_details WHERE events_details_id=".(int)$_POST['id_event']." FOR UPDATE";
     $g4p_result_req=$g4p_mysqli->g4p_query($sql);
     if(empty($g4p_result_req))
@@ -383,7 +379,7 @@ else # form submitted, saving data
         $_SESSION['errormsg']="Error while saving modification: ".$sql;
         header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
     }
-    
+
     $sql="SELECT timestamp FROM rel_indi_events WHERE events_details_id=".(int)$_POST['id_event']." FOR UPDATE";
     $g4p_result_req=$g4p_mysqli->g4p_query($sql);
     if(empty($g4p_result_req))
@@ -416,8 +412,8 @@ else # form submitted, saving data
 
     //check timestamp has not changed
     // tobe done
-    
-    
+
+
     if($type_event=='indi_e')
     {
         $event_type='';
@@ -442,7 +438,7 @@ else # form submitted, saving data
                 header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
             }
         }
-        
+
         if(isset($_POST['attestation']))
         {
             $sql="UPDATE rel_indi_events SET events_attestation='Y' WHERE events_details_id=".(int)$_POST['id_event'];
@@ -468,7 +464,7 @@ else # form submitted, saving data
             }
         }
 
-        
+
     }
     else if($type_event=='famille')
     {
@@ -494,7 +490,7 @@ else # form submitted, saving data
                 header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
             }
         }
-        
+
         if(isset($_POST['attestation']))
         {
             $sql="UPDATE rel_familles_events SET events_attestation='Y' WHERE events_details_id=".(int)$_POST['id_event'];
@@ -518,7 +514,7 @@ else # form submitted, saving data
                 $_SESSION['errormsg']="Error while saving modification: ".$sql;
                 header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
             }
-        }        
+        }
     }
 
     //events_details_descriptor
@@ -534,7 +530,7 @@ else # form submitted, saving data
             header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
         }
     }
-    
+
     //age
     $sql="UPDATE genea_events_details SET events_details_age='".$g4p_mysqli->escape_string(trim($_POST['age']))."' WHERE events_details_id=".(int)$_POST['id_event'];
     $g4p_result_req=$g4p_mysqli->g4p_query($sql);
@@ -570,11 +566,11 @@ else # form submitted, saving data
         }
     }
     else
-    {		
+    {
         $date='';
         if(!empty($_POST['g4p_phrase']))
             $date.='INT ';
-            
+
         $mod=array('', '');
         for($i=0; $i<2; $i++)
         {
@@ -589,10 +585,10 @@ else # form submitted, saving data
                         $mod[$i]=$value.' ';
                         break;
                     }
-                }	
+                }
                 $date.=$mod[$i];
             }
-            
+
             if(!empty($_POST['date_calendrier'][$i]))
             {
                 //checking value
@@ -607,7 +603,7 @@ else # form submitted, saving data
                 }
                 $date.=$checked;
             }
-            
+
             if(!empty($_POST['date_jour'][$i]))
             {
                 //checking value
@@ -643,10 +639,10 @@ else # form submitted, saving data
             die("wrong combination, FROM must be followed by TO");
         if(trim($mod[0])=='BET' and trim($mod[1])!='AND')
             die("wrong combination, BET must be followed by AND");
-        
+
         if(!empty($_POST['g4p_phrase']))
             $date=$date.'('.$_POST['g4p_phrase'].')';
-            
+
         $sql="UPDATE genea_events_details SET events_details_gedcom_date='".$g4p_mysqli->escape_string($date)."' WHERE events_details_id=".(int)$_POST['id_event'];
         $g4p_result_req=$g4p_mysqli->g4p_query($sql);
         if(empty($g4p_result_req))
@@ -656,7 +652,7 @@ else # form submitted, saving data
             $_SESSION['errormsg']="Error while saving modification: ".$sql;
             header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
         }
-        
+
     }
     $sql="COMMIT";
     $g4p_result_req=$g4p_mysqli->g4p_query($sql);
@@ -667,13 +663,13 @@ else # form submitted, saving data
         $_SESSION['errormsg']="Error while saving modification: ".$sql;
         header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
     }
-    
+
     if(isset($_POST['id_pers']))
         g4p_destroy_cache($_POST['id_pers']);
-        
+
     if(isset($g4p_event['indi_id_e']))
         g4p_destroy_cache($g4p_event['indi_id_e']);
-        
+
     if(isset($g4p_event['indi_id_a']))
         g4p_destroy_cache($g4p_event['indi_id_a']);
 
@@ -681,12 +677,12 @@ else # form submitted, saving data
     {
         $sql="SELECT familles_wife, familles_husb FROM  genea_familles WHERE familles_id=".(int)$_POST['id_famille'];
         $g4p_result_req=$g4p_mysqli->g4p_query($sql);
-        $g4p_result=$g4p_mysqli->g4p_result($g4p_result_req);        
+        $g4p_result=$g4p_mysqli->g4p_result($g4p_result_req);
         g4p_destroy_cache($g4p_result[0]['familles_wife']);
         g4p_destroy_cache($g4p_result[0]['familles_husb']);
     }
-        
-    
+
+
     $_SESSION['message']='Modification enregistrée';
     header('location:'.g4p_make_url('',$_SERVER['PHP_SELF'],'id_event='.$_POST['id_event'],0,0));
 
@@ -695,7 +691,7 @@ else # form submitted, saving data
 function g4p_form_date($i, $date)
 {
     global $liste_mois_gregorien,$liste_mois_francais,$liste_mois_hebreux, $g4p_liste_calendrier;
-    
+
     $liste_modificateur1=array(
     'EST'=>'Estimée', //EST
     'ABT'=>'Environ', //ABT
@@ -708,7 +704,7 @@ function g4p_form_date($i, $date)
     'TO'=>'à', //TO
     'AND'=>'et'); //AND
     */
-    
+
     if($i==0)
     {
         echo '<select name="date_mod['.$i.']" id="date_mod'.$i.'" style="width:12ex">'."\n";
@@ -733,11 +729,12 @@ function g4p_form_date($i, $date)
         echo '<option value="AND">et</option>'."\n";
         echo '</select> '."\n";
     }
-    
+
     echo '<select name="date_calendrier['.$i.']" style="width:19ex">'."\n";
     echo '<option value="" ></option>'."\n";
-    if(empty($date->calendar))
-        $date->calendar='';
+    if(empty($date)) {
+      $date = g4p_date('');
+    }
     foreach($g4p_liste_calendrier as $a_modif_key=>$a_modif_value)
     {
         if(!empty($date->calendar) and $a_modif_key==$date->calendar)
@@ -748,13 +745,12 @@ function g4p_form_date($i, $date)
     }
     echo '</select> '."\n";
     if(empty($date->day))
-        $date->day='';   
-    echo '<input type="text" name="date_jour['.$i.']" value="'.$date->day.'" style="width:3ex" /> '."\n";
+        echo '<input type="text" name="date_jour['.$i.']" value="" style="width:3ex" /> '."\n";
+    else
+        echo '<input type="text" name="date_jour['.$i.']" value="'.$date->day.'" style="width:3ex" /> '."\n";
     $tmp=array_merge($liste_mois_gregorien,$liste_mois_francais,$liste_mois_hebreux);
     echo '<select name="date_mois['.$i.']" style="width:26ex">'."\n";
     echo '<option value="" ></option>'."\n";
-    if(empty($date->month))
-        $date->month='';    
     foreach($tmp as $a_modif_key=>$a_modif_value)
     {
         if(!empty($date->month) and $a_modif_key==$date->month)
@@ -765,9 +761,9 @@ function g4p_form_date($i, $date)
     }
     echo '</select>'."\n";
     if(empty($date->year))
-        $date->year='';   
-    echo ' <input type="text" name="date_annee['.$i.']" value="'.$date->year.'" style="width:6ex" />'."\n";
+        echo ' <input type="text" name="date_annee['.$i.']" value="" style="width:6ex" />'."\n";
+    else
+        echo ' <input type="text" name="date_annee['.$i.']" value="'.$date->year.'" style="width:6ex" />'."\n";
 }
 
 ?>
-
