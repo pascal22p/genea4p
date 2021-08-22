@@ -264,17 +264,15 @@ if(!isset($_POST['g4p_exec']))
     echo '<dt>Lieu de l\'évènement : </dt>';
     echo '<dd></dd><select name="g4p_place">';
     echo '<option value="">Choisissez</option>';
-    reset($g4p_place);
-    while(list($g4p_key, $g4p_value)=each($g4p_place))
-    {
-        $g4p_value_txt=$g4p_value['place_lieudit'].' '.$g4p_value['place_ville'].' '.$g4p_value['place_cp'].' '.$g4p_value['place_pays'];
-        $g4p_selected='';
-        if(isset($g4p_event) and !empty((int)$g4p_event['place_id']))
-        {
-            if((int)$g4p_event['place_id']==$g4p_value['place_id'])
-                $g4p_selected='selected="SELECTED"';
-        }
-        echo '<option value="'.$g4p_value['place_id'].'" '.$g4p_selected.'>'.$g4p_value_txt."</option>\n";
+    foreach($g4p_place as $g4p_key => $g4p_value) {
+      $g4p_value_txt=$g4p_value['place_lieudit'].' '.$g4p_value['place_ville'].' '.$g4p_value['place_cp'].' '.$g4p_value['place_pays'];
+      $g4p_selected='';
+      if(isset($g4p_event) and !empty((int)$g4p_event['place_id']))
+      {
+          if((int)$g4p_event['place_id']==$g4p_value['place_id'])
+              $g4p_selected='selected="SELECTED"';
+      }
+      echo '<option value="'.$g4p_value['place_id'].'" '.$g4p_selected.'>'.$g4p_value_txt."</option>\n";
     }
     echo '</select></dd></dl>';
 
