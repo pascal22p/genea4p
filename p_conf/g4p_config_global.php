@@ -26,6 +26,7 @@
  * En cas de probl�me : http://www.parois.net                              *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+mysqli_report(MYSQLI_REPORT_ERROR|MYSQLI_REPORT_STRICT);
 
 // Configuration de la base de donn�es
 $g4p_config['g4p_db_host']='localhost';

@@ -5,7 +5,7 @@ $g4p_chemin='';
 require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 
-$g4p_javascript='<script src="javascript/jquery/jquery-1.3.1.min.js" type="text/javascript"></script>
+$g4p_javascript='<script src="javascript/jquery/jquery-3.6.0.min.js" type="text/javascript"></script>
   <script type="text/javascript" src="javascript/jquery/lib/jquery.bgiframe.min.js"></script>
   <script type="text/javascript" src="javascript/jquery/lib/jquery.dimensions.js"></script>
   <script type="text/javascript" src="javascript/jquery/jquery.autocomplete.min.js"></script>

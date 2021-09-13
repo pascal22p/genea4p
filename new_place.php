@@ -2,7 +2,7 @@
 $g4p_chemin='';
 // $g4p_chemin='modules/genea4p/';
 
-$g4p_javascript='<script src="javascript/jquery/jquery-1.3.1.min.js"></script>
+$g4p_javascript='<script src="javascript/jquery/jquery-3.6.0.min.js"></script>
   <script type="text/javascript" src="javascript/jquery/lib/jquery.bgiframe.min.js"></script>
   <script type="text/javascript" src="javascript/jquery/lib/jquery.dimensions.js"></script>
   <script type="text/javascript" src="javascript/jquery/jquery.autocomplete.min.js"></script>

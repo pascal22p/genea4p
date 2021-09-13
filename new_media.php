@@ -50,7 +50,7 @@ if($g4p_result=$g4p_mysqli->g4p_result($g4p_query))
 
 }
 
-$g4p_javascript='<script type="text/javascript" src="javascript/jquery/jquery-1.3.1.min.js"></script>
+$g4p_javascript='<script type="text/javascript" src="javascript/jquery/jquery-3.6.0.min.js"></script>
   <script type="text/javascript" src="javascript/jquery/lib/jquery.bgiframe.min.js"></script>
   <script type="text/javascript" src="javascript/jquery/lib/jquery.dimensions.js"></script>
   <script type="text/javascript" src="javascript/jquery/jquery.autocomplete.min.js"></script>
