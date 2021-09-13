@@ -5,7 +5,11 @@ $g4p_chemin='';
 require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 
-$_GET['id_event']=(int)$_GET['id_event'];
+if(isset($_GET['id_event'])) {
+  $_GET['id_event']=(int)$_GET['id_event'];
+} else {
+  g4p_error('Error on parameter');
+}
 if(empty($_GET['id_event']))
     g4p_error('Error on parameter');
 

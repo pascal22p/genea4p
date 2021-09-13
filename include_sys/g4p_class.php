@@ -1739,8 +1739,13 @@ class g4p_mysqli extends mysqli
     function g4p_query($g4p_db_request)
     {
         global $g4p_config, $g4p_chemin, $g4p_db_connect,$sql_count, $g4p_langue;
-
-        $result = parent::query($g4p_db_request);
+        try {
+          $result = parent::query($g4p_db_request);
+        }
+        catch (exception $e) {
+	  error_log($e->getMessage().": ".$g4p_db_request);
+          throw $e;
+	}
         $this->nb_requetes++;
         $this->requetes[]=$g4p_db_request;
 

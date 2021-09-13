@@ -149,7 +149,7 @@ if(empty($g4p_indi))
     g4p_error('Erreur lors du chargement des données de l\'individu');
 $g4p_famille=$g4p_indi->familles[(int)$_REQUEST['id_famille']];
 
-$g4p_javascript='<script src="javascript/jquery/jquery-1.3.1.min.js"></script>
+$g4p_javascript='<script src="javascript/jquery/jquery-3.6.0.min.js"></script>
   <script type="text/javascript" src="javascript/jquery/lib/jquery.bgiframe.min.js"></script>
   <script type="text/javascript" src="javascript/jquery/lib/jquery.dimensions.js"></script>
   <script type="text/javascript" src="javascript/jquery/jquery.autocomplete.min.js"></script>
