@@ -172,7 +172,7 @@ function g4p_latex_write_attribut($event)
 
     fwrite($latex, '\begin{description}'."\n");
     if($event->details_descriptor)
-        $g4p_tmp=' ('.$g4p_a_ievents->details_descriptor.')';
+        $g4p_tmp=' ('.$event->details_descriptor.')';
     else
         $g4p_tmp='';
     fwrite($latex, '\item['.$g4p_tag_def[$event->tag].'] ');
@@ -193,7 +193,7 @@ function g4p_latex_write_attribut($event)
             fwrite($latex, '\item[Age] '.$event->age."\n");
 
         //place
-        if($g4p_a_ievents->place->g4p_formated_place()!='')
+        if($event->place->g4p_formated_place()!='')
             fwrite($latex, '\item[Lieu] '.$event->place->g4p_formated_place()."\n");
         
         //adresse

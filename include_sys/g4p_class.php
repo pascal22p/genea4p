@@ -34,10 +34,9 @@
 class g4p_sql_datas
 {
     public $liste_sources, $liste_familles, $liste_sour_records, $liste_medias, $liste_repo, $liste_notes, $liste_indi;
-    private $g4p_infos_req, $g4p_infos, $sql, $g4p_result_req, $ligne;
     public $g4p_infos_indi, $g4p_alias, $rel_indi_sources, $rel_indi_notes, $rel_indi_medias, $g4p_parents, $g4p_rel_indi_events, $g4p_rel_indi_attributes, $g4p_events_details, $g4p_adresses, $g4p_places, $rel_events_sources, $rel_events_notes, $rel_events_media, $g4p_sour_citations, $rel_sour_citations_notes, $g4p_sour_records, $g4p_repo, $g4p_medias, $rel_medias_notes, $g4p_notes, $g4p_infos_indi2;
     public $g4p_familles, $g4p_rel_familles_events, $debug, $g4p_familles_enfants, $rel_sour_citations_medias, $rel_familles_notes, $rel_events_medias, $lieudit;
-
+    public $rel_familles_sour_details, $rel_familles_media;
     /**
      * Lecture des données en BD et remplissage de l'objet
      * @author Pascal Parois
@@ -938,7 +937,7 @@ class g4p_attribute
         if(!empty($g4p_sql_datas->rel_events_sources[$this->id]))
             $this->g4p_event_sources($g4p_sql_datas->rel_events_sources[$this->id], $g4p_sql_datas);
         if(!empty($g4p_sql_datas->rel_events_medias[$this->id]))
-            $this->g4p_event_medias($g4p_sql_datas->rel_events_medias[$this->id]);  
+            $this->g4p_event_medias($g4p_sql_datas->rel_events_medias[$this->id], $g4p_sql_datas);  
     }
 
     private function g4p_event_notes($g4p_event_notes, &$g4p_sql_datas)
@@ -953,10 +952,10 @@ class g4p_attribute
             $this->sources[$g4p_a_source['sour_citations_id']]=new g4p_source_citation($g4p_sql_datas->g4p_sour_citations[$g4p_a_source['sour_citations_id']], $g4p_sql_datas); 
     }
 
-    private function g4p_event_medias($g4p_event_medias)
+    private function g4p_event_medias($g4p_event_medias, &$g4p_sql_datas)
     {
         foreach ($g4p_event_medias as $g4p_a_media)
-            $this->medias[$g4p_a_media['media_id']]=new g4p_media($g4p_sql_datas->g4p_medias[$g4p_a_media['media_id']]);
+            $this->medias[$g4p_a_media['media_id']]=new g4p_media($g4p_sql_datas->g4p_medias[$g4p_a_media['media_id']], $g4p_sql_datas);
     }   
 }
 

@@ -14,19 +14,6 @@ function g4p_permission()
     return $_SESSION['g4p_permission']['*'];
 }
 
-
-function g4p_utf8_decode($var)
-{
-  if(is_array($var))
-  {
-    foreach($var as $key=>$value)
-      $var_iso[$key]=g4p_utf8_decode($value);
-    return $var_iso;
-  }
-  else
-    return utf8_decode($var);
-}
-
 function g4p_clean_xhtml_arrays ( $string )
 {
   if (is_array($string))
@@ -35,15 +22,6 @@ function g4p_clean_xhtml_arrays ( $string )
   }
   return preg_replace('/&(?!(#*x*[0-9]{1,4}|[a-zA-Z]{1,7});)/','&amp;',$string);
   //str_replace("&", "&amp;", $string);
-}
-
-function g4p_db_numrows($g4p_result)//OK
-{
-  global $g4p_langue;
-  if (empty($g4p_result))
-    return false;
-  else
-    return mysql_num_rows($g4p_result);
 }
 
 function g4p_date($g4p_date, $date='date1', $cache=0)
@@ -471,7 +449,7 @@ function g4p_affiche_liste_nom($lettre, $cpt)
     {
 
         $longueur_lettre=strlen($lettre);
-        $sql="SELECT lettre, nombre, longueur FROM agregats_noms WHERE base=".$_SESSION['genea_db_id']." AND longueur=".($longueur_lettre+1)." AND lettre LIKE '".mysql_escape_string($lettre)."%' ORDER BY lettre";
+        $sql="SELECT lettre, nombre, longueur FROM agregats_noms WHERE base=".$_SESSION['genea_db_id']." AND longueur=".($longueur_lettre+1)." AND lettre LIKE '".$g4p_mysqli->escape_string($lettre)."%' ORDER BY lettre";
 
         $g4p_result=$g4p_mysqli->g4p_query($sql);
         if($g4p_result=$g4p_mysqli->g4p_result($g4p_result))
@@ -909,7 +887,7 @@ function array_column_sort()
 }
 
 // recherches les dependances pour gerer les fichiers de cache
-function g4p_cherche_dependances($g4p_id,$g4p_type)
+function g4p_cherche_dependances($g4p_id,$g4p_type, &$g4p_mysqli)
 {
   switch($g4p_type)
   {
@@ -1071,14 +1049,14 @@ function g4p_strftime($masque,$date,$format='timestamp')
   {
     case 'timestamp':
       $g4p_tmp=array(
-          '/%A/'=>$g4p_jours_gregorien[strftime('%w',$date)],
-          '/%d/'=>strftime('%d',$date),
-          '/%b/'=>$g4p_cal_gregorien[intval(strftime('%m',$date))],
-          '/%B/'=>$g4p_mois_gregorien[intval(strftime('%m',$date))],
-          '/%Y/'=>strftime('%Y',$date),
-          '/%H/'=>strftime('%H',$date),
-          '/%M/'=>strftime('%S',$date),
-          '/%S/'=>strftime('%S',$date),
+          '/%A/'=>$g4p_jours_gregorien[date('%w',$date)],
+          '/%d/'=>date('%d',$date),
+          '/%b/'=>$g4p_cal_gregorien[intval(date('%m',$date))],
+          '/%B/'=>$g4p_mois_gregorien[intval(date('%m',$date))],
+          '/%Y/'=>date('%Y',$date),
+          '/%H/'=>date('%H',$date),
+          '/%M/'=>date('%S',$date),
+          '/%S/'=>date('%S',$date),
           );
       return trim(preg_replace(array_keys($g4p_tmp),array_values($g4p_tmp),$masque));
       break;
@@ -1128,7 +1106,7 @@ function g4p_strftime($masque,$date,$format='timestamp')
   }
 }
 
-function g4p_liste_membres()
+function g4p_liste_membres(&$g4p_mysqli)
 {
   global $g4p_config;
 
@@ -1366,10 +1344,7 @@ function & strip_slashes(&$str)
   }
   else
   {
-    if($g4p_langue['entete_charset']!='UTF-8')
-      $str = stripslashes(utf8_encode($str));
-    else
-      $str = stripslashes($str);
+   $str = stripslashes($str);
   }
   return $str;
 }
@@ -1441,7 +1416,7 @@ function g4p_add_intohistoric($id,$type='indi')
 	$_SESSION['historic'][$type] = array_values($_SESSION['historic'][$type]);
 }
 
-function g4p_show_alias($alias,$admin=0)
+function g4p_show_alias($alias,$g4p_indi, $admin=0)
 {
     global $g4p_langue;
 
@@ -1463,7 +1438,7 @@ function g4p_show_alias($alias,$admin=0)
     }
 }
 
-function g4p_anniversaire()
+function g4p_anniversaire($g4p_mysqli)
 {
   $anniversaire=array();
   $sql="SELECT genea_individuals.indi_id, genea_individuals.base AS base, resn, indi_nom, indi_prenom, date_event FROM genea_events
@@ -1704,66 +1679,6 @@ function g4p_error($a)
 {
 	echo $a;
 	exit;
-}
-
-function g4p_show_events($events)
-{
-	echo '<div class="evenements">';
-	//$g4p_indi->events=array_column_sort($g4p_indi->events,'jd_count');
-	foreach($events as $g4p_a_ievents)
-	{
-		if($g4p_a_ievents->details_descriptor)
-			$g4p_tmp=' ('.$g4p_a_ievents->details_descriptor.')';
-		else
-			$g4p_tmp='';
-		echo '<em>',$g4p_tag_def[$g4p_a_ievents->tag],$g4p_tmp,'&nbsp;:
-			</em><span class="date">',g4p_date($g4p_a_ievents->gedcom_date),'</span>', ($g4p_a_ievents->place->g4p_formated_place($_SESSION['place']))?(' ('.$g4p_langue['index_lieu'].$g4p_a_ievents->place->g4p_formated_place($_SESSION['place']).') '):('');
-		echo (isset($g4p_a_ievents->sources))?(' <span style="color:blue; font-size:x-small;">-S-</span> '):('');
-		echo (isset($g4p_a_ievents->notes))?(' <span style="color:blue; font-size:x-small;">-N-</span> '):('');
-		echo (isset($g4p_a_ievents->medias))?(' <span style="color:blue; font-size:x-small;">-M-</span> '):('');
-		echo (isset($g4p_a_ievents->asso))?(' <span style="color:blue; font-size:x-small;">-T-</span> '):('');
-		echo (isset($g4p_a_ievents->id))?(' <a href="'.g4p_make_url('','detail_event.php','parent=FAM&amp;id_parent='.$g4p_a_ievents->id,0).'" class="noprint">'.$g4p_langue['detail'].'</a><br />'):('<br />');
-	}
-	echo '</div>';
-}
-
-function g4p_http_not_modifed()
-{
-    global $g4p_chemin;
-    
-    // On économise le serveur, pas la peine de renvoyer la page si celle en cache dans le navigateur est la bonne
-    header('Date: ' . gmdate("D, d M Y H:i:s") . ' GMT');
-    header('Cache-Control: Public, must-revalidate');
-    header('Pragma: public');
-    header("ETag: ".md5($_SESSION['g4p_id_membre'].$_SESSION['langue'].$_SESSION['theme'].serialize($_SESSION['place'])));
-
-    if(file_exists($g4p_chemin.'cache/'.$_SESSION['genea_db_nom'].'/indi_'.$_GET['id_pers'].'.txt'))
-    {
-        // date de dernière modif
-        $modif = gmdate('D, d M Y H:i:s', filemtime($g4p_chemin.'cache/'.$_SESSION['genea_db_nom'].'/indi_'.$_GET['id_pers'].'.txt')) ;
-        header("Last-Modified: $modif GMT");
-        // on vérifie si le contenu a changé
-        //Je compare la date de génération du cache et de la page
-        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) and (strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'],0,29)))>=gmdate('U', filemtime($g4p_chemin.'cache/'.$_SESSION['genea_db_nom'].'/indi_'.$_GET['id_pers'].'.txt')))
-        {		
-            //Je compare un hash du membre et du etag de la page, 
-            if(isset($_SERVER['HTTP_IF_NONE_MATCH']) and 
-                $_SERVER['HTTP_IF_NONE_MATCH']==md5($_SESSION['g4p_id_membre'].$_SESSION['langue'].$_SESSION['theme'].serialize($_SESSION['place'])))
-            {
-                //Rien à chnagé, un petit 304, si la config est ok...
-                if(!empty($g4p_config['g4p_httpcache']))
-                {
-                    header('Not Modified', TRUE, 304);
-                    exit;
-                }
-            }
-        }
-    }
-
-    // on enregistre la date de la page pour pouvoir vérifier ultérieurement si les données sont à jour
-    $modif = gmdate('D, d M Y H:i:s', @filemtime($g4p_chemin.'cache/'.$_SESSION['genea_db_nom'].'/indi_'.$g4p_indi->indi_id.'.txt')) ;
-    header("Last-Modified: $modif GMT");
-
 }
 
 function g4p_link_nom($indi)

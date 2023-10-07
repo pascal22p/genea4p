@@ -156,7 +156,7 @@ $g4p_indi=g4p_load_indi_infos((int)$_GET['id_pers']);
       echo '</div>';
  
       if(!empty($g4p_indi->alias))
-        g4p_show_alias($g4p_indi->alias);
+        g4p_show_alias($g4p_indi->alias, $g4p_indi);
 
       //evenements individuels
       if(isset($g4p_indi->events) and count($g4p_indi->events)>0)

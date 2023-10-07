@@ -74,7 +74,7 @@ switch($_GET['g4p_opt'])
 
 //ALIAS
         if(!empty($g4p_indi->alias))
-            g4p_show_alias($g4p_indi->alias,$admin=1);
+            g4p_show_alias($g4p_indi->alias,$g4p_indi, $admin=1);
 
 //nouvel ALIAS
         echo '<form class="formulaire" method="post" action="',g4p_make_url('admin','exec.php','g4p_opt=add_alia',0),'" name="modif_fich">';
@@ -958,7 +958,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
     {
        echo '<b>',$g4p_langue['a_index_gerer_perm_supp_membre'],'</b><br /><form class="formulaire" method="post" action="',g4p_make_url('admin','exec.php','g4p_opt=del_member',0),'" name="del_member">';
        echo '<select name="membre_id" style="width:auto">';
-       $g4p_liste_membre=g4p_liste_membres();
+       $g4p_liste_membre=g4p_liste_membres($g4p_mysqli);
 	   foreach($g4p_liste_membre as $g4p_a_result)
       	   if($_SESSION['g4p_id_membre']!=$g4p_a_result['id'])
       	   	 echo '<option value="',$g4p_a_result['id'],'">',$g4p_a_result['email'],'</option>';
@@ -971,7 +971,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
       <form class="formulaire" method="post" action="',g4p_make_url('admin','index.php','g4p_opt=gerer_permissions',0),'" name="load_perm">';
       echo '<select name="nom" style="width:auto"><option value="0" selected="selected"> </option>';
     // creation de la liste des membres
-    $g4p_liste_membre=g4p_liste_membres();
+    $g4p_liste_membre=g4p_liste_membres($g4p_mysqli);
     foreach($g4p_liste_membre as $g4p_a_result)
       echo '<option value="',$g4p_a_result['id'],'">',$g4p_a_result['email'],'</option>';
     echo '</select><input type="submit" value="',$g4p_langue['submit_editer'],'" /></form><br /><hr /><br />';

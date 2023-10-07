@@ -83,7 +83,7 @@ echo '</dl>';
 echo '</div>';
 
 if(!empty($g4p_indi->alias))
-    g4p_show_alias($g4p_indi->alias);
+    g4p_show_alias($g4p_indi->alias, $g4p_indi);
 
 //evenements individuels
 /* 
@@ -206,8 +206,8 @@ if(!empty($g4p_indi->parents))
 if($g4p_config['show_ext_rela'])
     g4p_relations_avancees($g4p_indi->indi_id);
 
-g4p_affiche_asso(@$g4p_indi->asso, $g4p_indi->indi_id,'indi');
-g4p_affiche_event_temoins(@$g4p_indi->temoins['events']);
+//g4p_affiche_asso(@$g4p_indi->asso, $g4p_indi->indi_id,'indi');
+//g4p_affiche_event_temoins(@$g4p_indi->temoins['events']);
 
 if ($_SESSION['permission']->permission[_PERM_NOTE_])
     g4p_affiche_notes(@$g4p_indi->notes, $g4p_indi->indi_id,'indi');
