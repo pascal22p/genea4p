@@ -1055,7 +1055,7 @@ function g4p_strftime($masque,$date,$format='timestamp')
           '/%B/'=>$g4p_mois_gregorien[intval(date('n',$date))],
           '/%Y/'=>date('Y',$date),
           '/%H/'=>date('H',$date),
-          '/%M/'=>date('M',$date),
+          '/%M/'=>date('m',$date),
           '/%S/'=>date('S',$date),
           );
       return trim(preg_replace(array_keys($g4p_tmp),array_values($g4p_tmp),$masque));
