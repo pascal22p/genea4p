@@ -906,7 +906,7 @@ class g4p_event
 class g4p_attribute
 {
     public $id, $tag, $description, $place, $detail_escriptor, $gedcom_date, $age, $cause, $address, $timestamp, $g4p_event_notes, $g4p_event_sources, $g4p_event_medias;
-    public $details_descriptor;
+    public $details_descriptor, $notes, $medias, $sources;
     
     /**
      * Constructeur de l'objet attribut
@@ -1358,6 +1358,7 @@ class g4p_parents
 class g4p_date
 {
     public $jd_count, $jd_precision, $jd_calendar, $gedcom_date, $date1, $date2;
+    public $date_approximated, $date_phrase, $date_exact, $date_range, $phrase;
 
     /**
      * Constructeur de l'objet date
@@ -1525,7 +1526,7 @@ class g4p_date
 class g4p_date_value
 {
 
-    public $calendar, $year, $month, $day, $jd_count, $jd_precision, $mod;
+    public $calendar, $year, $month, $day, $jd_count, $jd_precision, $mod, $date_approximated, $g4p_cal_gregorien;
 
     function __construct()
     {
@@ -1534,6 +1535,7 @@ class g4p_date_value
     function set_date($day, $month, $year, $calendar='@#DGREGORIAN@')
     {
         global $g4p_cal_mrev;
+        global $g4p_cal_gregorien;
         $fren_cal=array_flip($g4p_cal_mrev);
         $greg_cal=array_flip($g4p_cal_gregorien);
         $hebr_cal=array_flip($g4p_cal_mrev);
@@ -1798,7 +1800,7 @@ class g4p_mysqli extends mysqli
     function __construct()
     {
         global $g4p_config;
-        $this->init();
+        parent::__construct();
         $this->nb_requetes=0;
         
         $this->real_connect($g4p_config['g4p_db_host'],$g4p_config['g4p_db_login'],$g4p_config['g4p_db_mdp'],$g4p_config['g4p_db_base']);
