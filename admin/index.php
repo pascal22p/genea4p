@@ -101,10 +101,10 @@ switch($_GET['g4p_opt'])
             
     //evenements individuels
         echo '<div class="evenements">';
-        if(isset($g4p_indi->evenements))
+        if(isset($g4p_indi->events))
         {
-            $g4p_indi->evenements=array_column_sort($g4p_indi->evenements,'type');
-            foreach($g4p_indi->evenements as $g4p_a_ievents)
+            $g4p_indi->events=array_column_sort($g4p_indi->events,'type');
+            foreach($g4p_indi->events as $g4p_a_ievents)
             {
                 if($g4p_a_ievents->description)
                     $g4p_tmp=' ('.$g4p_a_ievents->description.')';
@@ -149,7 +149,7 @@ switch($_GET['g4p_opt'])
             echo '</div>';
         }
 
-        g4p_affiche_asso(@$g4p_indi->asso, $g4p_indi->indi_id,'indi');
+        //g4p_affiche_asso(@$g4p_indi->asso, $g4p_indi->indi_id,'indi');
 
         if ($_SESSION['permission']->permission[_PERM_NOTE_])
             g4p_affiche_notes(@$g4p_indi->notes,$g4p_indi->indi_id, 'indi');
@@ -158,7 +158,7 @@ switch($_GET['g4p_opt'])
             g4p_affiche_sources(@$g4p_indi->sources,$g4p_indi->indi_id, 'indi');
 
         if ($_SESSION['permission']->permission[_PERM_MULTIMEDIA_])
-            g4p_affiche_multimedia(@$g4p_indi->multimedia, $g4p_indi->indi_id, 'indi');
+            g4p_affiche_multimedia(@$g4p_indi->medias, $g4p_indi->indi_id, 'indi');
 
         echo '</div>';
     }
@@ -424,7 +424,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
     else
     {
      $_SESSION['message']=$g4p_langue['a_index_mod_note_erreur'];
-     $g4p_indi=g4p_destroy_cache();
+     g4p_destroy_cache($g4p_indi);
       header('location:'.g4p_make_url('','index.php','id_pers='.$g4p_indi->indi_id,'fiche-'.g4p_prepare_var_url($g4p_indi->indi_nom).'-'.g4p_prepare_var_url($g4p_indi->indi_prenom).'-'.$g4p_indi->indi_id));
     }
   break;
@@ -647,9 +647,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
   
     echo $g4p_langue['a_index_mod_event_type'],'<select name="g4p_type">';
     echo '<option value="">Choisissez</option>';
-    reset($g4p_tag_iattributs);
-    while(list($g4p_key, $g4p_value)=each($g4p_tag_iattributs))
-    {
+    foreach ($g4p_tag_iattributs as $g4p_key => $g4p_value) {
       $g4p_selected=($g4p_events['type']==$g4p_key)?('selected="selected"'):('');
       echo '<option value="',$g4p_key,'" '.$g4p_selected.'>',$g4p_value,'</option>';
     }
@@ -671,9 +669,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
   
     echo $g4p_langue['a_index_mod_event_type'],'<select name="g4p_type">';
     echo '<option value="">Choisissez</option>';
-    reset($g4p_tag_ievents);
-    while(list($g4p_key, $g4p_value)=each($g4p_tag_ievents))
-    {
+    foreach ($g4p_tag_ievents as $g4p_key => $g4p_value) {
       $g4p_selected=($g4p_events['type']==$g4p_key)?('selected="SELECTED"'):('');
       echo '<option value="',$g4p_key,'" '.$g4p_selected.'>',$g4p_value,'</option>';
     }
@@ -697,9 +693,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
   
     echo $g4p_langue['a_index_mod_event_type'],'<select name="g4p_type">';
     echo '<option value="">Choisissez</option>';
-    reset($g4p_tag_fevents);
-    while(list($g4p_key, $g4p_value)=each($g4p_tag_fevents))
-    {
+    foreach ($g4p_tag_fevents as $g4p_key => $g4p_value) {
       $g4p_selected=($g4p_events['type']==$g4p_key)?('selected="SELECTED"'):('');
       echo '<option value="',$g4p_key,'" '.$g4p_selected.'>',$g4p_value,'</option>';
     }
@@ -711,10 +705,10 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
     
     g4p_formulaire_date_event($g4p_date);
     echo '</div>';
-  }
-  else
+  } else {
     echo 'Erreur lors de la modif d\'un évènement';
-  
+  }
+
   echo '<br />';
   echo $g4p_langue['a_index_mod_event_lieu'];
   echo '<select name="g4p_lieu" style="width:auto"><option value=""></option>';
@@ -781,9 +775,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
   
     echo $g4p_langue['a_index_mod_event_type'],'<select name="g4p_type">';
     echo '<option value="">Choisissez</option>';
-    reset($g4p_tag_iattributs);
-    while(list($g4p_key, $g4p_value)=each($g4p_tag_iattributs))
-    {
+    foreach ($g4p_tag_iattributs as $g4p_key => $g4p_value) {
       $g4p_selected=($g4p_events['type']==$g4p_key)?('selected="SELECTED"'):('');
       echo '<option value="',$g4p_key,'" '.$g4p_selected.'>',$g4p_value,'</option>';
     }
@@ -805,9 +797,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
   
     echo $g4p_langue['a_index_mod_event_type'],'<select name="g4p_type">';
     echo '<option value="">Choisissez</option>';
-    reset($g4p_tag_ievents);
-    while(list($g4p_key, $g4p_value)=each($g4p_tag_ievents))
-    {
+    foreach ($g4p_tag_ievents as $g4p_key => $g4p_value) {
       $g4p_selected=($g4p_events['type']==$g4p_key)?('selected="SELECTED"'):('');
       echo '<option value="',$g4p_key,'" '.$g4p_selected.'>',$g4p_value,'</option>';
     }
@@ -828,9 +818,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
   
     echo $g4p_langue['a_index_mod_event_type'],'<select name="g4p_type">';
     echo '<option value="">Choisissez</option>';
-    reset($g4p_tag_fevents);
-    while(list($g4p_key, $g4p_value)=each($g4p_tag_fevents))
-    {
+    foreach ($g4p_tag_fevents as $g4p_key => $g4p_value) {
       $g4p_selected=($g4p_events['type']==$g4p_key)?('selected="SELECTED"'):('');
       echo '<option value="',$g4p_key,'" '.$g4p_selected.'>',$g4p_value,'</option>';
     }
@@ -1334,7 +1322,7 @@ $g4p_langue['a_index_modfams_titre'],$g4p_indi->nom,@$g4p_indi->familles[$_GET['
     else
     {
       $_SESSION['message']=$g4p_langue['a_index_mod_multimedia_erreur'];
-      $g4p_indi=g4p_destroy_cache();
+      g4p_destroy_cache($g4p_indi);
       header('location:'.g4p_make_url('','index.php','id_pers='.$g4p_indi->indi_id,'fiche-'.g4p_prepare_varurl($g4p_indi->nom).'-'.g4p_prepare_varurl($g4p_indi->prenom).'-'.$g4p_indi->indi_id));
     }
   }
