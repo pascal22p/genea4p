@@ -48,12 +48,12 @@ else
     case 'modif_fich':
     if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     {
-      $sql="UPDATE genea_individuals SET indi_nom='".mysql_escape_string($_POST['nom'])."', indi_prenom='".
-            mysql_escape_string($_POST['prenom'])."', indi_sexe='".mysql_escape_string($_POST['sexe'])."', 
-            indi_timestamp=NOW(), indi_npfx='".mysql_escape_string($_POST['npfx'])."', indi_givn='".
-            mysql_escape_string($_POST['givn'])."', indi_nick='".
-            mysql_escape_string($_POST['nick'])."', indi_spfx='".mysql_escape_string($_POST['spfx'])."', indi_nsfx='".
-            mysql_escape_string($_POST['nsfx'])."' WHERE indi_id='".$_POST['g4p_id']."'";
+      $sql="UPDATE genea_individuals SET indi_nom='".$g4p_mysqli->escape_string($_POST['nom'])."', indi_prenom='".
+      $g4p_mysqli->escape_string($_POST['prenom'])."', indi_sexe='".$g4p_mysqli->escape_string($_POST['sexe'])."', 
+            indi_timestamp=NOW(), indi_npfx='".$g4p_mysqli->escape_string($_POST['npfx'])."', indi_givn='".
+            $g4p_mysqli->escape_string($_POST['givn'])."', indi_nick='".
+            $g4p_mysqli->escape_string($_POST['nick'])."', indi_spfx='".$g4p_mysqli->escape_string($_POST['spfx'])."', indi_nsfx='".
+            $g4p_mysqli->escape_string($_POST['nsfx'])."' WHERE indi_id='".$_POST['g4p_id']."'";
       if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message'].=$g4p_langue['message_req_succes'];
       else
@@ -73,24 +73,24 @@ else
       if(!empty($_POST['mari2']))
       {
         $g4p_modif=1;
-        $sql.="familles_husb=".mysql_escape_string($_POST['mari2'])." ";
+        $sql.="familles_husb=".$g4p_mysqli->escape_string($_POST['mari2'])." ";
       }
       elseif($_POST['mari'])
       {
         $g4p_modif=1;
-        $sql.="familles_husb=".mysql_escape_string($_POST['mari'])." ";
+        $sql.="familles_husb=".$g4p_mysqli->escape_string($_POST['mari'])." ";
       }
       if(($_POST['mari'] or $_POST['mari2']) and ($_POST['femme'] or $_POST['femme2']))
         $sql.=", ";
       if(!empty($_POST['femme2']))
       {
         $g4p_modif=1;
-        $sql.="familles_wife=".mysql_escape_string($_POST['femme2'])." ";
+        $sql.="familles_wife=".$g4p_mysqli->escape_string($_POST['femme2'])." ";
       }
       elseif($_POST['femme'])
       {
         $g4p_modif=1;
-        $sql.="familles_wife=".mysql_escape_string($_POST['femme'])." ";
+        $sql.="familles_wife=".$g4p_mysqli->escape_string($_POST['femme'])." ";
       }
       if($g4p_modif)
       {
@@ -129,7 +129,7 @@ else
 
         g4p_destroy_cache($g4p_indi->familles[$_GET['fam_id']]->conjoint->indi_id);
         g4p_destroy_cache($_GET['g4p_id']);
-        $g4p_indi=g4p_destroy_cache();
+        $g4p_indi=g4p_destroy_cache($g4p_indi);
         header('location:'.g4p_make_url('admin','index.php','g4p_opt=mod_fams&g4p_id='.$_GET['fam_id'],0,0));
       }
     }
@@ -159,7 +159,7 @@ else
       }
       g4p_destroy_cache($g4p_indi->familles[$_POST['fam_id']]->conjoint->indi_id);
       g4p_destroy_cache($_POST['enfant']);
-      $g4p_indi=g4p_destroy_cache();
+      $g4p_indi=g4p_destroy_cache($g4p_indi);
       header('location:'.g4p_make_url('admin','index.php','g4p_opt=mod_fams&g4p_id='.$_POST['fam_id'],0,0));
     }
     break;
@@ -168,13 +168,13 @@ else
     case 'modif_note':
     if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     {
-      $sql="UPDATE genea_notes SET notes_text='".mysql_escape_string($_POST['g4p_note'])."', notes_chan=NOW() WHERE notes_id=".$_POST['g4p_id'];
+      $sql="UPDATE genea_notes SET notes_text='".$g4p_mysqli->escape_string($_POST['g4p_note'])."', notes_chan=NOW() WHERE notes_id=".$_POST['g4p_id'];
       if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message'].=$g4p_langue['message_req_succes'];
       else
         $_SESSION['message'].=$g4p_langue['message_req_echec'];
 
-      $g4p_liste_indi=g4p_cherche_dependances($_POST['g4p_id'],'notes');
+      $g4p_liste_indi=g4p_cherche_dependances($_POST['g4p_id'],'notes', $g4p_mysqli);
       foreach($g4p_liste_indi as $g4p_tmp)
         g4p_destroy_cache($g4p_tmp);
       $g4p_indi=g4p_load_indi_infos($g4p_indi->indi_id);
@@ -186,7 +186,7 @@ else
     case 'ajout_note':
     if($_SESSION['permission']->permission[_PERM_EDIT_FILES_] and isset($_POST['g4p_id']) AND isset($_POST['g4p_type']))
     {
-      $sql="INSERT INTO genea_notes (notes_text, notes_chan, base) VALUES ('".mysql_escape_string(trim($_POST['g4p_note']))."' , NOW(), ".$_SESSION['genea_db_id'].")";
+      $sql="INSERT INTO genea_notes (notes_text, notes_chan, base) VALUES ('".$g4p_mysqli->escape_string(trim($_POST['g4p_note']))."' , NOW(), ".$_SESSION['genea_db_id'].")";
       if($g4p_mysqli->g4p_query($sql))
       {
         $_SESSION['message'].=$g4p_langue['message_note_enr'];
@@ -215,7 +215,7 @@ else
         $_SESSION['message'].=$g4p_langue['message_req_echec'];
       if(isset($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id))
         g4p_destroy_cache($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id);
-      $g4p_indi=g4p_destroy_cache();
+      $g4p_indi=g4p_destroy_cache($g4p_indi);
       header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
     }
     break;
@@ -249,7 +249,7 @@ else
     }
     if(isset($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id))
       g4p_destroy_cache($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id);
-    $g4p_indi=g4p_destroy_cache();
+    $g4p_indi=g4p_destroy_cache($g4p_indi);
     header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
   break;
 
@@ -282,7 +282,7 @@ else
     }
     if(isset($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id))
       g4p_destroy_cache($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id);
-    $g4p_indi=g4p_destroy_cache();
+    $g4p_indi=g4p_destroy_cache($g4p_indi);
     header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
   break;
 
@@ -293,8 +293,8 @@ else
     {
       $sql="INSERT INTO genea_sources (sources_title, sources_publ, sources_text, sources_auth, sources_page, sources_caln, sources_medi,
         sources_chan, base, repo_id)
-      VALUES ('".mysql_escape_string(trim($_POST['g4p_titre']))."',' ".mysql_escape_string(trim($_POST['g4p_publ']))."','".mysql_escape_string(trim($_POST['g4p_text']))."','".
-      mysql_escape_string(trim($_POST['g4p_auteur']))."','".mysql_escape_string(trim($_POST['g4p_page']))."','".mysql_escape_string(trim($_POST['g4p_caln']))."','".mysql_escape_string(trim($_POST['g4p_medi']))."'
+      VALUES ('".$g4p_mysqli->escape_string(trim($_POST['g4p_titre']))."',' ".$g4p_mysqli->escape_string(trim($_POST['g4p_publ']))."','".$g4p_mysqli->escape_string(trim($_POST['g4p_text']))."','".
+      $g4p_mysqli->escape_string(trim($_POST['g4p_auteur']))."','".$g4p_mysqli->escape_string(trim($_POST['g4p_page']))."','".$g4p_mysqli->escape_string(trim($_POST['g4p_caln']))."','".$g4p_mysqli->escape_string(trim($_POST['g4p_medi']))."'
       , NOW(),".$_SESSION['genea_db_id'].",".$_POST['g4p_repo']." )";
       if($g4p_mysqli->g4p_query($sql))
       {
@@ -324,7 +324,7 @@ else
         $_SESSION['message'].='Erreur lors de la requète';
       if(isset($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id))
         g4p_destroy_cache($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id);
-      $g4p_indi=g4p_destroy_cache();
+      $g4p_indi=g4p_destroy_cache($g4p_indi);
       header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
     }
     break;
@@ -333,17 +333,17 @@ else
     case 'mod_source':
     if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     {
-      $sql="UPDATE genea_sources SET sources_title='".mysql_escape_string(trim($_POST['g4p_titre']))
-          ."', sources_publ='".mysql_escape_string(trim($_POST['g4p_publ']))."', sources_text='".mysql_escape_string(trim($_POST['g4p_text']))
-          ."', sources_auth='".mysql_escape_string(trim($_POST['g4p_auteur']))."', sources_page='".mysql_escape_string(trim($_POST['g4p_page']))
-          ."', sources_caln='".mysql_escape_string(trim($_POST['g4p_caln']))."', sources_medi='".mysql_escape_string(trim($_POST['g4p_medi']))
+      $sql="UPDATE genea_sources SET sources_title='".$g4p_mysqli->escape_string(trim($_POST['g4p_titre']))
+          ."', sources_publ='".$g4p_mysqli->escape_string(trim($_POST['g4p_publ']))."', sources_text='".$g4p_mysqli->escape_string(trim($_POST['g4p_text']))
+          ."', sources_auth='".$g4p_mysqli->escape_string(trim($_POST['g4p_auteur']))."', sources_page='".$g4p_mysqli->escape_string(trim($_POST['g4p_page']))
+          ."', sources_caln='".$g4p_mysqli->escape_string(trim($_POST['g4p_caln']))."', sources_medi='".$g4p_mysqli->escape_string(trim($_POST['g4p_medi']))
           ."', sources_chan=NOW(), repo_id=".$_POST['g4p_repo_id'].", base=".$_SESSION['genea_db_id']." WHERE sources_id=".$_POST['g4p_id'];
       if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message'].=$g4p_langue['message_req_succes'];
       else
         $_SESSION['message'].=$g4p_langue['message_req_echec'];
 
-      $g4p_liste_indi=g4p_cherche_dependances($_POST['g4p_id'],'sources');
+      $g4p_liste_indi=g4p_cherche_dependances($_POST['g4p_id'],'sources', $g4p_mysqli);
       foreach($g4p_liste_indi as $g4p_tmp)
         g4p_destroy_cache($g4p_tmp);
       $g4p_indi=g4p_load_indi_infos($g4p_indi->indi_id);
@@ -375,7 +375,7 @@ else
         $_SESSION['message']=$g4p_langue['message_suppr_lien_source_echec'];
       if(isset($g4p_indi->familles[$_GET['g4p_lien']]->conjoint->indi_id))
         g4p_destroy_cache($g4p_indi->familles[$_GET['g4p_lien']]->conjoint->indi_id);
-      $g4p_indi=g4p_destroy_cache();
+      $g4p_indi=g4p_destroy_cache($g4p_indi);
       header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
     }
     break;
@@ -599,17 +599,17 @@ exit;*/
       else
         $_POST['g4p_description']='';
 
-      $sql="UPDATE genea_events SET type='".mysql_escape_string($_POST['g4p_type'])."', description='".mysql_escape_string(trim($_POST['g4p_description']))."', attestation='".$g4p_attestation."', date_event='".$g4p_date_gedcom."', place_id=".mysql_escape_string(trim($_POST['g4p_lieu']))
-          .", age='".mysql_escape_string($_POST['g4p_age'])."', cause='".mysql_escape_string(trim($_POST['g4p_cause']))."', jd_count=".$g4p_jd['jd_count'].", jd_precision=".$g4p_jd['precision'].", jd_calendar='".$g4p_jd['calendrier']."'
+      $sql="UPDATE genea_events SET type='".$g4p_mysqli->escape_string($_POST['g4p_type'])."', description='".$g4p_mysqli->escape_string(trim($_POST['g4p_description']))."', attestation='".$g4p_attestation."', date_event='".$g4p_date_gedcom."', place_id=".$g4p_mysqli->escape_string(trim($_POST['g4p_lieu']))
+          .", age='".$g4p_mysqli->escape_string($_POST['g4p_age'])."', cause='".$g4p_mysqli->escape_string(trim($_POST['g4p_cause']))."', jd_count=".$g4p_jd['jd_count'].", jd_precision=".$g4p_jd['precision'].", jd_calendar='".$g4p_jd['calendrier']."'
           WHERE id=".$_POST['g4p_event_id'];
       if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message'].=$g4p_langue['message_req_succes'];
       else
         $_SESSION['message'].=$g4p_langue['message_req_echec'];
 
-      $g4p_indi=g4p_destroy_cache();
+      g4p_destroy_cache($g4p_indi->familles[$_GET['g4p_id'][0]]->conjoint->indi_id);      
+      $g4p_indi=g4p_destroy_cache($g4p_indi);
       header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
-	  g4p_destroy_cache($g4p_indi->familles[$_GET['g4p_id'][0]]->conjoint->indi_id);      
     }
     break;
 
@@ -625,10 +625,10 @@ exit;*/
       if($g4p_error)
         $_SESSION['message'].=$g4p_langue['message_suppr_event_echec'];
 
-      $g4p_indi=g4p_destroy_cache();
-      header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
-      foreach($g4p_indi->familles as $g4p_a_famille)
+     foreach($g4p_indi->familles as $g4p_a_famille)
         g4p_destroy_cache($g4p_a_famille->conjoint->indi_id);
+      $g4p_indi=g4p_destroy_cache($g4p_indi);
+      header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
     }
     break;
 
@@ -696,7 +696,7 @@ exit;*/
         foreach($g4p_indi->familles[$_GET['g4p_id']]->enfants as $un_enfant)
           g4p_destroy_cache($un_enfant->indi_id);
 
-      $g4p_indi=g4p_destroy_cache();
+      $g4p_indi=g4p_destroy_cache($g4p_indi);
       header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
     }
     break;
@@ -707,12 +707,9 @@ exit;*/
     case 'new_base':
     if($_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
     {
-      $sql="INSERT INTO genea_infos (nom, descriptif) VALUES ('".mysql_escape_string($_POST['nom'])."','".mysql_escape_string($_POST['description'])."')";
+      $sql="INSERT INTO genea_infos (nom, descriptif) VALUES ('".$g4p_mysqli->escape_string($_POST['nom'])."','".$g4p_mysqli->escape_string($_POST['description'])."')";
       if($g4p_new_id=$g4p_mysqli->g4p_query($sql))
         $_SESSION['message']=$g4p_langue['message_creer_base_succes'];
-
-	  if($g4p_langue['entete_charset']=='UTF-8')
-        $_POST['nom']=utf8_decode($_POST['nom']);
 
       if(!is_dir($g4p_chemin.'cache'))
       {
@@ -747,7 +744,7 @@ exit;*/
     case 'new_member':
     if($_SESSION['permission']->permission[_PERM_SUPER_ADMIN_])
     {
-      $sql="INSERT INTO genea_membres (email, pass) VALUES ('".mysql_escape_string($_POST['email'])."', '".md5($_POST['mdp'])."')";
+      $sql="INSERT INTO genea_membres (email, pass) VALUES ('".$g4p_mysqli->escape_string($_POST['email'])."', '".md5($_POST['mdp'])."')";
       if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message']=sprintf($g4p_langue['message_email_ajout_succes'],$_POST['email']);
       else
@@ -1034,7 +1031,7 @@ exit;*/
         $_SESSION['message']=$g4p_langue['message_suppr_lien_note_echec'];
       if(isset($g4p_indi->familles[$_GET['g4p_lien']]->conjoint->indi_id))
         g4p_destroy_cache($g4p_indi->familles[$_GET['g4p_lien']]->conjoint->indi_id);
-      $g4p_indi=g4p_destroy_cache();
+      $g4p_indi=g4p_destroy_cache($g4p_indi);
       header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
     }
     break;
@@ -1078,7 +1075,7 @@ exit;*/
         $_SESSION['message']=$g4p_langue['message_suppr_lien_media_echec'];
       if(isset($g4p_indi->familles[$_GET['g4p_lien']]->conjoint->indi_id))
         g4p_destroy_cache($g4p_indi->familles[$_GET['g4p_lien']]->conjoint->indi_id);
-      $g4p_indi=g4p_destroy_cache();
+      $g4p_indi=g4p_destroy_cache($g4p_indi);
       header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
     }
     break;
@@ -1143,7 +1140,7 @@ exit;*/
         $g4p_file=$_POST['url'];
       }
 
-      $sql="INSERT INTO genea_multimedia (title, format, file, base, chan) VALUES ('".mysql_escape_string(trim($_POST['titre']))."','".mysql_escape_string($g4p_ext)."','".mysql_escape_string($g4p_file)."',".$_SESSION['genea_db_id'].", NOW() )";
+      $sql="INSERT INTO genea_multimedia (title, format, file, base, chan) VALUES ('".$g4p_mysqli->escape_string(trim($_POST['titre']))."','".$g4p_mysqli->escape_string($g4p_ext)."','".$g4p_mysqli->escape_string($g4p_file)."',".$_SESSION['genea_db_id'].", NOW() )";
       if($g4p_mysqli->g4p_query($sql))
       {
         $_SESSION['message'].=$g4p_langue['message_media_enr'] ;
@@ -1178,7 +1175,7 @@ exit;*/
         $_SESSION['message'].=$g4p_langue['message_req_echec'];
       if(isset($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id))
         g4p_destroy_cache($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id);
-      $g4p_indi=g4p_destroy_cache();
+      $g4p_indi=g4p_destroy_cache($g4p_indi);
       header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
     }
     break;
@@ -1213,7 +1210,7 @@ exit;*/
 
       if(!isset($g4p_ext))
       {
-        if(ereg('http://|mailto:',$_POST['g4p_file']))
+        if(preg_match('http://|mailto:',$_POST['g4p_file']))
         {
           $g4p_ext='URL';
           $g4p_file=$_POST['g4p_file'];
@@ -1226,12 +1223,12 @@ exit;*/
       }
 
 
-      $sql="UPDATE genea_multimedia SET title='".mysql_escape_string($_POST['g4p_title'])."', file='".mysql_escape_string($g4p_file)."', format='".mysql_escape_string($g4p_ext)."', chan=NOW() WHERE id=".$_POST['g4p_id'];
+      $sql="UPDATE genea_multimedia SET title='".$g4p_mysqli->escape_string($_POST['g4p_title'])."', file='".$g4p_mysqli->escape_string($g4p_file)."', format='".$g4p_mysqli->escape_string($g4p_ext)."', chan=NOW() WHERE id=".$_POST['g4p_id'];
       if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message'].=$g4p_langue['message_req_succes'];
       else
         $_SESSION['message'].=$g4p_langue['message_req_echec'];
-      $g4p_liste_indi=g4p_cherche_dependances($_POST['g4p_id'],'medias');
+      $g4p_liste_indi=g4p_cherche_dependances($_POST['g4p_id'],'medias', $g4p_mysqli);
       foreach($g4p_liste_indi as $g4p_tmp)
         g4p_destroy_cache($g4p_tmp);
       $g4p_indi=g4p_load_indi_infos($g4p_indi->indi_id);
@@ -1243,10 +1240,7 @@ exit;*/
     case 'del_cache':
     if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     {
-      if($g4p_langue['entete_charset']=='UTF-8')
-        $g4p_tmp=utf8_decode($_SESSION['genea_db_nom']);
-      else
-        $g4p_tmp=$_SESSION['genea_db_nom'];
+      $g4p_tmp=$_SESSION['genea_db_nom'];
 
       //$g4p_indi=g4p_destroy_cache($_GET['g4p_id']);
       shell_exec('unlink ../cache/indis/indi_'.(int)$_GET['g4p_id'].'.txt');
@@ -1265,8 +1259,8 @@ exit;*/
     if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     {
       $sql="INSERT INTO genea_repository (repo_name, repo_addr, repo_city, repo_post, repo_stae, repo_ctry, repo_phon1, repo_phon2, repo_phon3, repo_chan, base)
-        VALUES ('".mysql_escape_string($_POST['repo_name'])."','".mysql_escape_string($_POST['repo_addr'])."','".mysql_escape_string($_POST['repo_city'])."','".mysql_escape_string($_POST['repo_post'])."',
-        '".mysql_escape_string($_POST['repo_stae'])."','".mysql_escape_string($_POST['repo_ctry'])."','".mysql_escape_string($_POST['repo_phon1'])."','".mysql_escape_string($_POST['repo_phon2'])."','".mysql_escape_string($_POST['repo_phon3'])."',NOW(),".$_SESSION['genea_db_id'].")";
+        VALUES ('".$g4p_mysqli->escape_string($_POST['repo_name'])."','".$g4p_mysqli->escape_string($_POST['repo_addr'])."','".$g4p_mysqli->escape_string($_POST['repo_city'])."','".$g4p_mysqli->escape_string($_POST['repo_post'])."',
+        '".$g4p_mysqli->escape_string($_POST['repo_stae'])."','".$g4p_mysqli->escape_string($_POST['repo_ctry'])."','".$g4p_mysqli->escape_string($_POST['repo_phon1'])."','".$g4p_mysqli->escape_string($_POST['repo_phon2'])."','".$g4p_mysqli->escape_string($_POST['repo_phon3'])."',NOW(),".$_SESSION['genea_db_id'].")";
       if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message']=$g4p_langue['message_repo_enr'];
          
@@ -1281,8 +1275,8 @@ exit;*/
     if($_SESSION['permission']->permission[_PERM_EDIT_FILES_])
     {
       $sql="REPLACE INTO genea_repository (repo_id, repo_name, repo_addr, repo_city, repo_post, repo_stae, repo_ctry, repo_phon1, repo_phon2, repo_phon3, repo_chan, base)
-        VALUES (".mysql_escape_string($_POST['depot']).",'".mysql_escape_string($_POST['repo_name'])."','".mysql_escape_string($_POST['repo_addr'])."','".mysql_escape_string($_POST['repo_city'])."','".mysql_escape_string($_POST['repo_post'])."',
-        '".mysql_escape_string($_POST['repo_stae'])."','".mysql_escape_string($_POST['repo_ctry'])."',','".mysql_escape_string($_POST['repo_phon1'])."','".mysql_escape_string($_POST['repo_phon2'])."','".mysql_escape_string($_POST['repo_phon3'])."',NOW(),".$_SESSION['genea_db_id'].")";
+        VALUES (".$g4p_mysqli->escape_string($_POST['depot']).",'".$g4p_mysqli->escape_string($_POST['repo_name'])."','".$g4p_mysqli->escape_string($_POST['repo_addr'])."','".$g4p_mysqli->escape_string($_POST['repo_city'])."','".$g4p_mysqli->escape_string($_POST['repo_post'])."',
+        '".$g4p_mysqli->escape_string($_POST['repo_stae'])."','".$g4p_mysqli->escape_string($_POST['repo_ctry'])."',','".$g4p_mysqli->escape_string($_POST['repo_phon1'])."','".$g4p_mysqli->escape_string($_POST['repo_phon2'])."','".$g4p_mysqli->escape_string($_POST['repo_phon3'])."',NOW(),".$_SESSION['genea_db_id'].")";
       if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message']=$g4p_langue['message_repo_enr'];
          
@@ -1320,8 +1314,8 @@ exit;*/
     
       $sql="UPDATE genea_place SET ";
       foreach($g4p_config['subdivision'] as $a_subdiv)
-        $sql.=$a_subdiv."='".mysql_escape_string($_POST[$a_subdiv])."', ";   
-      $sql=substr($sql,0,-2)." WHERE place_id=".mysql_escape_string($_POST['place']);
+        $sql.=$a_subdiv."='".$g4p_mysqli->escape_string($_POST[$a_subdiv])."', ";   
+      $sql=substr($sql,0,-2)." WHERE place_id=".$g4p_mysqli->escape_string($_POST['place']);
       if($g4p_mysqli->g4p_query($sql))
         $_SESSION['message']="Modifiaction du lieu effectué avec succès";
          
@@ -1385,7 +1379,7 @@ exit;*/
       {
         case 'events':
         $sql="INSERT INTO rel_asso_events (events_id, indi_id, base, description)
-          VALUES ('".$_POST['g4p_id']."','".$_POST['g4p_id_asso']."','".$_SESSION['genea_db_id']."','".mysql_escape_string($_POST['description'])."')";
+          VALUES ('".$_POST['g4p_id']."','".$_POST['g4p_id_asso']."','".$_SESSION['genea_db_id']."','".$g4p_mysqli->escape_string($_POST['description'])."')";
         if($g4p_mysqli->g4p_query($sql))
           $_SESSION['message']=$g4p_langue['message_ajout_rela_succes'];
          
@@ -1398,7 +1392,7 @@ exit;*/
 
         case 'indi':
         $sql="INSERT INTO rel_asso_indi (indi_id1, indi_id2, base, description)
-          VALUES ('".$_POST['g4p_id']."','".$_POST['g4p_id_asso']."','".$_SESSION['genea_db_id']."','".mysql_escape_string($_POST['description'])."')";
+          VALUES ('".$_POST['g4p_id']."','".$_POST['g4p_id_asso']."','".$_SESSION['genea_db_id']."','".$g4p_mysqli->escape_string($_POST['description'])."')";
         if($g4p_mysqli->g4p_query($sql))
           $_SESSION['message']=$g4p_langue['message_ajout_rela_succes'];
          
@@ -1505,7 +1499,7 @@ exit;*/
     }
     if(isset($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id))
       g4p_destroy_cache($g4p_indi->familles[$_POST['g4p_id']]->conjoint->indi_id);
-    $g4p_indi=g4p_destroy_cache();
+    $g4p_indi=g4p_destroy_cache($g4p_indi);
     header('location:'.g4p_make_url('','index.php','g4p_action=fiche_indi',0));
     break;
 
@@ -1545,7 +1539,7 @@ exit;*/
           exit;
         else
         {
-          if(@unlink($g4p_chemin.'cache/'.utf8_decode($g4p_results['nom']).'/fichiers/'.$g4p_results['fichier']))
+          if(@unlink($g4p_chemin.'cache/'.$g4p_results['nom'].'/fichiers/'.$g4p_results['fichier']))
           {
             $sql="DELETE FROM genea_download WHERE download_id=".$_GET['g4p_id'];
             if($g4p_mysqli->g4p_query($sql))
@@ -1574,10 +1568,10 @@ exit;*/
       {
         $g4p_alia1=g4p_load_indi_infos($_POST['alia']);
         $g4p_alia2=g4p_load_indi_infos($_POST['g4p_id']);
-        if($g4p_alia1->indi_base!=$g4p_alia2->indi_base)
+        if($g4p_alia1->base!=$g4p_alia2->base)
           $g4p_base='NULL';
         else
-          $g4p_base=$g4p_alia1->indi_base;
+          $g4p_base=$g4p_alia1->base;
         
         $sql="SELECT alias1 FROM genea_alias WHERE (alias1=".$_POST['alia']." AND alias2=".$_POST['g4p_id'].") OR (alias2=".$_POST['alia']." AND alias1=".$_POST['g4p_id'].")";
         $g4p_infos_req=$g4p_mysqli->g4p_query($sql);

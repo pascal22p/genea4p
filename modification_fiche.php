@@ -120,7 +120,7 @@ echo '<input type="hidden" name="id_pers" value="',$g4p_indi->indi_id,'" />
     </form>';
 //ALIAS
 if(!empty($g4p_indi->alias))
-    g4p_show_alias($g4p_indi->alias);
+    g4p_show_alias($g4p_indi->alias, $g4p_indi);
         
 //evenements individuels
 echo '<div class="box">';
@@ -224,7 +224,7 @@ if(!empty($g4p_indi->parents))
     }
 }
 
-g4p_affiche_asso(@$g4p_indi->asso, $g4p_indi->indi_id,'indi');
+//g4p_affiche_asso(@$g4p_indi->asso, $g4p_indi->indi_id,'indi');
 
 if ($_SESSION['permission']->permission[_PERM_NOTE_])
     g4p_affiche_notes(@$g4p_indi->notes,$g4p_indi->indi_id, 'indi');
@@ -233,7 +233,7 @@ if ($_SESSION['permission']->permission[_PERM_SOURCE_])
     g4p_affiche_sources(@$g4p_indi->sources,$g4p_indi->indi_id, 'indi');
 
 if ($_SESSION['permission']->permission[_PERM_MULTIMEDIA_])
-    g4p_affiche_multimedia(@$g4p_indi->multimedia, $g4p_indi->indi_id, 'indi');
+    g4p_affiche_multimedia(@$g4p_indi->medias, $g4p_indi->indi_id, 'indi');
 
 echo '</div>';
 
