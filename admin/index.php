@@ -43,7 +43,7 @@ switch($_GET['g4p_opt'])
 /////////////////////////////////////////////////////////////:
 /////////////////////////////////////////////////////////////:
     case 'mod_fich':
-    $g4p_indi=g4p_load_indi_infos($_GET['id_pers']);
+    $g4p_indi=g4p_load_indi_infos((int)$_GET['id_pers']);
     if(empty($g4p_indi))
         g4p_error('Erreur lors du chargement des données de l\'individu');
 

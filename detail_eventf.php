@@ -13,7 +13,7 @@ $_GET['id_famille']=(int)$_GET['id_famille'];
 if(empty($_GET['id_famille']))
     g4p_error('Error on parameter');
 
-$g4p_indi=g4p_load_indi_infos($_GET['id_parent']);
+$g4p_indi=g4p_load_indi_infos((int)$_GET['id_parent']);
 if(empty($g4p_indi))
 	g4p_error('Erreur lors du chargement des données de l\'individu');
 

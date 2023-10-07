@@ -64,7 +64,7 @@ switch($_GET['g4p_action'])
       {
         if(isset($_SERVER['HTTP_IF_NONE_MATCH']) and $_SERVER['HTTP_IF_NONE_MATCH']==md5($_SESSION['g4p_id_membre'].$_SESSION['langue'].$_SESSION['theme'].serialize($_SESSION['place']).$g4p_langue['entete_charset']))
         {
-          $g4p_indi=g4p_load_indi_infos($_GET['id_pers']);
+          $g4p_indi=g4p_load_indi_infos((int)$_GET['id_pers']);
           //header('Not Modified', TRUE, 304);
           //exit;
         }
@@ -72,12 +72,12 @@ switch($_GET['g4p_action'])
     }
   }
 
-$g4p_indi=g4p_load_indi_infos($_GET['id_pers']);
+$g4p_indi=g4p_load_indi_infos((int)$_GET['id_pers']);
 
     if(isset($_GET['id_pers']) and isset($g4p_indi) and $_GET['id_pers']!=$g4p_indi->indi_id)
-      $g4p_indi=g4p_load_indi_infos($_GET['id_pers']);
+      $g4p_indi=g4p_load_indi_infos((int)$_GET['id_pers']);
     elseif(isset($_GET['id_pers']) and !isset($g4p_indi))
-      $g4p_indi=g4p_load_indi_infos($_GET['id_pers']);
+      $g4p_indi=g4p_load_indi_infos((int)$_GET['id_pers']);
     elseif(!isset($g4p_indi))
     {
       require_once($g4p_chemin.'entete.php');

@@ -406,7 +406,7 @@ function g4p_load_indi_infos($id, $debug=false)
         $indi->prenom='';
         return $indi;
     }*/
-	$g4p_mon_indi=new g4p_individu($id);
+	$g4p_mon_indi=new g4p_individu((int)$id);
 	//$g4p_mon_indi->ignore_cache($debug);
 	$g4p_mon_indi->g4p_load();
 	
@@ -1358,7 +1358,11 @@ function & strip_slashes(&$str)
   global $g4p_langue;
   if(is_array($str))
   {
-    $str = array_map('stripslashes', $str);
+    if (count($str) == count($str, COUNT_RECURSIVE)) {
+      $str = array_map('stripslashes', $str);
+    } else {
+      $str = "";
+    }
   }
   else
   {

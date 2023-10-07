@@ -225,11 +225,8 @@ if(!is_dir($g4p_chemin.'cache/liste_patronymes'))
 
 if(!empty($_SESSION['genea_db_nom']))
 {
-  if($g4p_langue['entete_charset']=='UTF-8')
-    $g4p_iso_genea_db_nom=utf8_decode($_SESSION['genea_db_nom']);  
-  else
-    $g4p_iso_genea_db_nom=$_SESSION['genea_db_nom'];  
-    
+  $g4p_iso_genea_db_nom=$_SESSION['genea_db_nom'];  
+
   if(!is_dir($g4p_chemin.'cache/'.$g4p_iso_genea_db_nom))
   {
     if(!mkdir($g4p_chemin.'cache/'.$g4p_iso_genea_db_nom,0755))

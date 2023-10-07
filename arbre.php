@@ -35,7 +35,7 @@ require_once($g4p_chemin.'include_sys/sys_functions.php');
 //echo '<textarea cols=1000 rows=100>';
 
 if(isset($_GET['id_pers']))
-  $g4p_indi=g4p_load_indi_infos($_GET['id_pers']);
+  $g4p_indi=g4p_load_indi_infos((int)$_GET['id_pers']);
   
 g4p_forbidden_access($g4p_indi);
 

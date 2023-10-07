@@ -1,4 +1,4 @@
-<?php
+`<?php
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                          *
  *Copyright (C) 2006                                          PAROIS Pascal *
@@ -33,9 +33,10 @@
  */
 class g4p_sql_datas
 {
-    //public $liste_sources, $liste_familles, $liste_sour_records, $liste_medias, $liste_repo, $liste_notes, $liste_indi;
+    public $liste_sources, $liste_familles, $liste_sour_records, $liste_medias, $liste_repo, $liste_notes, $liste_indi;
     private $g4p_infos_req, $g4p_infos, $sql, $g4p_result_req, $ligne;
-    //public $g4p_infos_indi, $g4p_alias, $rel_indi_sources, $rel_indi_notes, $rel_indi_medias, $g4p_parents, $g4p_rel_indi_events, $g4p_rel_indi_attributes, $g4p_events_details, $g4p_adresses, $g4p_places, $rel_events_sources, $rel_events_notes, $rel_events_media, $g4p_sour_citations, $rel_sour_citations_notes, $g4p_sour_records, $g4p_repo, $g4p_medias, $rel_medias_notes, $g4p_notes, $g4p_infos_indi2;
+    public $g4p_infos_indi, $g4p_alias, $rel_indi_sources, $rel_indi_notes, $rel_indi_medias, $g4p_parents, $g4p_rel_indi_events, $g4p_rel_indi_attributes, $g4p_events_details, $g4p_adresses, $g4p_places, $rel_events_sources, $rel_events_notes, $rel_events_media, $g4p_sour_citations, $rel_sour_citations_notes, $g4p_sour_records, $g4p_repo, $g4p_medias, $rel_medias_notes, $g4p_notes, $g4p_infos_indi2;
+    public $g4p_familles, $g4p_rel_familles_events, $debug, $g4p_familles_enfants, $rel_sour_citations_medias, $rel_familles_notes, $rel_events_medias, $lieudit;
 
     /**
      * Lecture des données en BD et remplissage de l'objet
@@ -448,7 +449,8 @@ class g4p_sql_datas
  */
 class g4p_individu
 {
-    //public $alias, $attributes, $familles, $parents, $notes, $sources, $medias, $base, $nom, $prenom, $npfx, $givn, $nick, $spfx, $surn, $nsfx, $sexe, $timestamp, $resn, $events;
+    public $alias, $attributes, $familles, $parents, $notes, $sources, $medias, $base, $nom, $prenom, $npfx, $givn, $nick, $spfx, $surn, $nsfx, $sexe, $timestamp, $resn, $events, $filiation;
+    public $basename, $ignorecache, $indi_id, $debug, $g4p_sql_datas;
     /**
      * Constructeur
      * @author Pascal Parois
@@ -459,7 +461,7 @@ class g4p_individu
         $this->indi_id=$indi_id;
         $this->debug=false;
         $this->filiation=true;
-        $this->ignorecache=false;
+        $this->ignorecache=true;
     }
     
     function set_debug($debug)
@@ -553,7 +555,7 @@ class g4p_individu
         {
             $this->g4p_load_from_db();
             $this->g4p_write_object($this->g4p_sql_datas);
-            $this->g4p_write_cache($this->g4p_sql_datas);
+            //$this->g4p_write_cache($this->g4p_sql_datas);
             return ;
         }
         else
@@ -654,6 +656,10 @@ class g4p_individu
      */
     function g4p_etat_civil(&$g4p_sql_datas)
     {
+        if(!isset($g4p_sql_datas->g4p_infos_indi[$this->indi_id])) {
+	    error_log(new Exception(sprintf("Cannot find %d in g4p_infos_indi", $this->indi_id)));
+            return;
+	}
         //var_dump($g4p_sql_datas->g4p_infos_indi);
         //echo $this->indi_id;
         $this->base=$g4p_sql_datas->g4p_infos_indi[$this->indi_id]['base'];
@@ -768,6 +774,17 @@ class g4p_individu
  */
 class g4p_famille
 {
+    public bool $debug;
+    public int $id;
+    public $timestamp;
+    public $husb;
+    public $wife;
+    public $enfants;
+    public $events;
+    public $sources;
+    public $medias;
+    public $notes;
+
     function __construct($famille,&$g4p_sql_datas, $debug)
     {
         if($debug===true)
@@ -829,7 +846,7 @@ class g4p_famille
  */
 class g4p_event
 {
-    //public $id, $tag, $attestation, $place, $details_descriptor, $gedcom_date, $date, $age, $cause, $address, $timestamp, $notes, $sources, $medias;
+    public $id, $tag, $attestation, $place, $details_descriptor, $gedcom_date, $date, $age, $cause, $address, $timestamp, $notes, $sources, $medias;
     
     /**
      * Constructeur de l'objet évènement
@@ -888,7 +905,8 @@ class g4p_event
  */
 class g4p_attribute
 {
-    //public $id, $tag, $description, $place, $detail_escriptor, $gedcom_date, $age, $cause, $address, $timestamp, $g4p_event_notes, $g4p_event_sources, $g4p_event_medias;
+    public $id, $tag, $description, $place, $detail_escriptor, $gedcom_date, $age, $cause, $address, $timestamp, $g4p_event_notes, $g4p_event_sources, $g4p_event_medias;
+    public $details_descriptor;
     
     /**
      * Constructeur de l'objet attribut
@@ -949,6 +967,18 @@ class g4p_attribute
  */
 class g4p_source_citation //acte
 {
+    public int $id;
+    public $page;
+    public $even;
+    public $even_role;
+    public $data_dates;
+    public $data_text;
+    public $quay;
+    public $subm;
+    public $timestamp;
+    public $record;
+    public $medias;
+
     /**
      * constructeur de l'objet source citation (acte civil ou religieux d'un registre)
      * @author Pascal Parois
@@ -985,6 +1015,18 @@ class g4p_source_citation //acte
  */
 class g4p_source_record//registre
 {
+    public int $id;
+    public $auth;
+    public $title;
+    public $abbr;
+    public $publ;
+    public $agnc;
+    public $rin;
+    public $repo_medi;
+    public $repo_caln;
+    public $repo;
+    public $timestamp;
+
     /**
      * Constructeur de l'objet source record (registre)
      * @author Pascal Parois
@@ -1017,6 +1059,11 @@ class g4p_source_record//registre
  */
 class g4p_repo
 {
+    public int $id;
+    public string $name;
+    public $addr;
+    public $timestamp;
+
     /**
      * Constructeur de l'objet repository (dépot, archives départementales)
      * @author Pascal Parois
@@ -1039,6 +1086,10 @@ class g4p_repo
  */
 class g4p_note
 {
+    public int $id;
+    public string $text;
+    public $timestamp;
+
     /**
      * Constructeur de l'objet note
      * @author Pascal Parois
@@ -1059,6 +1110,13 @@ class g4p_note
  */
 class g4p_media
 {
+    public int $id;
+    public string $basename;
+    public string $title;
+    public string $format;
+    public string $file;
+    public $timestamp;
+
     /**
      * Constructeur de l'objet média
      * @author Pascal Parois
@@ -1083,6 +1141,17 @@ class g4p_media
  */
 class g4p_place
 {
+    public int $id;
+    public $lieudit;
+    public string $ville;
+    public string $cp;
+    public $insee;
+    public $departement;
+    public $region;
+    public $pays;
+    public $longitude;
+    public $latitude;
+
     /**
      * Constructeur de l'objet lieu
      * @author Pascal Parois
@@ -1175,6 +1244,9 @@ class g4p_place
  */
 class g4p_address
 {
+    public int $id;
+    public $addr, $city, $stae, $post, $ctry, $phon1, $phon2, $phon3, $email1, $email2, $email3, $fax1, $fax2, $fax3, $www1, $www2, $www3;
+
     /**
      * Constructeur de l'objet adresse
      * @author Pascal Parois
@@ -1239,6 +1311,13 @@ class g4p_address
  */
 class g4p_parents
 {
+    public int $id;
+    public bool $debug;
+    public $famille_id;
+    public $rela_type;
+    public $pere;
+    public $mere;
+
     /**
      * Constructeur de l'objet parent
      * @author Pascal Parois
@@ -1278,6 +1357,8 @@ class g4p_parents
  */
 class g4p_date
 {
+    public $jd_count, $jd_precision, $jd_calendar, $gedcom_date, $date1, $date2;
+
     /**
      * Constructeur de l'objet date
      * @author Pascal Parois
@@ -1443,6 +1524,9 @@ class g4p_date
 
 class g4p_date_value
 {
+
+    public $calendar, $year, $month, $day, $jd_count, $jd_precision, $mod;
+
     function __construct()
     {
     }
@@ -1661,6 +1745,8 @@ class g4p_date_value
 
 class g4p_permission
 {
+    public $permission;
+
     function __construct()
     {
         global $g4p_permissions;
@@ -1707,6 +1793,8 @@ class g4p_permission
 
 class g4p_mysqli extends mysqli
 { 
+    public $nb_requetes, $requetes;
+
     function __construct()
     {
         global $g4p_config;
@@ -1748,7 +1836,7 @@ class g4p_mysqli extends mysqli
                 return 'Error:1062';
             else
             {
-                echo $g4p_db_request;
+                error_log($g4p_db_request);
                 throw new exception(mysqli_error($this), mysqli_errno($this));
             }
         }
@@ -1780,9 +1868,9 @@ class g4p_mysqli extends mysqli
         return (count($table))?($table):(false);
     }
 
-    function escape_string($string)
+    function escape_string(string $rawString): string
     {
-        return parent::real_escape_string($string);
+        return parent::real_escape_string($rawString);
     }
     
 }

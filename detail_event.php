@@ -65,7 +65,7 @@ else
 	die('event not linked to anything or linked more than once');
 	
 
-$g4p_indi=g4p_load_indi_infos($indi_id);
+$g4p_indi=g4p_load_indi_infos((int)$indi_id);
 if(empty($g4p_indi))
 	g4p_error('Erreur lors du chargement des données de l\'individu');
 

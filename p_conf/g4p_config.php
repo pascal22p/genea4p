@@ -26,7 +26,6 @@
  * En cas de probl�me : http://www.parois.net                              *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
 //PERMISSIONS
 require_once($g4p_chemin.'p_conf/g4p_permissions.php');
 //CALENDAR

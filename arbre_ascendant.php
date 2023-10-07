@@ -32,7 +32,7 @@ $g4p_chemin='';
 require_once($g4p_chemin.'p_conf/g4p_config.php');
 require_once($g4p_chemin.'p_conf/script_start.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
-$g4p_mon_indi=g4p_load_indi_infos($_GET['g4p_id']);
+$g4p_mon_indi=g4p_load_indi_infos((int)$_GET['g4p_id']);
 $g4p_titre_page='Arbre ascendant : '.$g4p_mon_indi->nom.' '.$g4p_mon_indi->prenom;
 require_once($g4p_chemin.'entete.php');
 

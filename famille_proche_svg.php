@@ -33,7 +33,7 @@ require_once($g4p_chemin.'p_conf/script_start.php');
 require_once($g4p_chemin.'include_sys/sys_functions.php');
 
 if(isset($_GET['id_pers']))
-  $g4p_indi=g4p_load_indi_infos($_GET['id_pers']);
+  $g4p_indi=g4p_load_indi_infos((int)$_GET['id_pers']);
 else
     exit;
     
