@@ -1049,10 +1049,10 @@ function g4p_strftime($masque,$date,$format='timestamp')
   {
     case 'timestamp':
       $g4p_tmp=array(
-          '/%A/'=>$g4p_jours_gregorien[date('%w',$date)],
+          '/%A/'=>$g4p_jours_gregorien[date('w',$date)],
           '/%d/'=>date('%d',$date),
-          '/%b/'=>$g4p_cal_gregorien[intval(date('%m',$date))],
-          '/%B/'=>$g4p_mois_gregorien[intval(date('%m',$date))],
+          '/%b/'=>$g4p_cal_gregorien[intval(date('n',$date))],
+          '/%B/'=>$g4p_mois_gregorien[intval(date('n',$date))],
           '/%Y/'=>date('%Y',$date),
           '/%H/'=>date('%H',$date),
           '/%M/'=>date('%S',$date),
